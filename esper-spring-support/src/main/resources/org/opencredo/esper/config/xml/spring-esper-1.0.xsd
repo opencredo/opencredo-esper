@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://www.opencredo.com/schema/spring/esper"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tool="http://www.springframework.org/schema/tool"
+	targetNamespace="http://www.opencredo.com/schema/spring/esper"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xsd:element name="esper-engine">
+		<xsd:complexType>
+			<xsd:annotation>
+				<xsd:documentation>
+					Defines an Esper Engine that encapsulates
+					a number
+					of statements and listeners.
+        		</xsd:documentation>
+			</xsd:annotation>
+			<xsd:sequence>
+				<xsd:element name="statements" type="statementsType"
+					minOccurs="1" maxOccurs="1" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="statementsType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines a list of statements.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="statement" type="statementType"
+					minOccurs="0" maxOccurs="unbounded" />
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="statementType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines an esper statement and the listener
+				interested
+				in that statement's results.
+       		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="listeners" type="listenersType"
+				minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="query" type="xsd:string" use="required" />
+	</xsd:complexType>
+
+	<xsd:complexType name="listenersType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines a list of listeners that will then be
+				joined to a specific query.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="listener" type="listenerType"
+					minOccurs="0" maxOccurs="unbounded" />
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="listenerType">
+		<xsd:annotation>
+			<xsd:documentation>
+				Defines an esper listener interested
+				in a
+				statement's results.
+       		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="ref">
+					<xsd:complexType>
+						<xsd:attribute name="bean" use="required">
+
+							<xsd:annotation>
+								<xsd:appinfo>
+									<tool:annotation kind="ref">
+										<tool:expected-type
+											type="com.espertech.esper.client.UpdateListener" />
+									</tool:annotation>
+								</xsd:appinfo>
+							</xsd:annotation>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:any namespace="##other" processContents="strict" />
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+
+		<property name="statements"> <bean
+		class="com.opencredo.spring.integration.esper.EsperStatement">
+		<constructor-arg value="select count(*) as throughput from
+		com.ubs.sseng.concurrent.sample.domain.Event.win:time_batch(1
+		second)"/> <property name="listeners"> <list> <ref
+		bean="throughputMessagesInboundGateway"/> </list> </property> </bean>
+		</property>
+	-->
+
+</xsd:schema>

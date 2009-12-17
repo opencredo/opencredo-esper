@@ -1,0 +1,2 @@
+http\://www.opencredo.com/schema/esper/spring-esper-1.0.xsd=org/opencredo/esper/config/xml/spring-esper-1.0.xsd
+http\://www.opencredo.com/schema/esper/spring-esper.xsd=org/opencredo/esper/config/xml/spring-esper-1.0.xsd
