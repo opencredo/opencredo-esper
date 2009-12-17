@@ -4,13 +4,12 @@
 	targetNamespace="http://www.opencredo.com/schema/spring/esper"
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 
-	<xsd:element name="esper-engine">
+	<xsd:element name="template">
 		<xsd:complexType>
 			<xsd:annotation>
 				<xsd:documentation>
-					Defines an Esper Engine that encapsulates
-					a number
-					of statements and listeners.
+					Defines an Esper Template that encapsulates
+					a number of statements and listeners.
         		</xsd:documentation>
 			</xsd:annotation>
 			<xsd:sequence>

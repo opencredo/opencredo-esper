@@ -6,7 +6,7 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 public class EsperNamespaceHandler extends NamespaceHandlerSupport implements NamespaceHandler {
 
 	public void init() {
-		registerBeanDefinitionParser("esper-engine", new EsperEngineParser());
+		registerBeanDefinitionParser("template", new EsperTemplateParser());
 	}
 
 }

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.xml.AbstractSimpleBeanDefinitionParser;
 import org.springframework.util.ObjectUtils;
 import org.w3c.dom.Element;
 
-public class EsperEngineParser extends AbstractSimpleBeanDefinitionParser {
+public class EsperTemplateParser extends AbstractSimpleBeanDefinitionParser {
 
 	@Override
 	protected boolean shouldGenerateId() {
