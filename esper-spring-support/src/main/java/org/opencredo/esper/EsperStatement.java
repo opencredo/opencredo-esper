@@ -19,14 +19,32 @@ public class EsperStatement {
         return epl;
     }
 
-    public void setListeners(UpdateListener... listeners) {
-        for (UpdateListener listener : listeners) {
-            addListener(listener);
-        }
+    public void setListeners(Set<UpdateListener> listeners) {
+        this.listeners = listeners;
+    	
+        this.refreshEPStatmentListeners();
     }
+    
+    public Set<UpdateListener> getListeners() {
+    	return this.listeners;
+    }
+    
     public void addListener(UpdateListener listener) {
         listeners.add(listener);
-        if (epStatement != null) {
+        
+        this.refreshEPStatmentListeners();
+
+        this.addEPStatementListener(listener);
+    }
+    
+    private void refreshEPStatmentListeners() {
+    	for (UpdateListener listener : this.listeners) {
+    		this.addEPStatementListener(listener);
+    	}
+    }
+    
+    private void addEPStatementListener(UpdateListener listener) {
+    	if (epStatement != null) {
             epStatement.addListener(listener);
         }
     }
@@ -37,4 +55,5 @@ public class EsperStatement {
             epStatement.addListener(listener);
         }
     }
+    
 }

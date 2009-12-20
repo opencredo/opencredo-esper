@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:esper="http://www.opencredo.com/schema/esper"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.opencredo.com/schema/esper
+						http://www.opencredo.com/schema/esper/spring-esper-1.0.xsd">
+
+	<esper:statement 
+		id="testStatement" 
+		epl="select count(*) as throughput from java.lang.Object.win:time_batch(1 second)" />
+	
+</beans>

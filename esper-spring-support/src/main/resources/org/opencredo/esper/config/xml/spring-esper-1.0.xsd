@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns="http://www.opencredo.com/schema/spring/esper"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tool="http://www.springframework.org/schema/tool"
-	targetNamespace="http://www.opencredo.com/schema/spring/esper"
+<xsd:schema xmlns="http://www.opencredo.com/schema/esper"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tool="http://www.springframework.org/schema/tool"
+	targetNamespace="http://www.opencredo.com/schema/esper"
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 
 	<xsd:element name="template">
@@ -14,10 +15,13 @@
 			</xsd:annotation>
 			<xsd:sequence>
 				<xsd:element name="statements" type="statementsType"
-					minOccurs="1" maxOccurs="1" />
+					minOccurs="0" maxOccurs="1" />
 			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:ID" />
 		</xsd:complexType>
 	</xsd:element>
+	
+	<xsd:element name="statement" type="statementType" />
 
 	<xsd:complexType name="statementsType">
 		<xsd:annotation>
@@ -29,6 +33,20 @@
 			<xsd:choice minOccurs="0" maxOccurs="unbounded">
 				<xsd:element name="statement" type="statementType"
 					minOccurs="0" maxOccurs="unbounded" />
+				<xsd:element name="ref">
+					<xsd:complexType>
+						<xsd:attribute name="bean" use="required">
+							<xsd:annotation>
+								<xsd:appinfo>
+									<tool:annotation kind="ref">
+										<tool:expected-type
+											type="org.opencredo.esper.EsperStatement" />
+									</tool:annotation>
+								</xsd:appinfo>
+							</xsd:annotation>
+						</xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
 			</xsd:choice>
 		</xsd:sequence>
 	</xsd:complexType>
@@ -42,25 +60,28 @@
        		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="listeners" type="listenersType"
+			<xsd:element name="listeners" type="listenerType"
 				minOccurs="0" maxOccurs="1" />
 		</xsd:sequence>
-		<xsd:attribute name="query" type="xsd:string" use="required" />
-	</xsd:complexType>
-
-	<xsd:complexType name="listenersType">
-		<xsd:annotation>
-			<xsd:documentation>
-				Defines a list of listeners that will then be
-				joined to a specific query.
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:choice minOccurs="0" maxOccurs="unbounded">
-				<xsd:element name="listener" type="listenerType"
-					minOccurs="0" maxOccurs="unbounded" />
-			</xsd:choice>
-		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:ID" />
+		<xsd:attribute name="epl" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The Event Processing Language (EPL) statement used to decide what and when
+					to send an event to the registered listeners.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="ref">
+			<xsd:annotation>
+				<xsd:appinfo>
+					<tool:annotation kind="ref">
+						<tool:expected-type
+							type="com.espertech.esper.client.UpdateListener" />
+					</tool:annotation>
+				</xsd:appinfo>
+			</xsd:annotation>
+		</xsd:attribute>
 	</xsd:complexType>
 
 	<xsd:complexType name="listenerType">

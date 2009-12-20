@@ -11,12 +11,12 @@ import com.espertech.esper.client.UpdateListener;
  */
 public class CallRecordingListener implements UpdateListener {
 	
-	private boolean called = false;
+	private int numberOfTimesInvoked = 0;
 	
-	public boolean getCalled() {
-		return this.called;
+	public int getNumberOfTimesInvoked() {
+		return numberOfTimesInvoked;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -25,6 +25,6 @@ public class CallRecordingListener implements UpdateListener {
 	 * client.EventBean[], com.espertech.esper.client.EventBean[])
 	 */
 	public void update(EventBean[] eventBeans, EventBean[] eventBeans1) {
-		this.called = true;
+		this.numberOfTimesInvoked++;
 	}
 }

@@ -7,6 +7,7 @@ public class EsperNamespaceHandler extends NamespaceHandlerSupport implements Na
 
 	public void init() {
 		registerBeanDefinitionParser("template", new EsperTemplateParser());
+		registerBeanDefinitionParser("statement", new EsperStatementParser());
 	}
 
 }

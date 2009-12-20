@@ -29,17 +29,19 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean, Dis
     private EPServiceProvider epServiceProvider;
     private EPRuntime epRuntime;
     private String name;
-    private Set<EsperStatement> statementBeans = new LinkedHashSet<EsperStatement>();
+    private Set<EsperStatement> statements = new LinkedHashSet<EsperStatement>();
 
     /**
      * Add a collection of {@link EsperStatement} to the template.
      * 
      * @param statementBeans
      */
-    public void setStatements(EsperStatement... statements) {
-		for (EsperStatement statement : statements) {
-		    this.addStatement(statement);
-		}
+    public void setStatements(Set<EsperStatement> statements) {
+    	this.statements = statements;
+    }
+    
+    public Set<EsperStatement> getStatements() {
+		return this.statements;
     }
 
     /**
@@ -48,7 +50,7 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean, Dis
      * @param statement The EsperStatement to add to the template. 
      */
     public void addStatement(EsperStatement statement) {
-    	statementBeans.add(statement);
+    	statements.add(statement);
     }
 
     /**
@@ -69,6 +71,10 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean, Dis
     	this.name = name;
     }
     
+    public String getName() {
+    	return this.name;
+    }
+    
     /**
      * Initializes the Esper service provider with the 
      * provided statements and associated listeners.
@@ -79,7 +85,7 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean, Dis
     private void setupEsper() {
 		epServiceProvider = EPServiceProviderManager.getProvider(name);
 		epRuntime = epServiceProvider.getEPRuntime();
-		for (EsperStatement statementBean : statementBeans) {
+		for (EsperStatement statementBean : statements) {
 		    EPStatement epStatement = epServiceProvider.getEPAdministrator().createEPL(statementBean.getEPL());
 		    statementBean.setEPStatement(epStatement);
 		}
