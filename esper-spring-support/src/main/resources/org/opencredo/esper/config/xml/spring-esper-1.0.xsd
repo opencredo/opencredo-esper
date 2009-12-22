@@ -5,6 +5,8 @@
 	targetNamespace="http://www.opencredo.com/schema/esper"
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 
+	<xsd:import namespace="http://www.springframework.org/schema/tool" />
+	
 	<xsd:element name="template">
 		<xsd:complexType>
 			<xsd:annotation>
@@ -12,6 +14,11 @@
 					Defines an Esper Template that encapsulates
 					a number of statements and listeners.
         		</xsd:documentation>
+        		<xsd:appinfo>
+					<tool:annotation>
+						<tool:exports type="org.opencredo.esper.EsperTemplate" />
+					</tool:annotation>
+				</xsd:appinfo>
 			</xsd:annotation>
 			<xsd:sequence>
 				<xsd:element name="statements" type="statementsType"
@@ -94,10 +101,9 @@
 		</xsd:annotation>
 		<xsd:sequence>
 			<xsd:choice>
-				<xsd:element name="ref">
+				<xsd:element name="ref" >
 					<xsd:complexType>
 						<xsd:attribute name="bean" use="required">
-
 							<xsd:annotation>
 								<xsd:appinfo>
 									<tool:annotation kind="ref">

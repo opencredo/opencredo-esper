@@ -1,4 +1,4 @@
-package org.opencredo.esper;
+package org.opencredo.esper.sample;
 
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
@@ -25,6 +25,10 @@ public class CallRecordingListener implements UpdateListener {
 	 * client.EventBean[], com.espertech.esper.client.EventBean[])
 	 */
 	public void update(EventBean[] eventBeans, EventBean[] eventBeans1) {
+		this.numberOfTimesInvoked++;
+	}
+	
+	public void updateFromSIChannel(Object event) {
 		this.numberOfTimesInvoked++;
 	}
 }

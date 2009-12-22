@@ -18,7 +18,7 @@
 		id="testStatement" 
 		epl="select count(*) as throughput from java.lang.Object.win:time_batch(1 second)">
 		<esper:listeners>
-			<bean class="org.opencredo.esper.CallRecordingListener" />
+			<bean class="org.opencredo.esper.sample.CallRecordingListener" />
 		</esper:listeners>
 	</esper:statement>
 	
@@ -26,7 +26,7 @@
 		id="testStatement2" 
 		epl="select count(*) as throughput from java.lang.Object.win:time_batch(1 second)">
 		<esper:listeners>
-			<bean class="org.opencredo.esper.CallRecordingListener" />
+			<bean class="org.opencredo.esper.sample.CallRecordingListener" />
 		</esper:listeners>
 	</esper:statement>
 	

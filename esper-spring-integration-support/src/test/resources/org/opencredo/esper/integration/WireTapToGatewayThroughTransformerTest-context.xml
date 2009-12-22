@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:esper="http://www.opencredo.com/schema/esper"
+	xmlns:espersi="http://www.opencredo.com/schema/esper/integration"
+	xmlns:si="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.opencredo.com/schema/esper
+						http://www.opencredo.com/schema/esper/spring-esper-1.0.xsd
+						http://www.opencredo.com/schema/esper/integration
+						http://www.opencredo.com/schema/esper/integration/spring-integration-esper-1.0.xsd
+						http://www.springframework.org/schema/integration
+						http://www.springframework.org/schema/integration/spring-integration-1.0.xsd">
+
+	<description>
+		Provides a demonstration of a full pipeline including a
+		throughput monitor.
+	</description>
+
+	<si:gateway service-interface="org.opencredo.esper.sample.SampleService"
+		id="sampleServiceGateway" default-request-channel="domainEvents" />
+
+	<si:channel id="domainEvents">
+		<si:interceptors>
+			<ref bean="wiretap" />
+		</si:interceptors>
+	</si:channel>
+
+	<espersi:wire-tap id="wiretap" template-ref="template" />
+
+	<!--
+		Take Esper messages and place them on the inboundRawEsperMessages
+		channel
+	-->
+
+	<esper:template id="template">
+		<esper:statements>
+			<esper:statement epl="select count(*) as throughput from org.opencredo.esper.sample.SampleEvent.win:time_batch(1 second)">
+				<esper:listeners>
+					<esper:ref bean="throughputGateway" />
+				</esper:listeners>
+			</esper:statement>
+		</esper:statements>
+	</esper:template>
+
+	<espersi:inbound-gateway id="throughputGateway"
+		channel="inboundRawEsperThroughputMessages" />
+
+	<si:channel id="inboundRawEsperThroughputMessages" />
+
+	<!--
+		Take the inbound esper messages on the channel, transform to the
+		actual throughput calculations and finally to pass those on a channel
+		to a console throughput monitor
+	-->
+
+	<si:transformer input-channel="inboundRawEsperThroughputMessages"
+		output-channel="throughputCalculations" ref="throughputCalculationTransformer" />
+
+	<bean id="throughputCalculationTransformer"
+		class="org.opencredo.esper.sample.ThroughputCalculationTransformer" />
+		
+	<si:channel id="throughputCalculations"/>
+
+	<si:service-activator ref="throughputMonitor"
+		input-channel="throughputCalculations" />
+		
+	<bean id="throughputMonitor" class="org.opencredo.esper.sample.DefaultThroughputMonitor" />
+
+	<!-- The destination endpoint to receive domain events -->
+
+	<si:service-activator ref="sampleService"
+		input-channel="domainEvents" />
+
+	<bean id="sampleService" class="org.opencredo.esper.sample.DefaultSampleService">
+		<property name="sleepDuration" value="10" />
+	</bean>
+</beans>

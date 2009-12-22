@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.opencredo.esper.sample.CallRecordingListener;
+import org.opencredo.esper.sample.SampleEvent;
 
 public class TestEsperTemplate {
 
@@ -66,7 +68,7 @@ public class TestEsperTemplate {
 
 	private EsperStatement addTestStatement() {
 		
-		String epl = "select * from org.opencredo.esper.SampleEvent";
+		String epl = "select * from org.opencredo.esper.sample.SampleEvent";
 		
 		return new EsperStatement(epl);
 	}

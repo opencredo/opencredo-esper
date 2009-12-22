@@ -10,8 +10,8 @@ public class EsperWireTap extends ChannelInterceptorAdapter  {
 	
 	private EsperTemplate template;
 	
-	public void setEsperBean(EsperTemplate esperBean) {
-		this.template = esperBean;
+	public void setTemplate(EsperTemplate template) {
+		this.template = template;
 	}
 	
 	public Message<?> preSend(Message<?> message, MessageChannel channel) {

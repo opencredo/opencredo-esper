@@ -1,2 +1,2 @@
-http\://www.opencredo.com/schema/esper/spring-integration-esper-1.0.xsd=org/opencredo/esper/integration/config/xml/spring-integration-esper-1.0.xsd
-http\://www.opencredo.com/schema/esper/spring-integration-esper.xsd=org/opencredo/esper/integration/config/xml/spring-integration-esper-1.0.xsd
+http\://www.opencredo.com/schema/esper/integration/spring-integration-esper-1.0.xsd=org/opencredo/esper/integration/config/xml/spring-integration-esper-1.0.xsd
+http\://www.opencredo.com/schema/esper/integration/spring-integration-esper.xsd=org/opencredo/esper/integration/config/xml/spring-integration-esper-1.0.xsd

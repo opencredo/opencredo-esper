@@ -9,9 +9,9 @@
 
 	<esper:statement 
 		id="testStatement" 
-		epl="select count(*) as throughput from java.lang.Object.win:time_batch(1 second)">
+		epl="select * from org.opencredo.esper.sample.SampleEvent">
 		<esper:listeners>
-			<bean class="org.opencredo.esper.CallRecordingListener" />
+			<bean class="org.opencredo.esper.sample.CallRecordingListener" />
 		</esper:listeners>
 	</esper:statement>
 		
