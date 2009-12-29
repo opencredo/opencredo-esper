@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:esper="http://www.opencredo.com/schema/esper"
-	xmlns:espersi="http://www.opencredo.com/schema/esper/integration"
+	xmlns:si-esper="http://www.opencredo.com/schema/esper/integration"
 	xmlns:si="http://www.springframework.org/schema/integration"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
@@ -21,12 +21,12 @@
 		</si:interceptors>
 	</si:channel>	
 					
-	<espersi:wire-tap id="wiretap" template-ref="testTemplate"/>
+	<si-esper:wire-tap id="wiretap" template-ref="testTemplate" send-context="true"/>
 	
 	<esper:template id="testTemplate">
 		<esper:statements>
 			<esper:statement 
-				epl="select * from org.opencredo.esper.sample.SampleEvent">
+				epl="select * from org.opencredo.esper.integration.MessageContext">
 				<esper:listeners>
 					<ref bean="testListener"/>
 				</esper:listeners>

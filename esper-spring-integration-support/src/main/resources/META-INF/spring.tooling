@@ -1,0 +1,4 @@
+# Tooling related information for the spring integration exper namespace
+http\://www.opencredo.com/schema/esper/integration@name=integration esper Namespace
+http\://www.opencredo.com/schema/esper/integration@prefix=si-esper
+http\://www.opencredo.com/schema/esper/integration@icon=org/opencredo/esper/integration/config/spring-integration-esper.gif

@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:esper="http://www.opencredo.com/schema/esper"
-	xmlns:espersi="http://www.opencredo.com/schema/esper/integration"
+	xmlns:si-esper="http://www.opencredo.com/schema/esper/integration"
 	xmlns:si="http://www.springframework.org/schema/integration"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
@@ -11,30 +11,29 @@
 						http://www.opencredo.com/schema/esper/integration
 						http://www.opencredo.com/schema/esper/integration/spring-integration-esper-1.0.xsd
 						http://www.springframework.org/schema/integration
-						http://www.springframework.org/schema/integration/spring-integration-1.0.xsd">
-						
-	<!-- Take Esper messages and place them on the inboundRawEsperMessages channel -->
+						http://www.springframework.org/schema/integration/spring-integration-1.0.xsd">	
+		
+	<import resource="sample-integration-environment-config.xml"/>
 	
-	<espersi:inbound-gateway id="inboundGateway" channel="inboundRawEsperMessages"/>
-	
-	<si:channel id="inboundRawEsperMessages" />	
+	<si:channel id="domainEvents">
+		<si:interceptors>
+			<ref bean="wiretap"/>
+		</si:interceptors>
+	</si:channel>	
+					
+	<si-esper:wire-tap id="wiretap" template-ref="testTemplate"/>
 	
 	<esper:template id="testTemplate">
 		<esper:statements>
 			<esper:statement 
-				epl="select * from org.opencredo.esper.integration.MessageContext">
+				epl="select * from org.opencredo.esper.sample.SampleEvent">
 				<esper:listeners>
-					<ref bean="inboundGateway"/>
+					<ref bean="testListener"/>
 				</esper:listeners>
 			</esper:statement>
 		</esper:statements>
 	</esper:template>
 	
-	<!-- Take the inbound esper messages on the channel and pass them to the update listener -->
-	
-	<si:service-activator ref="testListener" input-channel="inboundRawEsperMessages" />	
-	
 	<bean id="testListener" class="org.opencredo.esper.sample.CallRecordingListener" />
-	
 	
 </beans>

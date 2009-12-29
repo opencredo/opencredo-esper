@@ -20,6 +20,7 @@
 	
 	<properties>
 	  	<springIntegrationVersion>1.0.3.RELEASE</springIntegrationVersion>
+		<springVersion>2.5.6.SEC01</springVersion>
 	</properties>
 	
 	<dependencies>

@@ -13,5 +13,6 @@ public class EsperIntegrationNamespaceHandler extends NamespaceHandlerSupport im
 	public void init() {
 		registerBeanDefinitionParser("inbound-gateway", new InboundGatewayParser());
 		registerBeanDefinitionParser("wire-tap", new EsperWireTapParser());
+		registerBeanDefinitionParser("wire-tap-channels", new EsperWireTapChannelsParser());
 	}
 }

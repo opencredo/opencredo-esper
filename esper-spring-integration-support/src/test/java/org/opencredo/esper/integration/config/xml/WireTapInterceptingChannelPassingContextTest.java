@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class WireTapInterceptingChannelTest {
+public class WireTapInterceptingChannelPassingContextTest {
 
 	@Autowired
 	@Qualifier("domainEvents")
@@ -29,6 +29,6 @@ public class WireTapInterceptingChannelTest {
 		
 		channel.send(new GenericMessage<SampleEvent>(new SampleEvent()), 500l);
 
-		assertEquals(1, listener.getNumberOfTimesInvoked());
+		assertEquals(2, listener.getNumberOfTimesInvoked());
 	}
 }

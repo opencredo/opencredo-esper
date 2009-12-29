@@ -5,9 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opencredo.esper.EsperTemplate;
+import org.opencredo.esper.integration.MessageContext;
 import org.opencredo.esper.sample.CallRecordingListener;
-import org.opencredo.esper.sample.SampleEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.integration.channel.DirectChannel;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -22,8 +23,8 @@ public class InboundGatewayParserTest {
 	CallRecordingListener listener;
 
 	@Test
-	public void sendADomainMessageAndAssertThatListenerIsInvoked() {
-		template.sendEvent(new SampleEvent());
+	public void sendAnEsperContextMessageAndAssertThatListenerIsInvoked() {
+		template.sendEvent(new MessageContext(new DirectChannel()));
 		
 		assertEquals(1, listener.getNumberOfTimesInvoked());
 	}
