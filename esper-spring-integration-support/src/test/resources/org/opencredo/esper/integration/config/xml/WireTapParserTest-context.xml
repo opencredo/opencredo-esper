@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:esper="http://www.opencredo.com/schema/esper"
-	xmlns:espersi="http://www.opencredo.com/schema/esper/integration"
+	xmlns:si-esper="http://www.opencredo.com/schema/esper/integration"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 						http://www.opencredo.com/schema/esper
@@ -10,7 +10,7 @@
 						http://www.opencredo.com/schema/esper/integration
 						http://www.opencredo.com/schema/esper/integration/spring-integration-esper-1.0.xsd">
 						
-	<espersi:wire-tap id="wiretap" template-ref="testTemplate"/>
+	<si-esper:wire-tap id="wiretap" template-ref="testTemplate"/>
 	
 	<esper:template id="testTemplate">
 		<esper:statements>

@@ -3,4 +3,7 @@ target
 .settings
 .classpath
 *.springBeans
+*.iml
+*.ipr
+*.iws
 

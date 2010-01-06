@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:esper="http://www.opencredo.com/schema/esper"
-	xmlns:espersi="http://www.opencredo.com/schema/esper/integration"
+	xmlns:si-esper="http://www.opencredo.com/schema/esper/integration"
 	xmlns:si="http://www.springframework.org/schema/integration"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
@@ -15,7 +15,7 @@
 						
 	<!-- Take Esper messages and place them on the inboundRawEsperMessages channel -->
 	
-	<espersi:inbound-gateway id="inboundGateway" channel="inboundRawEsperMessages"/>
+	<si-esper:inbound-gateway id="inboundGateway" channel="inboundRawEsperMessages"/>
 	
 	<si:channel id="inboundRawEsperMessages" />	
 	
