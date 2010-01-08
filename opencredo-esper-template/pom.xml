@@ -9,13 +9,15 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.opencredo.esper</groupId>
-	<artifactId>opencredo-esper-support</artifactId>
+	<artifactId>opencredo-esper-template</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<name>opencredo-spring-support</name>
+	<name>opencredo-esper-template</name>
 	<url>http://maven.apache.org</url>
 	
 	<description>
-	  Support for configuring Esper.
+		A simplified Esper Template that can be used to send events
+		to Esper. Also includes a namespace suport for convenient
+		configuration in the Spring Framework (see: http://www.springsource.org/).
 	</description>
 	
 </project>

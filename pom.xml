@@ -140,7 +140,7 @@
 	</reporting>
 	
 	<modules>
-		<module>opencredo-esper-support</module>
+		<module>opencredo-esper-template</module>
 		<module>opencredo-esper-integration-support</module>
 	</modules>
 </project>
