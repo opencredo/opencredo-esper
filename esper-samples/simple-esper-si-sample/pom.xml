@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.opencredo.esper</groupId>
+		<artifactId>esper-samples</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.opencredo.esper</groupId>
+	<artifactId>simple-esper-si-sample</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>simple-esper-si-sample</name>
+	<url>http://maven.apache.org</url>
+	
+	<description>
+	  A simple sample application that measures throughput of messages
+	 demonstrating the use of the:
+	  * Esper Wire Tap
+	  * Esper Gateway (coupled with a transformer for a clean separation of concerns) 
+	</description>
+	
+	<properties>
+	  	<springIntegrationVersion>1.0.3.RELEASE</springIntegrationVersion>
+	</properties>
+	
+	<dependencies>
+	
+		<!-- OpenCredo Esper Dependencies -->
+		<dependency>
+			<groupId>org.opencredo.esper</groupId>
+			<artifactId>esper-template</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.opencredo.esper</groupId>
+			<artifactId>esper-template</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- OpenCredo Esper Spring Integration Dependencies -->
+		<dependency>
+			<groupId>org.opencredo.esper</groupId>
+			<artifactId>esper-si-support</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- Spring Integration Dependencies -->
+	  	<dependency>
+	  		<groupId>org.springframework.integration</groupId>
+	  		<artifactId>spring-integration-core</artifactId>
+	  		<version>${springIntegrationVersion}</version>
+	  	</dependency>
+	
+	</dependencies>
+</project>

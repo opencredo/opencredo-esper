@@ -5,13 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.opencredo.esper</groupId>
-		<artifactId>opencredo-esper-parent</artifactId>
+		<artifactId>esper-parent</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.opencredo.esper</groupId>
-	<artifactId>opencredo-esper-template</artifactId>
+	<artifactId>esper-template</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<name>opencredo-esper-template</name>
+	<name>esper-template</name>
 	<url>http://maven.apache.org</url>
 	
 	<description>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:esper="http://www.opencredo.com/schema/esper"
-	xmlns:espersi="http://www.opencredo.com/schema/esper/integration"
+	xmlns:si-esper="http://www.opencredo.com/schema/esper/integration"
 	xmlns:si="http://www.springframework.org/schema/integration"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
@@ -13,20 +13,20 @@
 						http://www.springframework.org/schema/integration/spring-integration-1.0.xsd">
 
 	<description>
-		Provides a demonstration of a full pipeline including a
-		throughput monitor.
+		Provides a simple example of using a combination of the Esper Wire Tap and Esper Template
+		to calculate throughput of order messages to a Noodle Bar.
 	</description>
 
-	<si:gateway service-interface="org.opencredo.esper.sample.SampleService"
-		id="sampleServiceGateway" default-request-channel="domainEvents" />
+	<si:gateway service-interface="org.opencredo.esper.samples.noodlebar.NoodleBar"
+		id="noodleBar" default-request-channel="orders" />
 
-	<si:channel id="domainEvents">
-		<si:interceptors>
-			<ref bean="wiretap" />
-		</si:interceptors>
-	</si:channel>
+	<si-esper:wire-tap-channels default-wire-tap="wiretap">
+		<si-esper:channel pattern="orders" />
+	</si-esper:wire-tap-channels>
+	
+	<si:channel id="orders"/>
 
-	<espersi:wire-tap id="wiretap" template-ref="template" />
+	<si-esper:wire-tap id="wiretap" template-ref="template" post-send="true"/>
 
 	<!--
 		Take Esper messages and place them on the inboundRawEsperMessages
@@ -35,7 +35,7 @@
 
 	<esper:template id="template">
 		<esper:statements>
-			<esper:statement epl="select count(*) as throughput from org.opencredo.esper.sample.SampleEvent.win:time_batch(1 second)">
+			<esper:statement epl="select count(*) as throughput from org.opencredo.esper.samples.noodlebar.NoodleOrder.win:time_batch(1 second)">
 				<esper:listeners>
 					<esper:ref bean="throughputGateway" />
 				</esper:listeners>
@@ -43,7 +43,7 @@
 		</esper:statements>
 	</esper:template>
 
-	<espersi:inbound-gateway id="throughputGateway"
+	<si-esper:inbound-gateway id="throughputGateway"
 		channel="inboundRawEsperThroughputMessages" />
 
 	<si:channel id="inboundRawEsperThroughputMessages" />
@@ -58,21 +58,21 @@
 		output-channel="throughputCalculations" ref="throughputCalculationTransformer" />
 
 	<bean id="throughputCalculationTransformer"
-		class="org.opencredo.esper.sample.ThroughputCalculationTransformer" />
+		class="org.opencredo.esper.samples.noodlebar.throughput.ThroughputCalculationTransformer" />
 		
 	<si:channel id="throughputCalculations"/>
 
-	<si:service-activator ref="throughputMonitor"
+	<si:service-activator ref="noodleOrderThroughputMonitor"
 		input-channel="throughputCalculations" />
 		
-	<bean id="throughputMonitor" class="org.opencredo.esper.sample.DefaultThroughputMonitor" />
+	<bean id="noodleOrderThroughputMonitor" class="org.opencredo.esper.samples.noodlebar.NoodleOrderThroughputMonitor" />
 
-	<!-- The destination endpoint to receive domain events -->
+	<!-- The destination noodle bar to receive orders -->
 
-	<si:service-activator ref="sampleService"
-		input-channel="domainEvents" method="actionEvent"/>
+	<si:service-activator ref="yummyNoodleBar"
+		input-channel="orders" method="cookNoodles"/>
 
-	<bean id="sampleService" class="org.opencredo.esper.sample.DefaultSampleService">
-		<property name="sleepDuration" value="10" />
+	<bean id="yummyNoodleBar" class="org.opencredo.esper.samples.noodlebar.YummyNoodleBar">
+		<property name="cookDuration" value="10" />
 	</bean>
 </beans>
