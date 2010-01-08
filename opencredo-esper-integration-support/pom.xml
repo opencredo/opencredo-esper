@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.opencredo.esper</groupId>
+		<artifactId>opencredo-esper-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.opencredo.esper</groupId>
+	<artifactId>opencredo-esper-integration-support</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>opencredo-esper-integration-support</name>
+	<url>http://maven.apache.org</url>
+	
+	<description>
+	  Support for configuring Esper against Spring Integration (see http://www.springsource.org/spring-integration).
+	</description>
+	
+	<properties>
+	  	<springIntegrationVersion>1.0.3.RELEASE</springIntegrationVersion>
+		<springVersion>2.5.6.SEC01</springVersion>
+	</properties>
+	
+	<dependencies>
+		
+		<!-- Spring Integration Dependencies -->
+	  	<dependency>
+	  		<groupId>org.springframework.integration</groupId>
+	  		<artifactId>spring-integration-core</artifactId>
+	  		<version>${springIntegrationVersion}</version>
+	  	</dependency>
+	
+		<!-- Spring support for Esper Dependencies -->
+		<dependency>
+			<groupId>org.opencredo.esper</groupId>
+			<artifactId>esper-spring-support</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.opencredo.esper</groupId>
+			<artifactId>esper-spring-support</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+	
+	</dependencies>
+</project>

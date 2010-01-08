@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:esper="http://www.opencredo.com/schema/esper"
+	xmlns:si-esper="http://www.opencredo.com/schema/esper/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.opencredo.com/schema/esper
+						http://www.opencredo.com/schema/esper/opencredo-esper-1.0.xsd
+						http://www.opencredo.com/schema/esper/integration
+						http://www.opencredo.com/schema/esper/integration/opencredo-integration-esper-1.0.xsd">
+						
+	<si-esper:wire-tap id="wiretap" template-ref="testTemplate"/>
+	
+	<esper:template id="testTemplate">
+		<esper:statements>
+			<esper:statement 
+				epl="select * from org.opencredo.esper.sample.SampleEvent">
+				<esper:listeners>
+					<ref bean="testListener"/>
+				</esper:listeners>
+			</esper:statement>
+		</esper:statements>
+	</esper:template>
+	
+	<bean id="testListener" class="org.opencredo.esper.sample.CallRecordingListener" />
+	
+</beans>

@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opencredo.esper</groupId>
-	<artifactId>spring-esper-parent</artifactId>
+	<artifactId>opencredo-esper-parent</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>spring-esper-parent</name>
+	<name>opencredo-esper-parent</name>
 	<url>http://maven.apache.org</url>
     
     <licenses>
@@ -140,7 +140,7 @@
 	</reporting>
 	
 	<modules>
-		<module>esper-spring-support</module>
-		<module>esper-spring-integration-support</module>
+		<module>opencredo-esper-support</module>
+		<module>opencredo-esper-integration-support</module>
 	</modules>
 </project>

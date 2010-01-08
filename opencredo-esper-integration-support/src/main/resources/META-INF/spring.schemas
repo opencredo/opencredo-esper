@@ -1,0 +1,2 @@
+http\://www.opencredo.com/schema/esper/integration/opencredo-integration-esper-1.0.xsd=org/opencredo/esper/integration/config/xml/opencredo-integration-esper-1.0.xsd
+http\://www.opencredo.com/schema/esper/integration/opencredo-integration-esper.xsd=org/opencredo/esper/integration/config/xml/opencredo-integration-esper-1.0.xsd
