@@ -50,7 +50,7 @@
 	</build>
 	
 	<properties>
-		<esperVersion>3.1.0</esperVersion>
+		<esperVersion>3.3.0</esperVersion>
 		<springVersion>2.5.6.SEC01</springVersion>
 		<junitVersion>4.4</junitVersion>
 	</properties>
