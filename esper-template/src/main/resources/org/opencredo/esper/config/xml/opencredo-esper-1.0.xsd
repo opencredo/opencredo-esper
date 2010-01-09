@@ -22,7 +22,7 @@
 			</xsd:annotation>
 			<xsd:sequence>
 				<xsd:element name="statements" type="statementsType"
-					minOccurs="0" maxOccurs="1" />
+					minOccurs="1" maxOccurs="1" />
 			</xsd:sequence>
 			<xsd:attribute name="id" type="xsd:ID" />
 			<xsd:attribute name="configuration" type="xsd:string">
@@ -33,6 +33,16 @@
 						For more information on what can go in an esper configuration file,
 						see http://esper.codehaus.org/esper-3.3.0/doc/reference/en/html/configuration.html					
 					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="unmatched-listener-ref">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<tool:annotation kind="ref">
+							<tool:expected-type
+								type="com.espertech.esper.client.UnmatchedListener" />
+						</tool:annotation>
+					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
 		</xsd:complexType>
@@ -49,7 +59,7 @@
 		<xsd:sequence>
 			<xsd:choice minOccurs="0" maxOccurs="unbounded">
 				<xsd:element name="statement" type="statementType"
-					minOccurs="0" maxOccurs="unbounded" />
+					minOccurs="1" maxOccurs="unbounded" />
 				<xsd:element name="ref">
 					<xsd:complexType>
 						<xsd:attribute name="bean" use="required">
@@ -79,7 +89,7 @@
 		<xsd:choice>
 			<xsd:sequence>
 				<xsd:element name="listeners" type="listenerType"
-					minOccurs="0" maxOccurs="1" />
+					minOccurs="1" maxOccurs="1" />
 			</xsd:sequence>
 			<xsd:element name="subscriber">
 				<xsd:complexType>
@@ -96,17 +106,7 @@
 				</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<!--<xsd:attribute name="ref">
-			<xsd:annotation>
-				<xsd:appinfo>
-					<tool:annotation kind="ref">
-						<tool:expected-type
-							type="com.espertech.esper.client.UpdateListener" />
-					</tool:annotation>
-				</xsd:appinfo>
-			</xsd:annotation>
-		</xsd:attribute>
-	--></xsd:complexType>
+	</xsd:complexType>
 
 	<xsd:complexType name="listenerType">
 		<xsd:annotation>

@@ -31,13 +31,7 @@ import com.espertech.esper.client.UpdateListener;
  * @author Russ Miles (russell.miles@opencredo.com)
  * 
  */
-public class CallRecordingListener implements UpdateListener {
-
-	protected int numberOfTimesInvoked = 0;
-
-	public int getNumberOfTimesInvoked() {
-		return numberOfTimesInvoked;
-	}
+public class CallRecordingListener extends AbstractCallRecorder implements UpdateListener {
 
 	/*
 	 * (non-Javadoc)
@@ -47,11 +41,11 @@ public class CallRecordingListener implements UpdateListener {
 	 * client.EventBean[], com.espertech.esper.client.EventBean[])
 	 */
 	public void update(EventBean[] eventBeans, EventBean[] eventBeans1) {
-		this.numberOfTimesInvoked++;
+		super.incrementCallCounter();
 	}
 	
 	public void update(EventBean[] eventBeans) {
-		this.numberOfTimesInvoked++;
+		super.incrementCallCounter();
 	}
 
 	/**
@@ -62,6 +56,6 @@ public class CallRecordingListener implements UpdateListener {
 	 *            The event detected
 	 */
 	public void update(SampleEvent event) {
-		this.numberOfTimesInvoked++;
+		super.incrementCallCounter();
 	}
 }

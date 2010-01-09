@@ -7,6 +7,17 @@
 						http://www.opencredo.com/schema/esper
 						http://www.opencredo.com/schema/esper/opencredo-esper-1.0.xsd">
 
-	<esper:template />
+	<esper:template unmatched-listener-ref="unmatchedListener">
+		<esper:statements>
+			<esper:statement 
+				epl="select * from org.opencredo.esper.sample.SampleEvent">
+				<esper:subscriber ref="subscriber"/>
+			</esper:statement>
+		</esper:statements>
+	</esper:template>
+	
+	<bean id="subscriber" class="org.opencredo.esper.sample.CallRecordingListener" />
+	
+	<bean id="unmatchedListener" class="org.opencredo.esper.sample.CallRecordingUnmatchedListener" />
 	
 </beans>

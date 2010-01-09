@@ -29,6 +29,35 @@ public class EsperTemplateParser extends AbstractBeanDefinitionParser {
 		.genericBeanDefinition(EsperNamespaceUtils.BASE_PACKAGE
 				+ ".EsperTemplate");
 
+		initialiseStatements(element, parserContext, builder);
+		
+		initializeConfiguration(element, builder);
+		
+		initializeUnmatchedListener(element, builder);
+		
+		return builder.getBeanDefinition();
+	}
+
+	private void initializeUnmatchedListener(Element element,
+			BeanDefinitionBuilder builder) {
+		String unmatchedListenerRef = (String) element.getAttribute(EsperNamespaceUtils.UNMATCHED_LISTENER_ATTRIBUTE);
+		
+		if (StringUtils.hasText(unmatchedListenerRef)) {
+			builder.addPropertyReference("unmatchedListener", unmatchedListenerRef);
+		}
+	}
+
+	private void initializeConfiguration(Element element,
+			BeanDefinitionBuilder builder) {
+		String configuration = (String) element.getAttribute(EsperNamespaceUtils.CONFIGURATION_ATTRIBUTE);
+		
+		if (StringUtils.hasText(configuration)) {
+			builder.addPropertyValue("configuration", configuration);
+		}
+	}
+
+	private void initialiseStatements(Element element,
+			ParserContext parserContext, BeanDefinitionBuilder builder) {
 		ManagedSet statements = null;
 		
 		Element statementsElement = DomUtils.getChildElementByTagName(element, "statements");
@@ -40,13 +69,5 @@ public class EsperTemplateParser extends AbstractBeanDefinitionParser {
 		if (statements != null) {
 			builder.addPropertyValue("statements", statements);
 		}
-		
-		String configuration = (String) element.getAttribute(EsperNamespaceUtils.CONFIGURATION_ATTRIBUTE);
-		
-		if (StringUtils.hasText(configuration)) {
-			builder.addPropertyValue("configuration", configuration);
-		}
-		
-		return builder.getBeanDefinition();
 	}
 }

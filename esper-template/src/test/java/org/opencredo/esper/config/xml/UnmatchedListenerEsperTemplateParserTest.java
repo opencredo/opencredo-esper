@@ -18,26 +18,53 @@ package org.opencredo.esper.config.xml;
 
 import static org.junit.Assert.*;
 
+import java.util.Set;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opencredo.esper.EsperStatement;
 import org.opencredo.esper.EsperTemplate;
+import org.opencredo.esper.sample.CallRecordingListener;
+import org.opencredo.esper.sample.CallRecordingUnmatchedListener;
+import org.opencredo.esper.sample.SampleEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class NoStatementsNamedEsperTemplateParserTest {
+public class UnmatchedListenerEsperTemplateParserTest {
 
 	@Autowired
 	EsperTemplate template;
 	
+	@Autowired
+	CallRecordingListener listener;
+	
+	@Autowired
+	CallRecordingUnmatchedListener unmatchedlistener;
+	
 	@Test
-	public void testTemplateBeanFoundWithNoStatements() {
-		assertNotNull(template);
+	public void testTemplateInitializesWithOneStatement() {
 		
-		assertEquals(0, template.getStatements().size());
+		Set<EsperStatement> statements = template.getStatements();
 		
-		assertEquals(EsperTestConstants.DEFAULT_TEMPLATE_NAME, template.getName());
+		assertEquals(1, statements.size());	
+	}
+	
+	@Test
+	public void testSendSampleEvent() {
+		
+		Set<EsperStatement> statements = template.getStatements();
+		
+		assertEquals(1, statements.size());
+		
+		template.sendEvent(new SampleEvent());
+		
+		template.sendEvent("Simple string event!");
+		
+		assertEquals(1, listener.getNumberOfTimesInvoked());
+		
+		assertEquals(1, unmatchedlistener.getNumberOfTimesInvoked());
 	}
 }

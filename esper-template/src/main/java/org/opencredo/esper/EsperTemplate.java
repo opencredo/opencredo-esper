@@ -31,6 +31,7 @@ import com.espertech.esper.client.EPRuntime;
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
+import com.espertech.esper.client.UnmatchedListener;
 
 /**
  * The main workhorse of Esper. The template is configured with a set of
@@ -52,6 +53,7 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean,
 	private String name;
 	private Set<EsperStatement> statements = new LinkedHashSet<EsperStatement>();
 	private Resource configuration;
+	private UnmatchedListener unmatchedListener;
 
 	/**
 	 * Add a collection of {@link EsperStatement} to the template.
@@ -69,6 +71,16 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean,
 	 */
 	public void setConfiguration(Resource configuration) {
 		this.configuration = configuration;
+	}
+	
+	/**
+	 * Specify the listener that should be notified of any unmatched
+	 * events.
+	 * 
+	 * @param unmatchedListener The listener that is notified of events that are not matched
+	 */
+	public void setUnmatchedListener(UnmatchedListener unmatchedListener) {
+		this.unmatchedListener = unmatchedListener;
 	}
 
 	/**
@@ -131,6 +143,9 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean,
 	private void setupEsper() throws EPException, IOException {
 		configureEPServiceProvider();
 		epRuntime = epServiceProvider.getEPRuntime();
+		if (this.unmatchedListener != null) {
+			epRuntime.setUnmatchedListener(unmatchedListener);
+		}
 		setupEPStatements();
 	}
 
