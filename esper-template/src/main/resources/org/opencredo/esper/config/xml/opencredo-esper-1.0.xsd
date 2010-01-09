@@ -25,6 +25,16 @@
 					minOccurs="0" maxOccurs="1" />
 			</xsd:sequence>
 			<xsd:attribute name="id" type="xsd:ID" />
+			<xsd:attribute name="configuration" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						The relative resource location of the XML (Esper Configuration) file to import,
+						for example "myImport.xml" or "includes/myImport.xml" or "../myImport.xml".	
+						For more information on what can go in an esper configuration file,
+						see http://esper.codehaus.org/esper-3.3.0/doc/reference/en/html/configuration.html					
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
 	

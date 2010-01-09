@@ -51,7 +51,6 @@ public class NoodleOrderGenerator {
 						+ noodleOrderThroughputMonitor.getAverageThroughput()
 						+ " orders per second according to continuous Esper Monitoring");
 		
-		// Required to force the close of threads opened by Esper
 		System.exit(0);
 	}
 

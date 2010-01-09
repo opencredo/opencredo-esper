@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<esper-configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.espertech.com/schema/esper"
+	xsi:schemaLocation="http://www.espertech.com/schema/esper 
+						http://www.espertech.com/schema/esper/esper-configuration-3.0.xsd">
+
+	<!-- A simple example Esper Configuration. -->
+
+	<!--
+		For more information about what can go into an Esper Configuration,
+		see http://esper.codehaus.org/esper-3.3.0/doc/reference/en/html/configuration.html
+	-->
+
+	<engine-settings>
+		<defaults>
+			<threading>
+				<listener-dispatch preserve-order="true"
+					timeout-msec="1000" locking="spin" />
+				<threadpool-inbound enabled="true" num-threads="2" />
+				<threadpool-outbound enabled="true" num-threads="2"
+					capacity="1000" />
+				<threadpool-timerexec enabled="true"
+					num-threads="2" />
+				<threadpool-routeexec enabled="true"
+					num-threads="2" />
+			</threading>
+		</defaults>
+	</engine-settings>
+
+</esper-configuration> 

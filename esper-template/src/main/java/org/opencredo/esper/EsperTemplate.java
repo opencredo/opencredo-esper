@@ -16,13 +16,17 @@
 
 package org.opencredo.esper;
 
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.core.io.Resource;
 
+import com.espertech.esper.client.Configuration;
+import com.espertech.esper.client.EPException;
 import com.espertech.esper.client.EPRuntime;
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
@@ -37,10 +41,8 @@ import com.espertech.esper.client.EPStatement;
  * Once setup the template is then used to inform esper of any events of
  * interest by calling sendEvent(Object).
  * 
- * @author Russ Miles (russell.miles@opencredo.com)
+ * @author Russ Miles (russ.miles@opencredo.com)
  * 
- *         TODO Add support for passing a configuration document, embedded and
- *         resource loaded, to configure the generated EPRuntime
  */
 public final class EsperTemplate implements BeanNameAware, InitializingBean,
 		DisposableBean {
@@ -49,6 +51,7 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean,
 	private EPRuntime epRuntime;
 	private String name;
 	private Set<EsperStatement> statements = new LinkedHashSet<EsperStatement>();
+	private Resource configuration;
 
 	/**
 	 * Add a collection of {@link EsperStatement} to the template.
@@ -57,6 +60,24 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean,
 	 */
 	public void setStatements(Set<EsperStatement> statements) {
 		this.statements = statements;
+	}
+
+	/**
+	 * Set the location of the XML Esper configuration resource.
+	 * 
+	 * @param configurationResource
+	 */
+	public void setConfiguration(Resource configuration) {
+		this.configuration = configuration;
+	}
+
+	/**
+	 * Retrieve the configured esper runtime.
+	 * 
+	 * @return The current esper runtime
+	 */
+	public EPRuntime getEpRuntime() {
+		return epRuntime;
 	}
 
 	public Set<EsperStatement> getStatements() {
@@ -104,14 +125,40 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean,
 	 * associated listeners.
 	 * 
 	 * The provider is giving a unique name that is based on the bean name.
+	 * @throws IOException 
+	 * @throws EPException 
 	 */
-	private void setupEsper() {
-		epServiceProvider = EPServiceProviderManager.getProvider(name);
+	private void setupEsper() throws EPException, IOException {
+		configureEPServiceProvider();
 		epRuntime = epServiceProvider.getEPRuntime();
-		for (EsperStatement statementBean : statements) {
+		setupEPStatements();
+	}
+
+	/**
+	 * Add the appropriate statements to the esper runtime.
+	 */
+	private void setupEPStatements() {
+		for (EsperStatement statement : statements) {
 			EPStatement epStatement = epServiceProvider.getEPAdministrator()
-					.createEPL(statementBean.getEPL());
-			statementBean.setEPStatement(epStatement);
+					.createEPL(statement.getEPL());
+			statement.setEPStatement(epStatement);
+		}
+	}
+
+	/**
+	 * Configure the Esper Service Provider to create the appropriate Esper
+	 * Runtime.
+	 * @throws IOException 
+	 * @throws EPException 
+	 */
+	private void configureEPServiceProvider() throws EPException, IOException {
+		if (this.configuration != null && this.configuration.exists()) {
+			Configuration configuration = new Configuration();
+			configuration = configuration.configure(this.configuration
+					.getFile());
+			epServiceProvider = EPServiceProviderManager.getProvider(name, configuration);
+		} else {
+			epServiceProvider = EPServiceProviderManager.getProvider(name);
 		}
 	}
 

@@ -32,7 +32,7 @@
 	<!-- Configure the wiretap with the appropriate Esper statements -->
 	<si-esper:wire-tap id="wiretap" template-ref="template" post-send="true"/>
 
-	<esper:template id="template">
+	<esper:template id="template" configuration="esper-configuration.xml">
 		<esper:statements>
 			<esper:statement epl="select count(*) as throughput from org.opencredo.esper.samples.noodlebar.NoodleOrder.win:time_batch(1 second)">
 				<esper:listeners>

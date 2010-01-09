@@ -5,6 +5,7 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
@@ -38,6 +39,12 @@ public class EsperTemplateParser extends AbstractBeanDefinitionParser {
 		
 		if (statements != null) {
 			builder.addPropertyValue("statements", statements);
+		}
+		
+		String configuration = (String) element.getAttribute(EsperNamespaceUtils.CONFIGURATION_ATTRIBUTE);
+		
+		if (StringUtils.hasText(configuration)) {
+			builder.addPropertyValue("configuration", configuration);
 		}
 		
 		return builder.getBeanDefinition();

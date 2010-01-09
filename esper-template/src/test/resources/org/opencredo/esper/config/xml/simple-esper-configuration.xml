@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<esper-configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.espertech.com/schema/esper"
+	xsi:schemaLocation="http://www.espertech.com/schema/esper 
+						http://www.espertech.com/schema/esper/esper-configuration-3.0.xsd">
+	<engine-settings>
+		<defaults>
+			<threading>
+				<internal-timer enabled="true" msec-resolution="1000" />
+				<listener-dispatch preserve-order="false" />
+				<insert-into-dispatch preserve-order="false" />
+			</threading>
+			<view-resources>
+				<!--
+					Lets configure the engine to reuse views, which is the default but
+					can introduce additional locking.
+				-->
+				<share-views enabled="false" />
+			</view-resources>
+		</defaults>
+	</engine-settings>
+	
+</esper-configuration> 
