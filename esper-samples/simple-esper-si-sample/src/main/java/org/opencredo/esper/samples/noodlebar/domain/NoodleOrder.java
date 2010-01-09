@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-package org.opencredo.esper.samples.noodlebar;
+package org.opencredo.esper.samples.noodlebar.domain;
 
-public enum OrderStatus {
-	NEW,
-	RECEIVED,
-	REJECTED,
-	BEING_COOKED,
-	COMPLETE
+import static org.opencredo.esper.samples.noodlebar.domain.OrderStatus.*;
+
+
+public class NoodleOrder {
+	private OrderStatus status = NEW;
+	
+	public synchronized void setStatus(OrderStatus status) {
+		this.status = status;
+	}
+
+	public OrderStatus getStatus() {
+		return this.status;
+	}
 }

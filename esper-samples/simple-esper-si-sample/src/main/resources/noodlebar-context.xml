@@ -18,7 +18,7 @@
 	</description>
 
 	<!-- Entrypoint into the Noodle bar pipeline -->
-	<si:gateway service-interface="org.opencredo.esper.samples.noodlebar.NoodleBar"
+	<si:gateway service-interface="org.opencredo.esper.samples.noodlebar.domain.NoodleBar"
 		id="noodleBar" default-request-channel="orders" />
 
 	<!-- Wiretap the orders channel to calculate throughput of
@@ -34,7 +34,7 @@
 
 	<esper:template id="template" configuration="esper-configuration.xml">
 		<esper:statements>
-			<esper:statement epl="select count(*) as throughput from org.opencredo.esper.samples.noodlebar.NoodleOrder.win:time_batch(1 second)">
+			<esper:statement epl="select count(*) as throughput from org.opencredo.esper.samples.noodlebar.domain.NoodleOrder.win:time_batch(1 second)">
 				<esper:listeners>
 					<!-- Pass Esper messages to the throughputGateway -->
 					<esper:ref bean="throughputGateway" />
@@ -70,14 +70,14 @@
 	<si:service-activator ref="noodleOrderThroughputMonitor"
 		input-channel="throughputCalculations" />
 		
-	<bean id="noodleOrderThroughputMonitor" class="org.opencredo.esper.samples.noodlebar.NoodleOrderThroughputMonitor" />
+	<bean id="noodleOrderThroughputMonitor" class="org.opencredo.esper.samples.noodlebar.domain.throughput.NoodleOrderThroughputMonitor" />
 
 	<!-- Route orders on to the Noodle bar. -->
 
 	<si:service-activator ref="yummyNoodleBar"
 		input-channel="orders" method="cookNoodles"/>
 
-	<bean id="yummyNoodleBar" class="org.opencredo.esper.samples.noodlebar.YummyNoodleBar">
+	<bean id="yummyNoodleBar" class="org.opencredo.esper.samples.noodlebar.domain.yummy.YummyNoodleBar">
 		<!-- How many milliseconds it takes for the YummyNoodleBar to cook a noodle order -->
 		<property name="cookDuration" value="10" />
 	</bean>

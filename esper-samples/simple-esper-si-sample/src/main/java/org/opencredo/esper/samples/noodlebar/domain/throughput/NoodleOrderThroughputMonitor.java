@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-package org.opencredo.esper.samples.noodlebar;
+package org.opencredo.esper.samples.noodlebar.domain.throughput;
 
+import org.opencredo.esper.samples.noodlebar.throughput.ThroughputMonitor;
 
-public interface NoodleBar {
+public class NoodleOrderThroughputMonitor implements ThroughputMonitor {
+	private long averageThroughput = 0l;
 
-	public void placeOrder(NoodleOrder order);
-	
+	public synchronized void receiveCurrentThroughput(long ordersProcessedPerDuration) {
+		this.averageThroughput = ordersProcessedPerDuration;
+	}
+
+	public synchronized long getAverageThroughput() {
+		return averageThroughput;
+	}
 }

@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package org.opencredo.esper.samples.noodlebar;
+package org.opencredo.esper.samples.noodlebar.domain.yummy;
 
-import static org.opencredo.esper.samples.noodlebar.OrderStatus.*;
+import static org.opencredo.esper.samples.noodlebar.domain.OrderStatus.*;
+
+import org.opencredo.esper.samples.noodlebar.domain.NoodleOrder;
 
 /**
  * 

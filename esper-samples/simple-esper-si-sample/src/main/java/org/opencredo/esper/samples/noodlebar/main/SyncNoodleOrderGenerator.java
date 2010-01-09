@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-package org.opencredo.esper.samples.noodlebar;
+package org.opencredo.esper.samples.noodlebar.main;
 
+import org.opencredo.esper.samples.noodlebar.domain.NoodleBar;
+import org.opencredo.esper.samples.noodlebar.domain.NoodleOrder;
+import org.opencredo.esper.samples.noodlebar.domain.OrderStatus;
+import org.opencredo.esper.samples.noodlebar.domain.throughput.NoodleOrderThroughputMonitor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class NoodleOrderGenerator {
+public class SyncNoodleOrderGenerator {
 
 	private static final int NUMBER_OF_ORDERS = 1000;
 

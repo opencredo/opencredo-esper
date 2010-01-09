@@ -22,6 +22,7 @@ import org.springframework.integration.message.GenericMessage;
 import org.springframework.util.Assert;
 
 import com.espertech.esper.client.EventBean;
+import com.espertech.esper.client.UnmatchedListener;
 import com.espertech.esper.client.UpdateListener;
 
 /**
@@ -31,7 +32,7 @@ import com.espertech.esper.client.UpdateListener;
  * @author Russ Miles (russell.miles@opencredo.com)
  * 
  */
-public class EsperInboundGateway implements UpdateListener {
+public class EsperInboundGateway implements UpdateListener, UnmatchedListener {
 
 	private MessageChannel channel;
 
@@ -69,11 +70,26 @@ public class EsperInboundGateway implements UpdateListener {
 	 * client.EventBean[], com.espertech.esper.client.EventBean[])
 	 */
 	public void update(EventBean[] eventBeans, EventBean[] eventBeans1) {
-
 		Assert.notNull(channel);
 
 		GenericMessage<EventBean[]> message = new GenericMessage<EventBean[]>(
 				eventBeans);
+
+		if (timeout != null) {
+			channel.send(message, timeout);
+		} else {
+			channel.send(message);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.espertech.esper.client.UnmatchedListener#update(com.espertech.esper.client.EventBean)
+	 */
+	public void update(EventBean eventBean) {
+		Assert.notNull(channel);
+
+		GenericMessage<EventBean> message = new GenericMessage<EventBean>(
+				eventBean);
 
 		if (timeout != null) {
 			channel.send(message, timeout);
