@@ -7,6 +7,7 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,10 +43,24 @@ public class EsperStatementParser extends AbstractBeanDefinitionParser {
 		if (listenersElement != null) {
 			EsperListenerParser listenerParser = new EsperListenerParser();
 			listeners = listenerParser.parseListeners(listenersElement, parserContext);
-		}
-		
-		if (listeners != null) {
-			builder.addPropertyValue("listeners", listeners);
+			if (listeners != null) {
+				builder.addPropertyValue("listeners", listeners);
+			} else {
+				parserContext.getReaderContext().error(
+						"At least one 'listener' should be provided.", listenersElement);
+			}
+		} else {
+			
+			Element subscriberElement = DomUtils.getChildElementByTagName(element, "subscriber");
+			if (subscriberElement != null) {
+				String subscriberRef = (String) subscriberElement.getAttribute("ref");
+				if (StringUtils.hasText(subscriberRef)) {
+					builder.addPropertyReference("subscriber", subscriberRef);
+				}
+			} else {
+				parserContext.getReaderContext().error(
+						"At least one of 'listeners' or 'subscriber' should be provided.", element);
+			}
 		}
 		
 		return builder.getBeanDefinition();

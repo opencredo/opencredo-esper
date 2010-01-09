@@ -76,10 +76,17 @@
 				in that statement's results.
        		</xsd:documentation>
 		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="listeners" type="listenerType"
-				minOccurs="0" maxOccurs="1" />
-		</xsd:sequence>
+		<xsd:choice>
+			<xsd:sequence>
+				<xsd:element name="listeners" type="listenerType"
+					minOccurs="0" maxOccurs="1" />
+			</xsd:sequence>
+			<xsd:element name="subscriber">
+				<xsd:complexType>
+					<xsd:attribute name="ref" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:choice>
 		<xsd:attribute name="id" type="xsd:ID" />
 		<xsd:attribute name="epl" type="xsd:string" use="required">
 			<xsd:annotation>
@@ -89,7 +96,7 @@
 				</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<xsd:attribute name="ref">
+		<!--<xsd:attribute name="ref">
 			<xsd:annotation>
 				<xsd:appinfo>
 					<tool:annotation kind="ref">
@@ -99,7 +106,7 @@
 				</xsd:appinfo>
 			</xsd:annotation>
 		</xsd:attribute>
-	</xsd:complexType>
+	--></xsd:complexType>
 
 	<xsd:complexType name="listenerType">
 		<xsd:annotation>

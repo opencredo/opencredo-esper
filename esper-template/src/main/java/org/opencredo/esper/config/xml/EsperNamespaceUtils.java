@@ -9,5 +9,7 @@ public class EsperNamespaceUtils {
 	public static final String ID_ATTRIBUTE_NAME = "id";
 	
 	public static final String CONFIGURATION_ATTRIBUTE = "configuration";
+
+	public static final String STATEMENT_SUBSCRIBER_REF_ATTRIBUTE = "subscriber-ref";
 	
 }

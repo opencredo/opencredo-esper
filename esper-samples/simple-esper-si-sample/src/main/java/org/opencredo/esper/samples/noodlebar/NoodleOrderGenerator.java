@@ -33,10 +33,14 @@ public class NoodleOrderGenerator {
 
 	public static void main(String[] args) {
 
+		System.out.println("Initializing Dependencies...");
+		
 		initializeDependencies();
 
 		long startTime = System.currentTimeMillis();
 
+		System.out.println("Sending orders into the Noodle Bar...");
+		
 		sendSomeOrders();
 
 		long stopTime = System.currentTimeMillis();

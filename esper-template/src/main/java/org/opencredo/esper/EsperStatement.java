@@ -26,6 +26,7 @@ public class EsperStatement {
     private String epl;
     private EPStatement epStatement;
     private Set<UpdateListener> listeners = new LinkedHashSet<UpdateListener>();
+	private Object subscriber;
 
     public EsperStatement(String epl) {
         this.epl = epl;
@@ -39,6 +40,10 @@ public class EsperStatement {
         this.listeners = listeners;
     	
         this.refreshEPStatmentListeners();
+    }
+    
+    public void setSubscriber(Object subscriber) {
+    	this.subscriber = subscriber;
     }
     
     public Set<UpdateListener> getListeners() {
@@ -60,15 +65,21 @@ public class EsperStatement {
     }
     
     private void addEPStatementListener(UpdateListener listener) {
-    	if (epStatement != null) {
-            epStatement.addListener(listener);
-        }
+    	if (this.subscriber == null) {
+	    	if (epStatement != null) {
+	            epStatement.addListener(listener);
+	        }
+    	}
     }
 
     void setEPStatement(EPStatement epStatement) {
         this.epStatement = epStatement;
-        for (UpdateListener listener : listeners) {
-            epStatement.addListener(listener);
+        if (this.subscriber != null) {
+        	epStatement.setSubscriber(this.subscriber);
+        } else {
+	        for (UpdateListener listener : listeners) {
+	            epStatement.addListener(listener);
+	        }
         }
     }
     

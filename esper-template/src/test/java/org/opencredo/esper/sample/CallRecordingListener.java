@@ -22,13 +22,19 @@ import com.espertech.esper.client.UpdateListener;
 /**
  * A listener used for testing and sample purposes.
  * 
+ * This class meets both the listener and subscriber contracts as offered by
+ * Esper.
+ * 
+ * For a comparison of these contracts, see
+ * http://esper.codehaus.org/esper-3.3.0/doc/reference/en/html/api.html#api-receive-results
+ * 
  * @author Russ Miles (russell.miles@opencredo.com)
  * 
  */
 public class CallRecordingListener implements UpdateListener {
-	
-	private int numberOfTimesInvoked = 0;
-	
+
+	protected int numberOfTimesInvoked = 0;
+
 	public int getNumberOfTimesInvoked() {
 		return numberOfTimesInvoked;
 	}
@@ -44,7 +50,18 @@ public class CallRecordingListener implements UpdateListener {
 		this.numberOfTimesInvoked++;
 	}
 	
-	public void updateFromSIChannel(Object event) {
+	public void update(EventBean[] eventBeans) {
+		this.numberOfTimesInvoked++;
+	}
+
+	/**
+	 * Method used when this class is being used as a subscriber as opposed to a
+	 * listener.
+	 * 
+	 * @param event
+	 *            The event detected
+	 */
+	public void update(SampleEvent event) {
 		this.numberOfTimesInvoked++;
 	}
 }
