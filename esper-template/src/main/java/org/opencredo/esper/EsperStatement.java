@@ -17,12 +17,14 @@
 package org.opencredo.esper;
 
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.espertech.esper.client.EPStatement;
 import com.espertech.esper.client.UpdateListener;
 
-public class EsperStatement {
+public class EsperStatement implements EsperStatementOperations {
     private String epl;
     private EPStatement epStatement;
     private Set<UpdateListener> listeners = new LinkedHashSet<UpdateListener>();
@@ -82,5 +84,64 @@ public class EsperStatement {
 	        }
         }
     }
-    
+
+	public <T> List<T> concurrentSafeQuery(ParameterizedEsperRowMapper<T> rm) {
+		
+		/*
+	    Replacing code that looks like:
+	    	
+	    	SafeIterator<EventBean> safeIter = statement.safeIterator();
+	    try {
+	      for (;safeIter.hasNext();) {
+	         // .. process event ..
+	         EventBean event = safeIter.next();
+	         System.out.println("avg:" + event.get("avgPrice");
+	      }
+	    }
+	    finally {
+	      safeIter.close();	// Note: safe iterators must be closed
+	    }
+	    */
+		
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Map<String, Object>> concurrentSafeQueryForList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map<String, Object> concurrentSafeQueryForMap() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> T concurrentSafeQueryForObject(ParameterizedEsperRowMapper<T> rm) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> List<T> concurrentUnsafeQafeQuery(
+			ParameterizedEsperRowMapper<T> rm) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Map<String, Object>> concurrentUnsafeQueryForList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map<String, Object> concurrentUnsafeQueryForMap() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> T concurrentUnsafeQueryForObject(
+			ParameterizedEsperRowMapper<T> rm) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }
