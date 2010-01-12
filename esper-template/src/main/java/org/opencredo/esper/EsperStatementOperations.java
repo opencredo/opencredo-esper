@@ -37,16 +37,17 @@ public interface EsperStatementOperations {
 	 * 
 	 * @return A map containing the a single result from the statement
 	 */
-	Map<String, Object> concurrentSafeQueryForMap();
+	Map<String, Object> concurrentSafeQueryForMap(String[] resultsToRetrieve);
 
 	/**
 	 * Performs a concurrency safe 'pull' to retrieve query filtered results
 	 * from the esper statement. Those results are then automatically used to
 	 * populate the returned {@link List} of {@link Map} objects.
 	 * 
+	 * @param resultsToRetrieve The named parameters to grab from the events
 	 * @return a list containing all of the individual result maps
 	 */
-	List<Map<String, Object>> concurrentSafeQueryForList();
+	List<Map<String, Object>> concurrentSafeQueryForList(String[] resultsToRetrieve);
 
 	/**
 	 * Performs a concurrency safe 'pull' to retrieve query filtered results
@@ -82,9 +83,10 @@ public interface EsperStatementOperations {
 	 * esper statement. That result is then automatically used to populate the
 	 * returned {@link Map}.
 	 * 
+	 * @param resultsToRetrieve The named parameters to grab from the events
 	 * @return A map containing the a single result from the statement
 	 */
-	Map<String, Object> concurrentUnsafeQueryForMap();
+	Map<String, Object> concurrentUnsafeQueryForMap(String[] resultsToRetrieve);
 
 	/**
 	 * Performs a concurrency unsafe 'pull' (i.e. should only be used in a
@@ -92,9 +94,10 @@ public interface EsperStatementOperations {
 	 * esper statement. Those results are then automatically used to populate
 	 * the returned {@link List} of {@link Map} objects.
 	 * 
+	 * @param resultsToRetrieve The named parameters to grab from the events
 	 * @return a list containing all of the individual result maps
 	 */
-	List<Map<String, Object>> concurrentUnsafeQueryForList();
+	List<Map<String, Object>> concurrentUnsafeQueryForList(String[] resultsToRetrieve);
 
 	/**
 	 * Performs a concurrency unsafe 'pull' (i.e. should only be used in a
@@ -108,6 +111,6 @@ public interface EsperStatementOperations {
 	 *            mapping
 	 * @return a list containing all the objects mapped from the query results
 	 */
-	<T> List<T> concurrentUnsafeQafeQuery(ParameterizedEsperRowMapper<T> rm);
+	<T> List<T> concurrentUnsafeQuery(ParameterizedEsperRowMapper<T> rm);
 
 }

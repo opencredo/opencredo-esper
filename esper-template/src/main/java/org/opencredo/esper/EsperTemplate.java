@@ -117,13 +117,6 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean,
 		epRuntime.sendEvent(event);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.beans.factory.BeanNameAware#setBeanName(java.lang
-	 * .String)
-	 */
 	public void setBeanName(String name) {
 		this.name = name;
 	}
@@ -185,21 +178,10 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean,
 		epServiceProvider.destroy();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-	 */
 	public void afterPropertiesSet() throws Exception {
 		this.setupEsper();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.beans.factory.DisposableBean#destroy()
-	 */
 	public void destroy() throws Exception {
 		this.cleanup();
 	}

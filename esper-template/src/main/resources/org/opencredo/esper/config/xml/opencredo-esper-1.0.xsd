@@ -89,9 +89,9 @@
 		<xsd:choice>
 			<xsd:sequence>
 				<xsd:element name="listeners" type="listenerType"
-					minOccurs="1" maxOccurs="1" />
+					minOccurs="0" maxOccurs="1" />
 			</xsd:sequence>
-			<xsd:element name="subscriber">
+			<xsd:element name="subscriber" minOccurs="0" maxOccurs="1">
 				<xsd:complexType>
 					<xsd:attribute name="ref" />
 				</xsd:complexType>

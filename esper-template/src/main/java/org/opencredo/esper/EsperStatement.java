@@ -16,132 +16,288 @@
 
 package org.opencredo.esper;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.espertech.esper.client.EPStatement;
+import com.espertech.esper.client.EPStatementState;
+import com.espertech.esper.client.EventBean;
+import com.espertech.esper.client.SafeIterator;
 import com.espertech.esper.client.UpdateListener;
 
+/**
+ * Implements a set of convenient Template operations around
+ * a native Esper Statement.
+ * 
+ * Support both the push (via listener or subscriber) or pull
+ * (via the template methods) operations to retrieve results
+ * from the associated statement.
+ * 
+ * For more information on push and pull operations on esper statements,
+ * see {@link http://esper.codehaus.org/esper-3.3.0/doc/reference/en/html/api.html#api-receive-results}
+ * 
+ * @author Russ Miles (russ.miles@opencredo.com)
+ */
 public class EsperStatement implements EsperStatementOperations {
-    private String epl;
-    private EPStatement epStatement;
-    private Set<UpdateListener> listeners = new LinkedHashSet<UpdateListener>();
+	private String epl;
+	private EPStatement epStatement;
+	private Set<UpdateListener> listeners = new LinkedHashSet<UpdateListener>();
 	private Object subscriber;
 
-    public EsperStatement(String epl) {
-        this.epl = epl;
-    }
+	public EsperStatement(String epl) {
+		this.epl = epl;
+	}
 
-    public String getEPL(){
-        return epl;
-    }
+	public String getEPL() {
+		return epl;
+	}
+	
+	public EPStatementState getState() {
+		return this.epStatement.getState();
+	}
+	
+	/**
+	 * Starts events being collated according to the statement's filter query
+	 */
+	public void start() {
+		this.epStatement.start();
+	}
+	
+	/**
+	 * Stops the underlying native statement from applying its filter query.
+	 */
+	public void stop() {
+		this.epStatement.stop();
+	}
+	
+	/**
+	 * Provides a mechanism by which to access the underlying esper API
+	 * 
+	 * @param callback used to pass access to the underlying esper API resources
+	 */
+	public void doWithNativeEPStatement(NativeEPStatementCallback callback) {
+		callback.executeWithEPStatement(this.epStatement, this.epl);
+	}
 
-    public void setListeners(Set<UpdateListener> listeners) {
-        this.listeners = listeners;
-    	
-        this.refreshEPStatmentListeners();
-    }
-    
-    public void setSubscriber(Object subscriber) {
-    	this.subscriber = subscriber;
-    }
-    
-    public Set<UpdateListener> getListeners() {
-    	return this.listeners;
-    }
-    
-    public void addListener(UpdateListener listener) {
-        listeners.add(listener);
-        
-        this.refreshEPStatmentListeners();
+	public void setListeners(Set<UpdateListener> listeners) {
+		this.listeners = listeners;
 
-        this.addEPStatementListener(listener);
-    }
-    
-    private void refreshEPStatmentListeners() {
-    	for (UpdateListener listener : this.listeners) {
-    		this.addEPStatementListener(listener);
-    	}
-    }
-    
-    private void addEPStatementListener(UpdateListener listener) {
-    	if (this.subscriber == null) {
-	    	if (epStatement != null) {
-	            epStatement.addListener(listener);
-	        }
-    	}
-    }
+		this.refreshEPStatmentListeners();
+	}
+	
+	public Set<UpdateListener> getListeners() {
+		return this.listeners;
+	}
 
-    void setEPStatement(EPStatement epStatement) {
-        this.epStatement = epStatement;
-        if (this.subscriber != null) {
-        	epStatement.setSubscriber(this.subscriber);
-        } else {
-	        for (UpdateListener listener : listeners) {
-	            epStatement.addListener(listener);
-	        }
-        }
-    }
+	public void setSubscriber(Object subscriber) {
+		this.subscriber = subscriber;
+	}
+
+	/**
+	 * Adds an {@link UpdateListener) to the statement to support
+	 * the 'push' mode of retrieving results.
+	 * 
+	 * @param listener The listener to be invoked when appropriate results according to the EPL filter query.
+	 */
+	public void addListener(UpdateListener listener) {
+		listeners.add(listener);
+
+		this.refreshEPStatmentListeners();
+
+		this.addEPStatementListener(listener);
+	}
+
+	/**
+	 * Refreshes the listeners associated with this statement.
+	 */
+	private void refreshEPStatmentListeners() {
+		for (UpdateListener listener : this.listeners) {
+			this.addEPStatementListener(listener);
+		}
+	}
+
+	/**
+	 * Adds an listener to the underlying native EPStatement.
+	 * 
+	 * @param listener the listener to add
+	 */
+	private void addEPStatementListener(UpdateListener listener) {
+		if (this.subscriber == null) {
+			if (epStatement != null) {
+				epStatement.addListener(listener);
+			}
+		}
+	}
+
+	/**
+	 * Sets the native Esper statement. Typically created
+	 * by an Esper Template.
+	 * 
+	 * @param epStatement the underlying native Esper statement
+	 * @see org.opencredo.esper.EsperTemplate
+	 */
+	void setEPStatement(EPStatement epStatement) {
+		this.epStatement = epStatement;
+		if (this.subscriber != null) {
+			epStatement.setSubscriber(this.subscriber);
+		} else {
+			for (UpdateListener listener : listeners) {
+				epStatement.addListener(listener);
+			}
+		}
+	}
 
 	public <T> List<T> concurrentSafeQuery(ParameterizedEsperRowMapper<T> rm) {
-		
-		/*
-	    Replacing code that looks like:
-	    	
-	    	SafeIterator<EventBean> safeIter = statement.safeIterator();
-	    try {
-	      for (;safeIter.hasNext();) {
-	         // .. process event ..
-	         EventBean event = safeIter.next();
-	         System.out.println("avg:" + event.get("avgPrice");
-	      }
-	    }
-	    finally {
-	      safeIter.close();	// Note: safe iterators must be closed
-	    }
-	    */
-		
-		// TODO Auto-generated method stub
-		return null;
+
+		SafeIterator<EventBean> safeIter = this.epStatement.safeIterator();
+
+		List<T> objectList = new ArrayList<T>();
+		try {
+			for (; safeIter.hasNext();) {
+				EventBean event = safeIter.next();
+				objectList.add(rm.mapRow(event));
+			}
+		} finally {
+			safeIter.close();
+		}
+
+		return objectList;
 	}
 
-	public List<Map<String, Object>> concurrentSafeQueryForList() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String, Object>> concurrentSafeQueryForList(
+			String[] resultsToRetrieve) {
+		SafeIterator<EventBean> safeIter = this.epStatement.safeIterator();
+
+		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+		try {
+			while (safeIter.hasNext()) {
+				EventBean event = safeIter.next();
+				for (String resultName : resultsToRetrieve) {
+					Map<String, Object> result = new HashMap<String, Object>();
+					result.put(resultName, event.get(resultName));
+					resultList.add(result);
+				}
+			}
+		} finally {
+			safeIter.close();
+		}
+
+		return resultList;
 	}
 
-	public Map<String, Object> concurrentSafeQueryForMap() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Object> concurrentSafeQueryForMap(
+			String[] resultsToRetrieve) {
+		SafeIterator<EventBean> safeIter = this.epStatement.safeIterator();
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			// Only retrieve the last result
+			while (safeIter.hasNext()) {
+				EventBean event = safeIter.next();
+				if (!safeIter.hasNext()) {
+					for (String resultName : resultsToRetrieve) {
+						result.put(resultName, event.get(resultName));
+					}
+				}
+
+			}
+		} finally {
+			safeIter.close();
+		}
+
+		return result;
 	}
 
 	public <T> T concurrentSafeQueryForObject(ParameterizedEsperRowMapper<T> rm) {
-		// TODO Auto-generated method stub
-		return null;
+		SafeIterator<EventBean> safeIter = this.epStatement.safeIterator();
+
+		T result = null;
+		try {
+			// Only retrieve the last result
+			while (safeIter.hasNext()) {
+				EventBean event = safeIter.next();
+				if (!safeIter.hasNext()) {
+					result = rm.mapRow(event);
+				}
+
+			}
+		} finally {
+			safeIter.close();
+		}
+
+		return result;
 	}
 
-	public <T> List<T> concurrentUnsafeQafeQuery(
-			ParameterizedEsperRowMapper<T> rm) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> List<T> concurrentUnsafeQuery(ParameterizedEsperRowMapper<T> rm) {
+		Iterator<EventBean> safeIter = this.epStatement.iterator();
+
+		List<T> objectList = new ArrayList<T>();
+		for (; safeIter.hasNext();) {
+			EventBean event = safeIter.next();
+			objectList.add(rm.mapRow(event));
+		}
+
+		return objectList;
 	}
 
-	public List<Map<String, Object>> concurrentUnsafeQueryForList() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String, Object>> concurrentUnsafeQueryForList(
+			String[] resultsToRetrieve) {
+		Iterator<EventBean> safeIter = this.epStatement.iterator();
+
+		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+
+		while (safeIter.hasNext()) {
+			EventBean event = safeIter.next();
+			for (String resultName : resultsToRetrieve) {
+				Map<String, Object> result = new HashMap<String, Object>();
+				result.put(resultName, event.get(resultName));
+				resultList.add(result);
+			}
+		}
+
+		return resultList;
 	}
 
-	public Map<String, Object> concurrentUnsafeQueryForMap() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Object> concurrentUnsafeQueryForMap(
+			String[] resultsToRetrieve) {
+		Iterator<EventBean> safeIter = this.epStatement.iterator();
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		// Only retrieve the last result
+		while (safeIter.hasNext()) {
+			EventBean event = safeIter.next();
+			if (!safeIter.hasNext()) {
+				for (String resultName : resultsToRetrieve) {
+					result.put(resultName, event.get(resultName));
+				}
+			}
+
+		}
+
+		return result;
 	}
 
 	public <T> T concurrentUnsafeQueryForObject(
 			ParameterizedEsperRowMapper<T> rm) {
-		// TODO Auto-generated method stub
-		return null;
+		Iterator<EventBean> safeIter = this.epStatement.iterator();
+
+		T result = null;
+
+		// Only retrieve the last result
+		while (safeIter.hasNext()) {
+			EventBean event = safeIter.next();
+			if (!safeIter.hasNext()) {
+				result = rm.mapRow(event);
+			}
+
+		}
+
+		return result;
 	}
-	
+
 }

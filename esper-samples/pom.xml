@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 	   <groupId>org.opencredo.esper</groupId>
-       <artifactId>esper-parent</artifactId>
+       <artifactId>opencredo-esper-parent</artifactId>
        <version>1.0-SNAPSHOT</version>
     </parent>
 	<groupId>org.opencredo.esper</groupId>
