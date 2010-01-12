@@ -1,7 +1,6 @@
 package org.opencredo.esper;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Esper support the capability to 'pull' query filter results from a statement.
@@ -31,25 +30,6 @@ public interface EsperStatementOperations {
 	<T> T concurrentSafeQueryForObject(ParameterizedEsperRowMapper<T> rm);
 
 	/**
-	 * Performs a concurrency safe 'pull' to retrieve a query filtered result
-	 * from the esper statement. That result is then automatically used to
-	 * populate the returned {@link Map}.
-	 * 
-	 * @return A map containing the a single result from the statement
-	 */
-	Map<String, Object> concurrentSafeQueryForMap(String[] resultsToRetrieve);
-
-	/**
-	 * Performs a concurrency safe 'pull' to retrieve query filtered results
-	 * from the esper statement. Those results are then automatically used to
-	 * populate the returned {@link List} of {@link Map} objects.
-	 * 
-	 * @param resultsToRetrieve The named parameters to grab from the events
-	 * @return a list containing all of the individual result maps
-	 */
-	List<Map<String, Object>> concurrentSafeQueryForList(String[] resultsToRetrieve);
-
-	/**
 	 * Performs a concurrency safe 'pull' to retrieve query filtered results
 	 * from the esper statement. The supplied
 	 * {@link ParameterizedEsperRowMapper} is then used to populate the objects
@@ -76,28 +56,6 @@ public interface EsperStatementOperations {
 	 * @return the mapped object
 	 */
 	<T> T concurrentUnsafeQueryForObject(ParameterizedEsperRowMapper<T> rm);
-
-	/**
-	 * Performs a concurrency unsafe 'pull' (i.e. should only be used in a
-	 * single threaded environment) to retrieve a query filtered result from the
-	 * esper statement. That result is then automatically used to populate the
-	 * returned {@link Map}.
-	 * 
-	 * @param resultsToRetrieve The named parameters to grab from the events
-	 * @return A map containing the a single result from the statement
-	 */
-	Map<String, Object> concurrentUnsafeQueryForMap(String[] resultsToRetrieve);
-
-	/**
-	 * Performs a concurrency unsafe 'pull' (i.e. should only be used in a
-	 * single threaded environment) to retrieve query filtered results from the
-	 * esper statement. Those results are then automatically used to populate
-	 * the returned {@link List} of {@link Map} objects.
-	 * 
-	 * @param resultsToRetrieve The named parameters to grab from the events
-	 * @return a list containing all of the individual result maps
-	 */
-	List<Map<String, Object>> concurrentUnsafeQueryForList(String[] resultsToRetrieve);
 
 	/**
 	 * Performs a concurrency unsafe 'pull' (i.e. should only be used in a

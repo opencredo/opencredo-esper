@@ -18,6 +18,8 @@ package org.opencredo.esper;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.opencredo.esper.sample.SampleEvent;
@@ -29,9 +31,11 @@ public class TestEsperStatement {
 	private EsperTemplate template;
 	
 	private EsperStatement statement;
+	
+	private ParameterizedEsperRowMapper<SampleEvent> rowMapper;
 
 	@Before
-	public void setupTemplateAndStatement() throws Exception {
+	public void setupTemplateStatementAndRowMapper() throws Exception {
 		this.template = new EsperTemplate();
 		
 		String epl = "select * from org.opencredo.esper.sample.SampleEvent";
@@ -43,6 +47,12 @@ public class TestEsperStatement {
 		template.setBeanName("testTemplate");
 		
 		template.afterPropertiesSet();
+		
+		this.rowMapper = new ParameterizedEsperRowMapper<SampleEvent>() {
+			public SampleEvent mapRow(EventBean eventBean) {
+				return (SampleEvent) eventBean.getUnderlying();
+			}
+		};
 	}
 	
 	@Test
@@ -51,14 +61,38 @@ public class TestEsperStatement {
 		SampleEvent event = new SampleEvent();
 		template.sendEvent(event);
 		
-		ParameterizedEsperRowMapper<SampleEvent> rm = new ParameterizedEsperRowMapper<SampleEvent>() {
-			public SampleEvent mapRow(EventBean eventBean) {
-				return (SampleEvent) eventBean.getUnderlying();
-			}
-		};
-		SampleEvent result = statement.concurrentSafeQueryForObject(rm);
+		SampleEvent result = statement.concurrentSafeQueryForObject(this.rowMapper);
 		
 		assertEquals(result, event);
+	}
+	
+	@Test(expected=EsperStatementInvalidStateException.class)
+	public void testConcurrencySafeQueryForObjectWhenStopped() throws Exception {
+		
+		statement.stop();
+		
+		SampleEvent event = new SampleEvent();
+		
+		template.sendEvent(event);
+		
+		statement.concurrentSafeQueryForObject(this.rowMapper);
+		
+	}
+	
+	@Test
+	public void testConcurrencySafeQueryForObjectWhenStoppedAndRestarted() throws Exception {
+		
+		statement.stop();
+		statement.start();
+		
+		SampleEvent event = new SampleEvent();
+		
+		template.sendEvent(event);
+		
+		SampleEvent result = statement.concurrentSafeQueryForObject(this.rowMapper);
+		
+		assertEquals(result, event);
+		
 	}
 	
 	@Test
@@ -67,18 +101,127 @@ public class TestEsperStatement {
 		SampleEvent event = new SampleEvent();
 		template.sendEvent(event);
 		
-		ParameterizedEsperRowMapper<SampleEvent> rm = new ParameterizedEsperRowMapper<SampleEvent>() {
-			public SampleEvent mapRow(EventBean eventBean) {
-				return (SampleEvent) eventBean.getUnderlying();
-			}
-		};
-		SampleEvent result = statement.concurrentUnsafeQueryForObject(rm);
+		
+		SampleEvent result = statement.concurrentUnsafeQueryForObject(this.rowMapper);
 		
 		assertEquals(result, event);
+		
 	}
 	
-	// TODO Continue to test each of the other pull methods.
-	// Also test the Start and Stop operations (ensuring intermediate events are not sent using
-	// the pull interface.
+	@Test(expected=EsperStatementInvalidStateException.class)
+	public void testConcurrencyUnsafeQueryForObjectWhenStopped() throws Exception {
+		
+		statement.stop();
+		
+		SampleEvent event = new SampleEvent();
+		
+		template.sendEvent(event);
+		
+		statement.concurrentUnsafeQueryForObject(this.rowMapper);
+		
+	}
+	
+	@Test
+	public void testConcurrencyUnsafeQueryForObjectWhenStoppedAndRestarted() throws Exception {
+		
+		statement.stop();
+		statement.start();
+		
+		SampleEvent event = new SampleEvent();
+		
+		template.sendEvent(event);
+		
+		SampleEvent result = statement.concurrentUnsafeQueryForObject(this.rowMapper);
+		
+		assertEquals(result, event);
+		
+	}
+	
+	@Test
+	public void testConcurrencySafeQuery() throws Exception {
+		
+		SampleEvent event = new SampleEvent();
+		template.sendEvent(event);
+		
+		
+		List<SampleEvent> events = statement.concurrentSafeQuery(this.rowMapper);
+		
+		assertEquals(events.size(), 1);
+		assertEquals(events.get(0), event);
+		
+	}
+	
+	@Test(expected=EsperStatementInvalidStateException.class)
+	public void testConcurrencySafeQueryWhenStopped() throws Exception {
+		
+		statement.stop();
+		
+		SampleEvent event = new SampleEvent();
+		
+		template.sendEvent(event);
+		
+		statement.concurrentSafeQuery(this.rowMapper);
+		
+	}
+	
+	@Test
+	public void testConcurrencySafeQueryWhenStoppedAndRestarted() throws Exception {
+		
+		statement.stop();
+		statement.start();
+		
+		SampleEvent event = new SampleEvent();
+		
+		template.sendEvent(event);
+		
+		List<SampleEvent> events = statement.concurrentSafeQuery(this.rowMapper);
+		
+		assertEquals(events.size(), 1);
+		assertEquals(events.get(0), event);
+		
+	}
+	
+	@Test
+	public void testConcurrencyUnsafeQuery() throws Exception {
+		
+		SampleEvent event = new SampleEvent();
+		template.sendEvent(event);
+		
+		
+		List<SampleEvent> events = statement.concurrentUnsafeQuery(this.rowMapper);
+		
+		assertEquals(events.size(), 1);
+		assertEquals(events.get(0), event);
+	}
+	
+	@Test(expected=EsperStatementInvalidStateException.class)
+	public void testConcurrencyUnsafeQueryWhenStopped() throws Exception {
+		
+		statement.stop();
+		
+		SampleEvent event = new SampleEvent();
+		
+		template.sendEvent(event);
+		
+		statement.concurrentUnsafeQuery(this.rowMapper);
+		
+	}
+	
+	@Test
+	public void testConcurrencyUnsafeQueryWhenStoppedAndRestarted() throws Exception {
+		
+		statement.stop();
+		statement.start();
+		
+		SampleEvent event = new SampleEvent();
+		
+		template.sendEvent(event);
+		
+		List<SampleEvent> events = statement.concurrentUnsafeQuery(this.rowMapper);
+		
+		assertEquals(events.size(), 1);
+		assertEquals(events.get(0), event);
+		
+	}
 
 }

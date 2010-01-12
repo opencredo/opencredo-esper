@@ -17,11 +17,9 @@
 package org.opencredo.esper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.espertech.esper.client.EPStatement;
@@ -154,6 +152,11 @@ public class EsperStatement implements EsperStatementOperations {
 
 	public <T> List<T> concurrentSafeQuery(ParameterizedEsperRowMapper<T> rm) {
 
+		if (epStatement.isStopped() || epStatement.isDestroyed()) {
+			// TODO Log this event as well.
+			throw new EsperStatementInvalidStateException("Attempted to execute a concurrent safe query when esper statement resource had state of " + epStatement.getState());
+		}
+		
 		SafeIterator<EventBean> safeIter = this.epStatement.safeIterator();
 
 		List<T> objectList = new ArrayList<T>();
@@ -169,53 +172,15 @@ public class EsperStatement implements EsperStatementOperations {
 		return objectList;
 	}
 
-	public List<Map<String, Object>> concurrentSafeQueryForList(
-			String[] resultsToRetrieve) {
-		SafeIterator<EventBean> safeIter = this.epStatement.safeIterator();
-
-		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
-		try {
-			while (safeIter.hasNext()) {
-				EventBean event = safeIter.next();
-				for (String resultName : resultsToRetrieve) {
-					Map<String, Object> result = new HashMap<String, Object>();
-					result.put(resultName, event.get(resultName));
-					resultList.add(result);
-				}
-			}
-		} finally {
-			safeIter.close();
-		}
-
-		return resultList;
-	}
-
-	public Map<String, Object> concurrentSafeQueryForMap(
-			String[] resultsToRetrieve) {
-		SafeIterator<EventBean> safeIter = this.epStatement.safeIterator();
-
-		Map<String, Object> result = new HashMap<String, Object>();
-		try {
-			// Only retrieve the last result
-			while (safeIter.hasNext()) {
-				EventBean event = safeIter.next();
-				if (!safeIter.hasNext()) {
-					for (String resultName : resultsToRetrieve) {
-						result.put(resultName, event.get(resultName));
-					}
-				}
-
-			}
-		} finally {
-			safeIter.close();
-		}
-
-		return result;
-	}
-
 	public <T> T concurrentSafeQueryForObject(ParameterizedEsperRowMapper<T> rm) {
+		
+		if (epStatement.isStopped() || epStatement.isDestroyed()) {
+			// TODO Log this event as well.
+			throw new EsperStatementInvalidStateException("Attempted to execute a concurrent safe query for object when esper statement resource had state of " + epStatement.getState());
+		}
+		
 		SafeIterator<EventBean> safeIter = this.epStatement.safeIterator();
-
+		
 		T result = null;
 		try {
 			// Only retrieve the last result
@@ -234,6 +199,12 @@ public class EsperStatement implements EsperStatementOperations {
 	}
 
 	public <T> List<T> concurrentUnsafeQuery(ParameterizedEsperRowMapper<T> rm) {
+		
+		if (epStatement.isStopped() || epStatement.isDestroyed()) {
+			// TODO Log this event as well.
+			throw new EsperStatementInvalidStateException("Attempted to execute a concurrent unsafe query when esper statement resource had state of " + epStatement.getState());
+		}
+		
 		Iterator<EventBean> safeIter = this.epStatement.iterator();
 
 		List<T> objectList = new ArrayList<T>();
@@ -245,45 +216,14 @@ public class EsperStatement implements EsperStatementOperations {
 		return objectList;
 	}
 
-	public List<Map<String, Object>> concurrentUnsafeQueryForList(
-			String[] resultsToRetrieve) {
-		Iterator<EventBean> safeIter = this.epStatement.iterator();
-
-		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
-
-		while (safeIter.hasNext()) {
-			EventBean event = safeIter.next();
-			for (String resultName : resultsToRetrieve) {
-				Map<String, Object> result = new HashMap<String, Object>();
-				result.put(resultName, event.get(resultName));
-				resultList.add(result);
-			}
-		}
-
-		return resultList;
-	}
-
-	public Map<String, Object> concurrentUnsafeQueryForMap(
-			String[] resultsToRetrieve) {
-		Iterator<EventBean> safeIter = this.epStatement.iterator();
-
-		Map<String, Object> result = new HashMap<String, Object>();
-		// Only retrieve the last result
-		while (safeIter.hasNext()) {
-			EventBean event = safeIter.next();
-			if (!safeIter.hasNext()) {
-				for (String resultName : resultsToRetrieve) {
-					result.put(resultName, event.get(resultName));
-				}
-			}
-
-		}
-
-		return result;
-	}
-
 	public <T> T concurrentUnsafeQueryForObject(
 			ParameterizedEsperRowMapper<T> rm) {
+		
+		if (epStatement.isStopped() || epStatement.isDestroyed()) {
+			// TODO Log this event as well.
+			throw new EsperStatementInvalidStateException("Attempted to execute a concurrent unsafe query for object when esper statement resource had state of " + epStatement.getState());
+		}
+		
 		Iterator<EventBean> safeIter = this.epStatement.iterator();
 
 		T result = null;
