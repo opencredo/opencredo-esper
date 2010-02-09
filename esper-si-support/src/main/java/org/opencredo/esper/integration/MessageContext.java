@@ -19,28 +19,37 @@ package org.opencredo.esper.integration;
 import org.springframework.integration.core.Message;
 import org.springframework.integration.core.MessageChannel;
 
+/**
+ * Provides the complete message context as it can be retrieved from Spring
+ * Integration.
+ * 
+ * @author Russ Miles (russ.miles@opencredo.com)
+ * 
+ */
 public class MessageContext {
 	private final Message<?> message;
 	private final MessageChannel channel;
 	private final IntegrationOperation operation;
 	private final boolean sent;
-	
-	public MessageContext(Message<?> message, MessageChannel channel, IntegrationOperation operation) {
+
+	public MessageContext(Message<?> message, MessageChannel channel,
+			IntegrationOperation operation) {
 		super();
 		this.message = message;
 		this.channel = channel;
 		this.operation = operation;
 		this.sent = false;
 	}
-	
-	public MessageContext(Message<?> message, MessageChannel channel, boolean sent) {
+
+	public MessageContext(Message<?> message, MessageChannel channel,
+			boolean sent) {
 		super();
 		this.message = message;
 		this.channel = channel;
 		this.operation = IntegrationOperation.POST_SEND;
 		this.sent = sent;
 	}
-	
+
 	public MessageContext(MessageChannel channel) {
 		super();
 		this.message = null;

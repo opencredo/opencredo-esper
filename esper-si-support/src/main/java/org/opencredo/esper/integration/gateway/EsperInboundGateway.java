@@ -16,6 +16,8 @@
 
 package org.opencredo.esper.integration.gateway;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.integration.core.MessageChannel;
 import org.springframework.integration.message.GenericMessage;
@@ -33,6 +35,8 @@ import com.espertech.esper.client.UpdateListener;
  * 
  */
 public class EsperInboundGateway implements UpdateListener, UnmatchedListener {
+	private final static Logger LOG = LoggerFactory
+			.getLogger(EsperInboundGateway.class);
 
 	private MessageChannel channel;
 
@@ -70,31 +74,43 @@ public class EsperInboundGateway implements UpdateListener, UnmatchedListener {
 	 * client.EventBean[], com.espertech.esper.client.EventBean[])
 	 */
 	public void update(EventBean[] eventBeans, EventBean[] eventBeans1) {
+		LOG.debug("Inbound gateway receiving an event from esper");
+		
 		Assert.notNull(channel);
 
 		GenericMessage<EventBean[]> message = new GenericMessage<EventBean[]>(
 				eventBeans);
 
 		if (timeout != null) {
+			LOG.debug("Sending message (" + message + ") to channel " + channel + " with timeout " + timeout);
 			channel.send(message, timeout);
 		} else {
+			LOG.debug("Sending message (" + message + ") to channel " + channel);
 			channel.send(message);
 		}
+		
+		LOG.debug("Inbound gateway received an event from esper");
 	}
 
 	/* (non-Javadoc)
 	 * @see com.espertech.esper.client.UnmatchedListener#update(com.espertech.esper.client.EventBean)
 	 */
 	public void update(EventBean eventBean) {
+		LOG.debug("Inbound gateway receiving an unmatched listener event from esper");
+		
 		Assert.notNull(channel);
 
 		GenericMessage<EventBean> message = new GenericMessage<EventBean>(
 				eventBean);
 
 		if (timeout != null) {
+			LOG.debug("Sending message (" + message + ") to channel " + channel + " with timeout " + timeout);
 			channel.send(message, timeout);
 		} else {
+			LOG.debug("Sending message (" + message + ") to channel " + channel);
 			channel.send(message);
 		}
+		
+		LOG.debug("Inbound gateway received an unmatched listener event from esper");
 	}
 }
