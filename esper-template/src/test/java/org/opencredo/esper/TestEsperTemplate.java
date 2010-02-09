@@ -23,8 +23,13 @@ import org.junit.Test;
 import org.opencredo.esper.sample.CallRecordingListener;
 import org.opencredo.esper.sample.SampleEvent;
 
+/**
+ * A unit test for the {@link EsperTemplate}.
+ * 
+ * @author Russ Miles (russ.miles@opencredo.com)
+ * 
+ */
 public class TestEsperTemplate {
-
 	
 	private EsperTemplate template;
 
@@ -33,31 +38,36 @@ public class TestEsperTemplate {
 		this.template = new EsperTemplate();
 	}
 	
+	@Test(expected = InvalidEsperConfigurationException.class)
+	public void testExceptionRaisedWhenTemplateNotInitialized() {
+		template.sendEvent(new SampleEvent());
+	}
+	
 	@Test
-	public void testEventWithNoStatements() throws Exception {
-		template.setBeanName("testTemplate");
+	public void testEventWithNoStatements() {
+		setupTemplateAndSendSampleEvent();
+	}
+
+	private void setupTemplateAndSendSampleEvent() {
+		template.setName("testTemplate");
 		
-		template.afterPropertiesSet();
+		template.initialize();
 		
 		template.sendEvent(new SampleEvent());
 	}
 	
 	@Test
-	public void testEventWithOneStatementNoListener() throws Exception {
+	public void testEventWithOneStatementNoListener() {
 		
 		EsperStatement statement = addTestStatement();
 		
 		template.addStatement(statement);
 		
-		template.setBeanName("testTemplate");
-		
-		template.afterPropertiesSet();
-		
-		template.sendEvent(new SampleEvent());
+		setupTemplateAndSendSampleEvent();
 	}
 	
 	@Test
-	public void testEventWithOneStatementWithOneListener() throws Exception {
+	public void testEventWithOneStatementWithOneListener() {
 		
 		EsperStatement statement = addTestStatement();
 		
@@ -65,11 +75,7 @@ public class TestEsperTemplate {
 		
 		template.addStatement(statement);
 		
-		template.setBeanName("testTemplate");
-		
-		template.afterPropertiesSet();
-		
-		template.sendEvent(new SampleEvent());
+		setupTemplateAndSendSampleEvent();
 		
 		assertEquals(1, listener.getNumberOfTimesInvoked());
 	}

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2008-2009 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.opencredo.esper.config.xml;
 
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -13,6 +29,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * Parses an esper-statement element.
+ * 
+ * @author Russ Miles (russ.miles@opencredo.com)
+ *
+ */
 public class EsperStatementParser extends AbstractBeanDefinitionParser {
 
 	@Override
@@ -66,6 +88,13 @@ public class EsperStatementParser extends AbstractBeanDefinitionParser {
 		return builder.getBeanDefinition();
 	}
 	
+	/**
+	 * Parses out the individual statement elements for further processing.
+	 * 
+	 * @param element the esper-template context
+	 * @param parserContext the parser's context
+	 * @return a set of initialized esper statements
+	 */
 	@SuppressWarnings("unchecked")
 	public ManagedSet parseStatements(Element element, ParserContext parserContext) {
 		ManagedSet statements = new ManagedSet();

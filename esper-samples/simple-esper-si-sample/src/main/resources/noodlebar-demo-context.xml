@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:esper="http://www.opencredo.com/schema/esper"
+	xmlns:si-esper="http://www.opencredo.com/schema/esper/integration"
+	xmlns:si="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.opencredo.com/schema/esper
+						http://www.opencredo.com/schema/esper/opencredo-esper-1.0.xsd
+						http://www.opencredo.com/schema/esper/integration
+						http://www.opencredo.com/schema/esper/integration/opencredo-integration-esper-1.0.xsd
+						http://www.springframework.org/schema/integration
+						http://www.springframework.org/schema/integration/spring-integration-1.0.xsd">
+
+	<description>
+		Provides a simple example of using a combination of the Esper Wire Tap and Esper Template
+		to calculate throughput of order messages to a Noodle Bar.
+	</description>
+	
+	<si:gateway service-interface="org.opencredo.esper.samples.noodlebar.domain.NoodleBar" id="noodleBar"
+	default-request-channel="incomingOrders"/>
+	
+	<si:channel id="incomingOrders" />
+	
+	<si:service-activator input-channel="incomingOrders" ref="yummyNoodleBar" method="cookNoodles"/>
+
+	<bean id="yummyNoodleBar" class="org.opencredo.esper.samples.noodlebar.domain.yummy.YummyNoodleBar">
+		<!-- How many milliseconds it takes for the YummyNoodleBar to cook a noodle order -->
+		<property name="cookDuration" value="10" />
+	</bean>
+	
+</beans>

@@ -20,9 +20,8 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.BeanNameAware;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 
 import com.espertech.esper.client.Configuration;
@@ -45,9 +44,9 @@ import com.espertech.esper.client.UnmatchedListener;
  * @author Russ Miles (russ.miles@opencredo.com)
  * 
  */
-public final class EsperTemplate implements BeanNameAware, InitializingBean,
-		DisposableBean {
-
+public class EsperTemplate implements EsperTemplateOperations {
+	private final static Logger LOG = LoggerFactory.getLogger(EsperTemplate.class);
+	
 	private EPServiceProvider epServiceProvider;
 	private EPRuntime epRuntime;
 	private String name;
@@ -55,69 +54,7 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean,
 	private Resource configuration;
 	private UnmatchedListener unmatchedListener;
 
-	/**
-	 * Add a collection of {@link EsperStatement} to the template.
-	 * 
-	 * @param statementBeans
-	 */
-	public void setStatements(Set<EsperStatement> statements) {
-		this.statements = statements;
-	}
-
-	/**
-	 * Set the location of the XML Esper configuration resource.
-	 * 
-	 * @param configurationResource
-	 */
-	public void setConfiguration(Resource configuration) {
-		this.configuration = configuration;
-	}
-	
-	/**
-	 * Specify the listener that should be notified of any unmatched
-	 * events.
-	 * 
-	 * @param unmatchedListener The listener that is notified of events that are not matched
-	 */
-	public void setUnmatchedListener(UnmatchedListener unmatchedListener) {
-		this.unmatchedListener = unmatchedListener;
-	}
-
-	/**
-	 * Retrieve the configured esper runtime.
-	 * 
-	 * @return The current esper runtime
-	 */
-	public EPRuntime getEpRuntime() {
-		return epRuntime;
-	}
-
-	public Set<EsperStatement> getStatements() {
-		return this.statements;
-	}
-
-	/**
-	 * Adds an {@link EsperStatement} composite to the template.
-	 * 
-	 * @param statement
-	 *            The EsperStatement to add to the template.
-	 */
-	public void addStatement(EsperStatement statement) {
-		statements.add(statement);
-	}
-
-	/**
-	 * Instructs the template to send an event to Esper. Events are then used to
-	 * satisfy statements, which then alert listeners.
-	 * 
-	 * @param event
-	 *            The event that Esper is to be informed of.
-	 */
-	public void sendEvent(Object event) {
-		epRuntime.sendEvent(event);
-	}
-
-	public void setBeanName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -125,21 +62,61 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean,
 		return this.name;
 	}
 
-	/**
-	 * Initializes the Esper service provider with the provided statements and
-	 * associated listeners.
-	 * 
-	 * The provider is giving a unique name that is based on the bean name.
-	 * @throws IOException 
-	 * @throws EPException 
-	 */
-	private void setupEsper() throws EPException, IOException {
-		configureEPServiceProvider();
-		epRuntime = epServiceProvider.getEPRuntime();
-		if (this.unmatchedListener != null) {
-			epRuntime.setUnmatchedListener(unmatchedListener);
+	public void setStatements(Set<EsperStatement> statements) {
+		this.statements = statements;
+	}
+
+	public void setConfiguration(Resource configuration) {
+		this.configuration = configuration;
+	}
+
+	public void setUnmatchedListener(UnmatchedListener unmatchedListener) {
+		this.unmatchedListener = unmatchedListener;
+	}
+
+	public EPRuntime getEsperNativeRuntime() {
+		return epRuntime;
+	}
+
+	public Set<EsperStatement> getStatements() {
+		return this.statements;
+	}
+
+	public void addStatement(EsperStatement statement) {
+		statements.add(statement);
+	}
+
+	public void sendEvent(Object event)
+			throws InvalidEsperConfigurationException {
+		LOG.debug("Sending event to Esper");
+		if (epRuntime != null) {
+			epRuntime.sendEvent(event);
+		} else {
+			LOG.error("Attempted to send message with null Esper Runtime.");
+			throw new InvalidEsperConfigurationException(
+					"Esper Runtime is null. Have you initialized the template before you attempt to send an event?");
 		}
-		setupEPStatements();
+		LOG.debug("Sent event to Esper");
+	}
+
+	public void initialize() throws InvalidEsperConfigurationException {
+		LOG.debug("Initializing esper template");
+		try {
+			configureEPServiceProvider();
+			epRuntime = epServiceProvider.getEPRuntime();
+			if (this.unmatchedListener != null) {
+				epRuntime.setUnmatchedListener(unmatchedListener);
+			}
+			setupEPStatements();
+		} catch (Exception e) {
+			LOG.error("An exception occured when attempting to initialize the esper template", e);
+			throw new InvalidEsperConfigurationException(e.getMessage(), e);
+		}
+		LOG.debug("Finished initializing esper template");
+	}
+
+	public void cleanup() {
+		epServiceProvider.destroy();
 	}
 
 	/**
@@ -156,33 +133,22 @@ public final class EsperTemplate implements BeanNameAware, InitializingBean,
 	/**
 	 * Configure the Esper Service Provider to create the appropriate Esper
 	 * Runtime.
-	 * @throws IOException 
-	 * @throws EPException 
+	 * 
+	 * @throws IOException
+	 * @throws EPException
 	 */
 	private void configureEPServiceProvider() throws EPException, IOException {
+		LOG.debug("Configuring the Esper Service Provider");
 		if (this.configuration != null && this.configuration.exists()) {
 			Configuration configuration = new Configuration();
 			configuration = configuration.configure(this.configuration
 					.getFile());
-			epServiceProvider = EPServiceProviderManager.getProvider(name, configuration);
+			epServiceProvider = EPServiceProviderManager.getProvider(name,
+					configuration);
+			LOG.info("Esper configured with a user-provided configuration", configuration);
 		} else {
 			epServiceProvider = EPServiceProviderManager.getProvider(name);
 		}
-	}
-
-	/**
-	 * Tidies up the Esper service provider, which in turn releases any
-	 * resources being used by Esper.
-	 */
-	private void cleanup() {
-		epServiceProvider.destroy();
-	}
-
-	public void afterPropertiesSet() throws Exception {
-		this.setupEsper();
-	}
-
-	public void destroy() throws Exception {
-		this.cleanup();
+		LOG.debug("Completed configuring the Esper Service Provider");
 	}
 }

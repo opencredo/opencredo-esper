@@ -40,7 +40,7 @@ public class EsperConfigurationDrivenOneInnerStatementEsperTemplateParserTest {
 	EsperTemplate template;
 	
 	@Test
-	public void testTemplateInitializesWithOneStatment() {
+	public void testTemplateInitializesWithOneStatement() {
 		
 		Set<EsperStatement> statements = template.getStatements();
 		

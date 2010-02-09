@@ -44,9 +44,9 @@ public class TestEsperStatement {
 		
 		template.addStatement(statement);
 		
-		template.setBeanName("testTemplate");
+		template.setName("testTemplate");
 		
-		template.afterPropertiesSet();
+		template.initialize();
 		
 		this.rowMapper = new ParameterizedEsperRowMapper<SampleEvent>() {
 			public SampleEvent mapRow(EventBean eventBean) {

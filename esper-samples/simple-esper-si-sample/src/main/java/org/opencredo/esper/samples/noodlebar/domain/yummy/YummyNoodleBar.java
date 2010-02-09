@@ -29,8 +29,8 @@ import org.opencredo.esper.samples.noodlebar.domain.NoodleOrder;
  * @author Russ Miles (russ.miles@opencredo.com)
  *
  */
-public class YummyNoodleBar {
-
+public class YummyNoodleBar implements YNoodleBar {
+	
 	private long cookDuration;
 	
 	public void setCookDuration(long cookDuration) {

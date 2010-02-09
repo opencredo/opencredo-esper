@@ -22,6 +22,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.espertech.esper.client.EPStatement;
 import com.espertech.esper.client.EPStatementState;
 import com.espertech.esper.client.EventBean;
@@ -42,6 +45,8 @@ import com.espertech.esper.client.UpdateListener;
  * @author Russ Miles (russ.miles@opencredo.com)
  */
 public class EsperStatement implements EsperStatementOperations {
+	private final static Logger LOG = LoggerFactory.getLogger(EsperStatement.class);
+	
 	private String epl;
 	private EPStatement epStatement;
 	private Set<UpdateListener> listeners = new LinkedHashSet<UpdateListener>();
@@ -63,14 +68,22 @@ public class EsperStatement implements EsperStatementOperations {
 	 * Starts events being collated according to the statement's filter query
 	 */
 	public void start() {
+		LOG.info("Esper statement being started");
+		
 		this.epStatement.start();
+		
+		LOG.info("Esper statement started");
 	}
 	
 	/**
 	 * Stops the underlying native statement from applying its filter query.
 	 */
 	public void stop() {
+		LOG.info("Esper statement being stopped");
+		
 		this.epStatement.stop();
+		
+		LOG.info("Esper statement stopped");
 	}
 	
 	/**
@@ -151,9 +164,10 @@ public class EsperStatement implements EsperStatementOperations {
 	}
 
 	public <T> List<T> concurrentSafeQuery(ParameterizedEsperRowMapper<T> rm) {
-
+		LOG.info("Concurrent safe query being executed");
+		
 		if (epStatement.isStopped() || epStatement.isDestroyed()) {
-			// TODO Log this event as well.
+			LOG.error("Concurrent safe query was attempted when the statement was stopped or destroyed");
 			throw new EsperStatementInvalidStateException("Attempted to execute a concurrent safe query when esper statement resource had state of " + epStatement.getState());
 		}
 		
@@ -168,14 +182,16 @@ public class EsperStatement implements EsperStatementOperations {
 		} finally {
 			safeIter.close();
 		}
-
+		
+		LOG.info("Concurrent safe query was completed");
 		return objectList;
 	}
 
 	public <T> T concurrentSafeQueryForObject(ParameterizedEsperRowMapper<T> rm) {
+		LOG.info("Concurrent safe query for object being executed");
 		
 		if (epStatement.isStopped() || epStatement.isDestroyed()) {
-			// TODO Log this event as well.
+			LOG.error("Concurrent safe query for object was attempted when the statement was stopped or destroyed");
 			throw new EsperStatementInvalidStateException("Attempted to execute a concurrent safe query for object when esper statement resource had state of " + epStatement.getState());
 		}
 		
@@ -195,13 +211,15 @@ public class EsperStatement implements EsperStatementOperations {
 			safeIter.close();
 		}
 
+		LOG.info("Concurrent safe query for object was completed");
 		return result;
 	}
 
 	public <T> List<T> concurrentUnsafeQuery(ParameterizedEsperRowMapper<T> rm) {
+		LOG.info("Concurrent unsafe query being executed");
 		
 		if (epStatement.isStopped() || epStatement.isDestroyed()) {
-			// TODO Log this event as well.
+			LOG.error("Concurrent unsafe query was attempted when the statement was stopped or destroyed");
 			throw new EsperStatementInvalidStateException("Attempted to execute a concurrent unsafe query when esper statement resource had state of " + epStatement.getState());
 		}
 		
@@ -213,14 +231,16 @@ public class EsperStatement implements EsperStatementOperations {
 			objectList.add(rm.mapRow(event));
 		}
 
+		LOG.info("Concurrent unsafe query was completed");
 		return objectList;
 	}
 
 	public <T> T concurrentUnsafeQueryForObject(
 			ParameterizedEsperRowMapper<T> rm) {
+		LOG.info("Concurrent unsafe query for object being executed");
 		
 		if (epStatement.isStopped() || epStatement.isDestroyed()) {
-			// TODO Log this event as well.
+			LOG.error("Concurrent unsafe query for object was attempted when the statement was stopped or destroyed");
 			throw new EsperStatementInvalidStateException("Attempted to execute a concurrent unsafe query for object when esper statement resource had state of " + epStatement.getState());
 		}
 		
@@ -237,6 +257,7 @@ public class EsperStatement implements EsperStatementOperations {
 
 		}
 
+		LOG.info("Concurrent unsafe query for object was completed");
 		return result;
 	}
 
