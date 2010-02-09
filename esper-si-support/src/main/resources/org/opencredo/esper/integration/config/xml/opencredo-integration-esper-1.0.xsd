@@ -109,5 +109,28 @@
 			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
+	
+	<!-- Declarations associated with the simple channel throughput monitor -->
+	
+	<xsd:element name="channel-throughput-monitor">
+		<xsd:complexType>
+			<xsd:annotation>
+				<xsd:documentation>
+					Defines an Esper implementation channel throughput monitor.
+        		</xsd:documentation>
+			</xsd:annotation>
+			<xsd:attribute name="id" type="xsd:ID" use="required" />
+			<xsd:attribute name="time-sample" type="xsd:string" />
+			<xsd:attribute name="channel-ref" type="xsd:string">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<tool:annotation kind="ref">
+							<tool:expected-type type="org.springframework.integration.core.MessageChannel"/>
+						</tool:annotation>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
 	 
 </xsd:schema>

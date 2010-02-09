@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:si-esper="http://www.opencredo.com/schema/esper/integration"
+	xmlns:si="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.opencredo.com/schema/esper/integration
+						http://www.opencredo.com/schema/esper/integration/opencredo-integration-esper-1.0.xsd
+						http://www.springframework.org/schema/integration
+						http://www.springframework.org/schema/integration/spring-integration-1.0.xsd">
+
+	<si-esper:channel-throughput-monitor id="throughputMonitor" channel-ref="messageChannel" time-sample="1 second"/>
+	
+	<si:channel id="messageChannel" />
+					
+	<si:service-activator ref="sampleService"
+		method="actionEvent" 
+		input-channel="messageChannel" />
+
+	<bean id="sampleService" class="org.opencredo.esper.sample.DefaultSampleService" />
+	
+</beans>
