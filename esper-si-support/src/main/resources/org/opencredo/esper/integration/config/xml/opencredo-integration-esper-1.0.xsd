@@ -90,7 +90,7 @@
 	
 	<!-- Declarations associated with the Esper inbound gateway (see http://www.eaipatterns.com/MessagingGateway.html) -->
 	
-	<xsd:element name="inbound-gateway">
+	<xsd:element name="inbound-channel-adapter">
 		<xsd:complexType>
 			<xsd:annotation>
 				<xsd:documentation>

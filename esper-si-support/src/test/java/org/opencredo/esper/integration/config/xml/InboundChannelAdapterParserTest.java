@@ -23,7 +23,6 @@ import org.junit.runner.RunWith;
 import org.opencredo.esper.EsperTemplate;
 import org.opencredo.esper.integration.MessageContext;
 import org.opencredo.esper.sample.CallRecordingListener;
-import org.opencredo.esper.sample.CallRecordingUnmatchedListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.test.context.ContextConfiguration;
@@ -31,25 +30,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class UnmatchedListenerInboundGatewayParserTest {
+public class InboundChannelAdapterParserTest {
 
 	@Autowired
 	EsperTemplate template;
 	
 	@Autowired
 	CallRecordingListener listener;
-	
-	@Autowired
-	CallRecordingUnmatchedListener unmatchedListener;
 
 	@Test
 	public void sendAnEsperContextMessageAndAssertThatListenerIsInvoked() {
 		template.sendEvent(new MessageContext(new DirectChannel()));
 		
-		template.sendEvent("A simple string event object!");
-		
 		assertEquals(1, listener.getNumberOfTimesInvoked());
-		
-		assertEquals(1, unmatchedListener.getNumberOfTimesInvoked());
 	}
 }

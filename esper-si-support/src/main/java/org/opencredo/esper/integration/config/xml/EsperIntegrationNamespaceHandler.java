@@ -27,7 +27,7 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 public class EsperIntegrationNamespaceHandler extends NamespaceHandlerSupport implements NamespaceHandler {
 
 	public void init() {
-		registerBeanDefinitionParser("inbound-gateway", new InboundGatewayParser());
+		registerBeanDefinitionParser("inbound-channel-adapter", new InboundChannelAdapterParser());
 		registerBeanDefinitionParser("wire-tap", new EsperWireTapParser());
 		registerBeanDefinitionParser("wire-tap-channels", new EsperWireTapChannelsParser());
 		registerBeanDefinitionParser("channel-throughput-monitor", new EsperChannelThroughputMonitorParser());
