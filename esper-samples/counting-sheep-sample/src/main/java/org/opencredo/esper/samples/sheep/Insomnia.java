@@ -22,30 +22,29 @@ import org.opencredo.esper.EsperStatement;
 import org.opencredo.esper.EsperTemplate;
 
 /**
- * Simple example showing use of EsperTemplate to count sheep from a passing 
- * @author Jonas Partner
+ * Simple example showing use of EsperTemplate to count sheep from a passing menagerie
  *
+ * @author Jonas Partner
  */
 public class Insomnia {
 
-    public static void main(String[] ars){
+    public static void main(String[] ars) {
+        EsperStatement statement = new EsperStatement("insert into Sleep select count(*) as total from org.opencredo.esper.samples.sheep.Animal(type='sheep').win:time(10 sec) having count(*) > 100");
+
+        EsperStatement sleepStatment = new EsperStatement("select * from Sleep");
+        sleepStatment.addListener(new LoggingListener());
+
         EsperTemplate template = new EsperTemplate();
+        template.addStatement(statement);
+        template.addStatement(sleepStatment);
+        template.initialize();
 
 
-             EsperStatement statement = new EsperStatement("insert into Sleep select count(*) as total from org.opencredo.esper.samples.sheep.Animal(type='sheep').win:time(10 sec) having count(*) > 100");
-             template.addStatement(statement);
+        for (int i = 0; i < 109; i++) {
+            template.sendEvent(new Animal("cat"));
+            template.sendEvent(new Animal("sheep"));
 
-             EsperStatement sleepStatment = new EsperStatement("select * from Sleep");
-             sleepStatment.addListener(new LoggingListener());
-             template.addStatement(sleepStatment);
-             template.initialize();
-
-
-             for (int i = 0; i < 109; i++) {
-                 template.sendEvent(new Animal("cat"));
-                 template.sendEvent(new Animal("sheep"));
-
-             }
+        }
 
     }
 

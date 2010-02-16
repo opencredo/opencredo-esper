@@ -79,6 +79,19 @@ public class TestEsperTemplate {
 		
 		assertEquals(1, listener.getNumberOfTimesInvoked());
 	}
+	
+	
+	@Test
+	public void testAddStatementAfterInitialisation() {
+		setupTemplateAndSendSampleEvent();
+		EsperStatement statement = addTestStatement();
+    	CallRecordingListener listener = this.addListenerToStatement(statement);
+     	template.addStatement(statement);
+        template.sendEvent(new SampleEvent());
+        assertEquals(1, listener.getNumberOfTimesInvoked());
+
+
+	}
 
 	private CallRecordingListener addListenerToStatement(EsperStatement statement) {
 		CallRecordingListener listener = new CallRecordingListener();
