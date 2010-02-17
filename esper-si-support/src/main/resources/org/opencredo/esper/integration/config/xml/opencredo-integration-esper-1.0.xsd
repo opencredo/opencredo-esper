@@ -31,6 +31,7 @@
 				</xsd:annotation>
 			</xsd:attribute>
 			<xsd:attribute name="id" type="xsd:ID" />
+            <xsd:attribute name="sourceId" type="xsd:string" use="required" />
 			<xsd:attribute name="send-context" type="xsd:boolean" />
 			<xsd:attribute name="pre-send" type="xsd:boolean" />
 			<xsd:attribute name="post-send" type="xsd:boolean" />
@@ -120,6 +121,7 @@
         		</xsd:documentation>
 			</xsd:annotation>
 			<xsd:attribute name="id" type="xsd:ID" use="required" />
+             <xsd:attribute name="sourceId" type="xsd:string" use="required" />
 			<xsd:attribute name="time-sample" type="xsd:string" />
 			<xsd:attribute name="channel-ref" type="xsd:string">
 				<xsd:annotation>

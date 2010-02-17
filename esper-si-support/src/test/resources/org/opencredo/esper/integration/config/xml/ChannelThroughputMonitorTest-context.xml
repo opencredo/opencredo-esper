@@ -10,13 +10,22 @@
 						http://www.springframework.org/schema/integration
 						http://www.springframework.org/schema/integration/spring-integration-1.0.xsd">
 
-	<si-esper:channel-throughput-monitor id="throughputMonitor" channel-ref="messageChannel" time-sample="1 second"/>
+	<si-esper:channel-throughput-monitor id="throughputMonitor" sourceId="testSource" channel-ref="messageChannel" time-sample="1 second"/>
 	
 	<si:channel id="messageChannel" />
 					
 	<si:service-activator ref="sampleService"
 		method="actionEvent" 
 		input-channel="messageChannel" />
+
+    <si-esper:channel-throughput-monitor id="throughputMonitorTwo" sourceId="testSourceTwo" channel-ref="messageChannelTwo" time-sample="1 second"/>
+
+	<si:channel id="messageChannelTwo" />
+
+	<si:service-activator ref="sampleService"
+		method="actionEvent"
+		input-channel="messageChannelTwo" />
+
 
 	<bean id="sampleService" class="org.opencredo.esper.sample.DefaultSampleService" />
 	

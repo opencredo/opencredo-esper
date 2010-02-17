@@ -18,6 +18,9 @@ package org.opencredo.esper.integration;
 
 import org.springframework.integration.core.Message;
 import org.springframework.integration.core.MessageChannel;
+import org.springframework.integration.core.MessageHeaders;
+
+import java.util.UUID;
 
 /**
  * Provides the complete message context as it can be retrieved from Spring
@@ -31,36 +34,48 @@ public class MessageContext {
 	private final MessageChannel channel;
 	private final IntegrationOperation operation;
 	private final boolean sent;
+    private final String messageId;
+    private final String sourceId;
 
 	public MessageContext(Message<?> message, MessageChannel channel,
-			IntegrationOperation operation) {
+                          IntegrationOperation operation, String sourceId) {
 		super();
 		this.message = message;
 		this.channel = channel;
 		this.operation = operation;
-		this.sent = false;
+        this.sourceId = sourceId;
+        this.sent = false;
+        this.messageId =  message.getHeaders().get(MessageHeaders.ID).toString();
 	}
 
 	public MessageContext(Message<?> message, MessageChannel channel,
-			boolean sent) {
+                          boolean sent, String sourceId) {
 		super();
 		this.message = message;
 		this.channel = channel;
-		this.operation = IntegrationOperation.POST_SEND;
+        this.sourceId = sourceId;
+        this.operation = IntegrationOperation.POST_SEND;
 		this.sent = sent;
+         this.messageId =  message.getHeaders().get(MessageHeaders.ID).toString();
 	}
 
-	public MessageContext(MessageChannel channel) {
+	public MessageContext(MessageChannel channel, String sourceId) {
 		super();
-		this.message = null;
+        this.sourceId = sourceId;
+        this.message = null;
 		this.channel = channel;
 		this.operation = IntegrationOperation.PRE_RECEIVE;
 		this.sent = false;
+        this.messageId = null;
 	}
 
 	public Message<?> getMessage() {
 		return message;
 	}
+
+    public String getMessageId(){
+        return this.messageId;
+    }
 
 	public MessageChannel getChannel() {
 		return channel;
@@ -73,4 +88,8 @@ public class MessageContext {
 	public boolean isSent() {
 		return sent;
 	}
+
+    public String getSourceId() {
+        return sourceId;
+    }
 }

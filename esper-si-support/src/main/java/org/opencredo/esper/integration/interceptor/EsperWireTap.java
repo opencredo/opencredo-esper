@@ -39,20 +39,23 @@ public class EsperWireTap implements ChannelInterceptor {
 	private final static Logger LOG = LoggerFactory
 			.getLogger(EsperWireTap.class);
 
-	private EsperTemplate template;
+	private final EsperTemplate template;
 
-	private boolean sendContext = false;
+    private final String sourceId;
 
-	private boolean preSend = true;
+	private volatile boolean sendContext = false;
 
-	private boolean postSend = true;
+	private volatile boolean preSend = true;
 
-	private boolean preReceive = true;
+	private volatile boolean postSend = true;
 
-	private boolean postReceive = true;
+	private volatile boolean preReceive = true;
 
-	public EsperWireTap(EsperTemplate template) {
+	private volatile boolean postReceive = true;
+
+	public EsperWireTap(EsperTemplate template, String sourceId) {
 		this.template = template;
+        this.sourceId = sourceId;
 	}
 
 	public void setSendContext(boolean sendContext) {
@@ -81,7 +84,7 @@ public class EsperWireTap implements ChannelInterceptor {
 		if (this.preSend) {
 			if (sendContext) {
 				MessageContext context = new MessageContext(message, channel,
-						IntegrationOperation.PRE_SEND);
+						IntegrationOperation.PRE_SEND, sourceId);
 				template.sendEvent(context);
 				LOG.debug("Sent message context to esper");
 			} else {
@@ -100,7 +103,7 @@ public class EsperWireTap implements ChannelInterceptor {
 		if (this.postReceive) {
 			if (sendContext) {
 				MessageContext context = new MessageContext(message, channel,
-						IntegrationOperation.POST_RECEIVE);
+						IntegrationOperation.POST_RECEIVE, sourceId);
 				template.sendEvent(context);
 				LOG.debug("Sent message context to esper");
 			} else {
@@ -120,7 +123,7 @@ public class EsperWireTap implements ChannelInterceptor {
 		if (this.postSend) {
 			if (sendContext) {
 				MessageContext context = new MessageContext(message, channel,
-						sent);
+						sent, sourceId);
 				template.sendEvent(context);
 				LOG.debug("Sent message context to esper");
 			} else {
@@ -136,7 +139,7 @@ public class EsperWireTap implements ChannelInterceptor {
 		LOG.debug("Sending a pre-receive message to esper");
 
 		if (this.preReceive) {
-			MessageContext context = new MessageContext(channel);
+			MessageContext context = new MessageContext(channel, sourceId);
 			template.sendEvent(context);
 			LOG.debug("Sent message context to esper");
 		}

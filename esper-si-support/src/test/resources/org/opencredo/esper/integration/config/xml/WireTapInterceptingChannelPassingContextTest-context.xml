@@ -21,7 +21,7 @@
 		</si:interceptors>
 	</si:channel>	
 					
-	<si-esper:wire-tap id="wiretap" template-ref="testTemplate" send-context="true"/>
+	<si-esper:wire-tap id="wiretap" sourceId="testSource" template-ref="testTemplate" send-context="true"/>
 	
 	<esper:template id="testTemplate">
 		<esper:statements>

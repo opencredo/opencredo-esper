@@ -44,7 +44,7 @@ public class UnmatchedListenerInboundChannelAdapterParserTest {
 
 	@Test
 	public void sendAnEsperContextMessageAndAssertThatListenerIsInvoked() {
-		template.sendEvent(new MessageContext(new DirectChannel()));
+		template.sendEvent(new MessageContext(new DirectChannel(), "testSourceId"));
 		
 		template.sendEvent("A simple string event object!");
 		

@@ -15,7 +15,7 @@
 		
 	<import resource="sample-send-and-receive-integration-environment-config.xml"/>
 	
-	<si-esper:wire-tap id="wiretap" template-ref="testTemplate" post-receive="true"/>
+	<si-esper:wire-tap id="wiretap" sourceId="testSource" template-ref="testTemplate" post-receive="true"/>
 	
 	<si-esper:wire-tap-channels default-wire-tap="wiretap">
 		<si-esper:channel pattern="incomingDomainEvents" />

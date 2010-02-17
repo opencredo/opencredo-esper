@@ -35,18 +35,25 @@ import org.springframework.integration.channel.ChannelInterceptor;
  */
 public class EsperChannelThroughputMonitor implements InitializingBean,
 		DisposableBean {
-	private final static Logger LOG = LoggerFactory
+
+    private static final String THROUGHPUT_SUFFIX = "throughput";
+
+    private final static Logger LOG = LoggerFactory
 			.getLogger(EsperChannelThroughputMonitor.class);
 
-	private AbstractMessageChannel channel;
-	private String timeSample = "1 second";
+	private final AbstractMessageChannel channel;
+	private final String sourceId;
+
+
+    private String timeSample = "1 second";
 	private long throughput;
 
 	private EsperTemplate template;
 
-	public EsperChannelThroughputMonitor(AbstractMessageChannel channel) {
+	public EsperChannelThroughputMonitor(AbstractMessageChannel channel, String sourceId) {
 		super();
 		this.channel = channel;
+        this.sourceId = sourceId;
 		
 	}
 	
@@ -59,28 +66,29 @@ public class EsperChannelThroughputMonitor implements InitializingBean,
 	}
 
 	public void afterPropertiesSet() throws Exception {
+        String windowName =  sourceId + THROUGHPUT_SUFFIX ;
 
-		String throughputQuery = "select count(*) as throughput from org.opencredo.esper.integration.MessageContext.win:time_batch(" + this.timeSample + ")";
+		String createSourceWindow = "insert into " + windowName + " select * from org.opencredo.esper.integration.MessageContext where sourceId = '"
+                + this.sourceId + "'";
 		
 		this.template = new EsperTemplate();
+        template.addStatement(new EsperStatement(createSourceWindow));
 
-		EsperStatement statement = new EsperStatement(throughputQuery);
-
-		statement.setSubscriber(this);
-
-		template.addStatement(statement);
+        EsperStatement listenForSourceId = new EsperStatement("select count(*) as throughput from " + windowName + ".win:time_batch(" + this.timeSample + ")");
+        listenForSourceId.setSubscriber(this);
+        template.addStatement(listenForSourceId);
 
 		template.initialize();
 
-		EsperWireTap wireTap = new EsperWireTap(template);
+		EsperWireTap wireTap = new EsperWireTap(template, this.sourceId);
 		
 		// We only want to listen to one event per message sent
 		wireTap.setPostSend(true);
-		wireTap.setPostSend(false);
-		
-		wireTap.setSendContext(true);
-
-		this.channel.addInterceptor(wireTap);
+		wireTap.setPreSend(false);
+        wireTap.setPreReceive(false);
+        wireTap.setPostReceive(false);
+        wireTap.setSendContext(true);
+        this.channel.addInterceptor(wireTap);
 
 	}
 
@@ -93,7 +101,7 @@ public class EsperChannelThroughputMonitor implements InitializingBean,
 	 *            the calculated throughput for the channel
 	 */
 	public void update(long throughput) {
-		LOG.debug("Received throughput of " + throughput);
+		LOG.debug("Received throughput of " + throughput + " on channel " + this.channel.getName());
 		this.throughput = throughput;
 	}
 

@@ -40,7 +40,7 @@ public class InboundChannelAdapterParserTest {
 
 	@Test
 	public void sendAnEsperContextMessageAndAssertThatListenerIsInvoked() {
-		template.sendEvent(new MessageContext(new DirectChannel()));
+		template.sendEvent(new MessageContext(new DirectChannel(), "testSourceId"));
 		
 		assertEquals(1, listener.getNumberOfTimesInvoked());
 	}

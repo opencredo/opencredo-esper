@@ -10,7 +10,7 @@
 						http://www.opencredo.com/schema/esper/integration
 						http://www.opencredo.com/schema/esper/integration/opencredo-integration-esper-1.0.xsd">
 						
-	<si-esper:wire-tap id="wiretap" template-ref="testTemplate"/>
+	<si-esper:wire-tap id="wiretap" sourceId="testSource" template-ref="testTemplate"/>
 	
 	<esper:template id="testTemplate">
 		<esper:statements>

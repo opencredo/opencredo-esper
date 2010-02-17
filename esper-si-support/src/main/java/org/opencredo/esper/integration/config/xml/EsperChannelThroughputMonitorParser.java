@@ -19,6 +19,7 @@ package org.opencredo.esper.integration.config.xml;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.util.Assert;
 import org.w3c.dom.Element;
 
 public class EsperChannelThroughputMonitorParser extends AbstractSingleBeanDefinitionParser {
@@ -35,7 +36,11 @@ public class EsperChannelThroughputMonitorParser extends AbstractSingleBeanDefin
 		
 		String channelRef = element.getAttribute("channel-ref");
 		builder.addConstructorArgReference(channelRef);
-		
+
+        String sourceId = element.getAttribute("sourceId");
+        Assert.hasText(sourceId, "sourceId attribute is required");
+        builder.addConstructorArgValue(sourceId);
+
 		String timeSample = element.getAttribute("time-sample");
 		builder.addPropertyValue("timeSample", timeSample);
 	
