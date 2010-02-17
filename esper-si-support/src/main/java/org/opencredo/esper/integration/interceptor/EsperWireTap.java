@@ -31,120 +31,116 @@ import org.opencredo.esper.integration.IntegrationOperation;
  * takes messages from the 4 interception points (pre-send, post-receive,
  * post-send, pre-receive) and sends either the message context or the message
  * payload to esper.
- * 
+ *
  * @author Russ Miles (russ.miles@opencredo.com)
- * 
  */
 public class EsperWireTap implements ChannelInterceptor {
-	private final static Logger LOG = LoggerFactory
-			.getLogger(EsperWireTap.class);
+    private final static Logger LOG = LoggerFactory
+            .getLogger(EsperWireTap.class);
 
-	private final EsperTemplate template;
+    private final EsperTemplate template;
 
     private final String sourceId;
 
-	private volatile boolean sendContext = false;
+    private volatile boolean sendContext = false;
 
-	private volatile boolean preSend = true;
+    private volatile boolean preSend = true;
 
-	private volatile boolean postSend = true;
+    private volatile boolean postSend = true;
 
-	private volatile boolean preReceive = true;
+    private volatile boolean preReceive = true;
 
-	private volatile boolean postReceive = true;
+    private volatile boolean postReceive = true;
 
-	public EsperWireTap(EsperTemplate template, String sourceId) {
-		this.template = template;
+    public EsperWireTap(EsperTemplate template, String sourceId) {
+        this.template = template;
         this.sourceId = sourceId;
-	}
+    }
 
-	public void setSendContext(boolean sendContext) {
-		this.sendContext = sendContext;
-	}
+    public void setSendContext(boolean sendContext) {
+        this.sendContext = sendContext;
+    }
 
-	public void setPreSend(boolean preSend) {
-		this.preSend = preSend;
-	}
+    public void setPreSend(boolean preSend) {
+        this.preSend = preSend;
+    }
 
-	public void setPostSend(boolean postSend) {
-		this.postSend = postSend;
-	}
+    public void setPostSend(boolean postSend) {
+        this.postSend = postSend;
+    }
 
-	public void setPreReceive(boolean preReceive) {
-		this.preReceive = preReceive;
-	}
+    public void setPreReceive(boolean preReceive) {
+        this.preReceive = preReceive;
+    }
 
-	public void setPostReceive(boolean postReceive) {
-		this.postReceive = postReceive;
-	}
+    public void setPostReceive(boolean postReceive) {
+        this.postReceive = postReceive;
+    }
 
-	public Message<?> preSend(Message<?> message, MessageChannel channel) {
-		LOG.debug("Sending a pre-send message to esper");
+    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+        if (this.preSend) {
+            LOG.debug("Sending a pre-send message to esper");
+            if (sendContext) {
+                MessageContext context = new MessageContext(message, channel,
+                        IntegrationOperation.PRE_SEND, sourceId);
+                template.sendEvent(context);
+                LOG.debug("Sent message context to esper");
+            } else {
+                template.sendEvent(message.getPayload());
+                LOG.debug("Sent message payload to esper");
+            }
+            LOG.debug("Finished sending a pre-send message to esper");
+        }
 
-		if (this.preSend) {
-			if (sendContext) {
-				MessageContext context = new MessageContext(message, channel,
-						IntegrationOperation.PRE_SEND, sourceId);
-				template.sendEvent(context);
-				LOG.debug("Sent message context to esper");
-			} else {
-				template.sendEvent(message.getPayload());
-				LOG.debug("Sent message payload to esper");
-			}
-		}
+        return message;
+    }
 
-		LOG.debug("Finished sending a pre-send message to esper");
-		return message;
-	}
+    public Message<?> postReceive(Message<?> message, MessageChannel channel) {
 
-	public Message<?> postReceive(Message<?> message, MessageChannel channel) {
-		LOG.debug("Sending a post-receive message to esper");
+        if (this.postReceive) {
+            LOG.debug("Sending a post-receive message to esper");
+            if (sendContext) {
+                MessageContext context = new MessageContext(message, channel,
+                        IntegrationOperation.POST_RECEIVE, sourceId);
+                template.sendEvent(context);
+                LOG.debug("Sent message context to esper");
+            } else {
+                template.sendEvent(message.getPayload());
+                LOG.debug("Sent message payload to esper");
+            }
+            LOG.debug("Finished sending a post-receive message to esper");
+        }
 
-		if (this.postReceive) {
-			if (sendContext) {
-				MessageContext context = new MessageContext(message, channel,
-						IntegrationOperation.POST_RECEIVE, sourceId);
-				template.sendEvent(context);
-				LOG.debug("Sent message context to esper");
-			} else {
-				template.sendEvent(message.getPayload());
-				LOG.debug("Sent message payload to esper");
-			}
-		}
+        return message;
+    }
 
-		LOG.debug("Finished sending a post-receive message to esper");
-		return message;
-	}
+    public void postSend(Message<?> message, MessageChannel channel,
+                         boolean sent) {
 
-	public void postSend(Message<?> message, MessageChannel channel,
-			boolean sent) {
-		LOG.debug("Sending a post-send message to esper");
+        if (this.postSend) {
+            LOG.debug("Sending a post-send message to esper");
 
-		if (this.postSend) {
-			if (sendContext) {
-				MessageContext context = new MessageContext(message, channel,
-						sent, sourceId);
-				template.sendEvent(context);
-				LOG.debug("Sent message context to esper");
-			} else {
-				template.sendEvent(message.getPayload());
-				LOG.debug("Sent message payload to esper");
-			}
-		}
-
-		LOG.debug("Finished sending a post-send message to esper");
-	}
-
-	public boolean preReceive(MessageChannel channel) {
-		LOG.debug("Sending a pre-receive message to esper");
-
-		if (this.preReceive) {
-			MessageContext context = new MessageContext(channel, sourceId);
-			template.sendEvent(context);
-			LOG.debug("Sent message context to esper");
-		}
-
-		LOG.debug("Finished sending a pre-receive message to esper");
-		return true;
-	}
+            if (sendContext) {
+                MessageContext context = new MessageContext(message, channel,
+                        sent, sourceId);
+                template.sendEvent(context);
+                LOG.debug("Sent message context to esper");
+            } else {
+                template.sendEvent(message.getPayload());
+                LOG.debug("Sent message payload to esper");
+            }
+            LOG.debug("Finished sending a post-send message to esper");
+        }
+    }
+    
+    public boolean preReceive(MessageChannel channel) {
+        if (this.preReceive) {
+            LOG.debug("Sending a pre-receive message to esper");
+            MessageContext context = new MessageContext(channel, sourceId);
+            template.sendEvent(context);
+            LOG.debug("Sent message context to esper");
+            LOG.debug("Finished sending a pre-receive message to esper");
+        }
+       return true;
+    }
 }
