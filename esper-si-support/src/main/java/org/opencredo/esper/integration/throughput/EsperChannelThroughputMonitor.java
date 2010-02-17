@@ -31,6 +31,7 @@ import org.springframework.integration.channel.ChannelInterceptor;
  * of a channel throughput monitor.
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
+ * @author Jonas Partner (jonas.partner@opencredo.com)
  * 
  */
 public class EsperChannelThroughputMonitor implements InitializingBean,

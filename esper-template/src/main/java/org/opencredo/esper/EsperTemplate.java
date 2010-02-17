@@ -42,6 +42,7 @@ import com.espertech.esper.client.UnmatchedListener;
  * interest by calling sendEvent(Object).
  *
  * @author Russ Miles (russ.miles@opencredo.com)
+ * @author Jonas Partner (jonas.partner@opencredo.com)
  */
 public class EsperTemplate implements EsperTemplateOperations {
     private final static Logger LOG = LoggerFactory.getLogger(EsperTemplate.class);

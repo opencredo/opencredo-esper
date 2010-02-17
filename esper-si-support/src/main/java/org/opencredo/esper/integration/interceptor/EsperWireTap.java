@@ -33,6 +33,7 @@ import org.opencredo.esper.integration.IntegrationOperation;
  * payload to esper.
  *
  * @author Russ Miles (russ.miles@opencredo.com)
+ * @author Jonas Partner (jonas.partner@opencredo.com)
  */
 public class EsperWireTap implements ChannelInterceptor {
     private final static Logger LOG = LoggerFactory
@@ -132,7 +133,7 @@ public class EsperWireTap implements ChannelInterceptor {
             LOG.debug("Finished sending a post-send message to esper");
         }
     }
-    
+
     public boolean preReceive(MessageChannel channel) {
         if (this.preReceive) {
             LOG.debug("Sending a pre-receive message to esper");
@@ -141,6 +142,6 @@ public class EsperWireTap implements ChannelInterceptor {
             LOG.debug("Sent message context to esper");
             LOG.debug("Finished sending a pre-receive message to esper");
         }
-       return true;
+        return true;
     }
 }
