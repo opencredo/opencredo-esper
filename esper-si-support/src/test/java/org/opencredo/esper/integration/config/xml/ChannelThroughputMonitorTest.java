@@ -43,7 +43,7 @@ public class ChannelThroughputMonitorTest {
             channel.send(new GenericMessage<SampleEvent>(new SampleEvent()));
         }
 
-        Thread.sleep(1000);
+        Thread.sleep(1500);
         long throughput = throughputMonitor.getThroughput();
 
         System.out.println("Throughput is: " + throughputMonitor.getThroughput());
@@ -64,7 +64,7 @@ public class ChannelThroughputMonitorTest {
             channelTwo.send(new GenericMessage<SampleEvent>(new SampleEvent()));
         }
 
-        Thread.sleep(1000);
+        Thread.sleep(1500);
 
         long throughput = throughputMonitor.getThroughput();
 
