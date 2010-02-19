@@ -38,7 +38,7 @@
 	
 
 	<!-- Configure the wiretap with the appropriate Esper statements -->
-	<si-esper:wire-tap id="wiretap" template-ref="template" post-send="true"/>
+	<si-esper:wire-tap id="wiretap" sourceId="defaultWireTap" template-ref="template" post-send="true"/>
 
 	<esper:template id="template" configuration="esper-configuration.xml">
 		<esper:statements>
@@ -56,7 +56,7 @@
 		channel
 	-->
 
-	<si-esper:inbound-gateway id="throughputGateway"
+	<si-esper:inbound-channel-adapter id="throughputGateway"
 		channel="inboundRawEsperThroughputMessages" />
 
 	<si:channel id="inboundRawEsperThroughputMessages" />

@@ -32,17 +32,25 @@ import com.espertech.esper.client.UpdateListener;
  * them on the indicated Spring Integration channel.
  * 
  * @author Russ Miles (russell.miles@opencredo.com)
- * 
+ * @author Jonas Partner (jonas.partner@opencredo.com)
  */
 public class EventDrivenEsperInboundChannelAdapter implements UpdateListener, UnmatchedListener {
 	private final static Logger LOG = LoggerFactory
 			.getLogger(EventDrivenEsperInboundChannelAdapter.class);
 
-	private MessageChannel channel;
+	private final MessageChannel channel;
 
 	private Long timeout;
 
-	/**
+    /**
+     * Provide the channel required to send to 
+     * @param channel
+     */
+    public EventDrivenEsperInboundChannelAdapter(MessageChannel channel) {
+        this.channel = channel;
+    }
+
+    /**
 	 * Provides a timeout that is used when sending messages to the indicated
 	 * channel.
 	 * 
@@ -54,17 +62,7 @@ public class EventDrivenEsperInboundChannelAdapter implements UpdateListener, Un
 		this.timeout = timeout;
 	}
 
-	/**
-	 * Sets the channel that incoming Esper events are to be send to.
-	 * 
-	 * @param channel
-	 *            The channel that will receive messages whose payload contains
-	 *            esper events
-	 */
-	@Required
-	public void setChannel(MessageChannel channel) {
-		this.channel = channel;
-	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -74,7 +72,7 @@ public class EventDrivenEsperInboundChannelAdapter implements UpdateListener, Un
 	 * client.EventBean[], com.espertech.esper.client.EventBean[])
 	 */
 	public void update(EventBean[] eventBeans, EventBean[] eventBeans1) {
-		LOG.debug("Inbound gateway receiving an event from esper");
+		LOG.debug("Inbound channel adapter receiving an event from esper");
 		
 		Assert.notNull(channel);
 
@@ -89,14 +87,14 @@ public class EventDrivenEsperInboundChannelAdapter implements UpdateListener, Un
 			channel.send(message);
 		}
 		
-		LOG.debug("Inbound gateway received an event from esper");
+		LOG.debug("Inbound channel adapter received an event from esper");
 	}
 
 	/* (non-Javadoc)
 	 * @see com.espertech.esper.client.UnmatchedListener#update(com.espertech.esper.client.EventBean)
 	 */
 	public void update(EventBean eventBean) {
-		LOG.debug("Inbound gateway receiving an unmatched listener event from esper");
+		LOG.debug("Inbound channel adapter receiving an unmatched listener event from esper");
 		
 		Assert.notNull(channel);
 
@@ -111,6 +109,6 @@ public class EventDrivenEsperInboundChannelAdapter implements UpdateListener, Un
 			channel.send(message);
 		}
 		
-		LOG.debug("Inbound gateway received an unmatched listener event from esper");
+		LOG.debug("Inbound channel adapter received an unmatched listener event from esper");
 	}
 }

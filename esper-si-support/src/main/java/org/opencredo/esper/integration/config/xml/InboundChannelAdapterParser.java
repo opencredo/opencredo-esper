@@ -17,31 +17,26 @@
 package org.opencredo.esper.integration.config.xml;
 
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.xml.AbstractSimpleBeanDefinitionParser;
-import org.springframework.integration.config.xml.IntegrationNamespaceUtils;
-import org.springframework.util.ObjectUtils;
+import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
+import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.util.Assert;
 import org.w3c.dom.Element;
 
-public class InboundChannelAdapterParser extends AbstractSimpleBeanDefinitionParser {
 
-	private static String[] referenceAttributes = new String[] { "channel" };
+public class InboundChannelAdapterParser extends AbstractSingleBeanDefinitionParser {
 
-	@Override
-	protected boolean isEligibleAttribute(String attributeName) {
-		return !ObjectUtils.containsElement(referenceAttributes, attributeName)
-				&& super.isEligibleAttribute(attributeName);
-	}
-	
+   private final static String BASE_PACKAGE_NAME = "org.opencredo.esper.integration";
+
 	@Override
 	protected String getBeanClassName(Element element) {
-		return EsperIntegrationNamespaceUtils.BASE_PACKAGE + ".EventDrivenEsperInboundChannelAdapter";
+		return BASE_PACKAGE_NAME + ".EventDrivenEsperInboundChannelAdapter";
 	}
 
 	@Override
-	protected void postProcess(BeanDefinitionBuilder builder,
-			Element element) {
-		for (String attributeName : referenceAttributes) {
-			IntegrationNamespaceUtils.setReferenceIfAttributeDefined(builder, element, attributeName);
-		}
+	protected void doParse(Element element, ParserContext parserContext, BeanDefinitionBuilder builder) {
+        String channelRef = element.getAttribute("channel");
+        Assert.hasText(channelRef, "channel attribute must be provided");
+		builder.addConstructorArgReference(channelRef);
 	}
+
 }
