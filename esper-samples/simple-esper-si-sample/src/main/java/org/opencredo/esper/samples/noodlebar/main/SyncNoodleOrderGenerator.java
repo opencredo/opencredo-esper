@@ -23,6 +23,12 @@ import org.opencredo.esper.samples.noodlebar.domain.throughput.NoodleOrderThroug
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
+ * Synchronously submits {@link NoodleOrder} orders to a {@link NoodleBar}.
+ * 
+ * @author Russ Miles (russ.miles@opencredo.com)
+ *
+ */
 public class SyncNoodleOrderGenerator {
 
 	private static final int NUMBER_OF_ORDERS = 1000;

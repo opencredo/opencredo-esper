@@ -21,7 +21,6 @@ import static org.opencredo.esper.samples.noodlebar.domain.OrderStatus.*;
 import org.opencredo.esper.samples.noodlebar.domain.NoodleOrder;
 
 /**
- * 
  * A simple service that pretends to execute an order.
  * 
  * For the real thing, visit http://www.yummynoodlebar.co.uk/

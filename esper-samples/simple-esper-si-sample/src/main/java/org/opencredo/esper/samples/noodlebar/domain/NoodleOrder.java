@@ -18,7 +18,12 @@ package org.opencredo.esper.samples.noodlebar.domain;
 
 import static org.opencredo.esper.samples.noodlebar.domain.OrderStatus.*;
 
-
+/**
+ * Defines the Noodle Order itself.
+ * 
+ * @author Russ Miles (russ.miles@opencredo.com)
+ *
+ */
 public class NoodleOrder {
 	private OrderStatus status = NEW;
 	

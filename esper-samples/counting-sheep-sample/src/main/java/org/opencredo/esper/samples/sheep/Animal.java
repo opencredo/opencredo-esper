@@ -17,27 +17,23 @@
 package org.opencredo.esper.samples.sheep;
 
 /**
- * Created by IntelliJ IDEA.
- * User: jpartner
- * Date: Feb 15, 2010
- * Time: 5:07:15 PM
- * To change this template use File | Settings | File Templates.
+ * Provides a simple Animal domain object.
+ * 
+ * @author Jonas Partner (jonas.partner@opencredo.com)
  */
 public class Animal {
+	private String type;
 
+	public Animal(String type) {
+		setType(type);
+	}
 
-        private String type;
+	public String getType() {
+		return type;
+	}
 
-        public Animal(String type) {
-            setType(type);
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
+	public void setType(String type) {
+		this.type = type;
+	}
 
 }

@@ -18,10 +18,18 @@ package org.opencredo.esper.samples.noodlebar.domain.throughput;
 
 import org.opencredo.esper.samples.noodlebar.throughput.ThroughputMonitor;
 
+/**
+ * Provides a simple throughput monitor to indicate the throughput of incoming
+ * orders to a Noodle Bar.
+ * 
+ * @author Russ Miles (russ.miles@opencredo.com)
+ * 
+ */
 public class NoodleOrderThroughputMonitor implements ThroughputMonitor {
 	private long averageThroughput = 0l;
 
-	public synchronized void receiveCurrentThroughput(long ordersProcessedPerDuration) {
+	public synchronized void receiveCurrentThroughput(
+			long ordersProcessedPerDuration) {
 		this.averageThroughput = ordersProcessedPerDuration;
 	}
 

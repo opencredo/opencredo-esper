@@ -16,10 +16,19 @@
 
 package org.opencredo.esper.samples.noodlebar.domain;
 
-
-
+/**
+ * A marker interface used to send {@link NoodleOrder} orders to noodle bars.
+ * 
+ * @author Russ Miles (russ.miles@opencredo.com)
+ * 
+ */
 public interface NoodleBar {
 
+	/**
+	 * Places a noodle order.
+	 * 
+	 * @param order the new noodle order being placed.
+	 */
 	public void placeOrder(NoodleOrder order);
-	
+
 }

@@ -16,10 +16,13 @@
 
 package org.opencredo.esper.samples.noodlebar.domain;
 
+/**
+ * Provides information as to the current point in the process that an order is
+ * in.
+ * 
+ * @author Russ Miles (russ.miles@opencredo.com)
+ * 
+ */
 public enum OrderStatus {
-	NEW,
-	RECEIVED,
-	REJECTED,
-	BEING_COOKED,
-	COMPLETE
+	NEW, RECEIVED, REJECTED, BEING_COOKED, COMPLETE
 }

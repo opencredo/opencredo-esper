@@ -22,9 +22,10 @@ import org.opencredo.esper.EsperStatement;
 import org.opencredo.esper.EsperTemplate;
 
 /**
- * Simple example showing use of EsperTemplate to count sheep from a passing menagerie
- *
- * @author Jonas Partner
+ * Simple example showing use of EsperTemplate to count sheep from a passing
+ * menagerie.
+ * 
+ * @author Jonas Partner (jonas.partner@opencredo.com)
  */
 public class Insomnia {
 
