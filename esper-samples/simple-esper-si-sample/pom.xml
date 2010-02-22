@@ -32,13 +32,13 @@
 		<dependency>
 			<groupId>org.opencredo.esper</groupId>
 			<artifactId>esper-template</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.opencredo.esper</groupId>
 			<artifactId>esper-template</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${project.parent.version}</version>
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>org.opencredo.esper</groupId>
 			<artifactId>esper-si-support</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${project.parent.version}</version>
 		</dependency>
 		
 		<!-- Spring Integration Dependencies -->
