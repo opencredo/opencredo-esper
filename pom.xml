@@ -39,9 +39,9 @@
     </issueManagement>
 
     <scm>
-        <connection>scm:git:git@github.com:opencredo/opencredo-esper.git</connection>
-        <developerConnection>scm:git:git@github.com:opencredo/opencredo-esper.git</developerConnection>
-        <url>scm:git:git@github.com:opencredo/opencredo-esper.git</url>
+        <connection>scm:git:git://github.com/opencredo/opencredo-esper.git</connection>
+        <developerConnection>scm:git:git://github.com/opencredo/opencredo-esper.git</developerConnection>
+        <url>http://github.com/opencredo/opencredo-esper</url>
     </scm>
 
     <dependencies>
