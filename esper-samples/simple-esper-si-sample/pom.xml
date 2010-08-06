@@ -13,7 +13,7 @@
 	<artifactId>simple-esper-si-sample</artifactId>
 	<version>${project.parent.version}</version>
 	<name>simple-esper-si-sample</name>
-	<url>http://maven.apache.org</url>
+	<url>http://www.opencredo.org</url>
 	
 	<description>
 	  A simple sample application that measures throughput of messages

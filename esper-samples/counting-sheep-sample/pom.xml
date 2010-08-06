@@ -13,7 +13,7 @@
     <artifactId>counting-sheep-sample</artifactId>
     <version>${project.parent.version}</version>
     <name>counting-sheep-sample</name>
-    <url>http://maven.apache.org</url>
+    <url>http://www.opencredo.org</url>
     <dependencies>
         <dependency>
             <groupId>org.opencredo.esper</groupId>

@@ -13,7 +13,7 @@
 	<artifactId>esper-si-support</artifactId>
 	<version>${project.parent.version}</version>
 	<name>esper-si-support</name>
-	<url>http://maven.apache.org</url>
+	<url>http://www.opencredo.org</url>
 	
 	<description>
 	  Support for configuring Esper in Spring Integration (see http://www.springsource.org/spring-integration).

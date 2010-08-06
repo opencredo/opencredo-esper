@@ -12,7 +12,7 @@
 	<packaging>pom</packaging>
 	<version>2.0-SNAPSHOT</version>
 	<name>esper-samples</name>
-	<url>http://maven.apache.org</url>	
+	<url>http://www.opencredo.org</url>	
 	<modules>
         <module>counting-sheep-sample</module>
 		<module>simple-esper-si-sample</module>

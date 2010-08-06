@@ -13,7 +13,7 @@
 	<artifactId>esper-template</artifactId>
 	<version>${project.parent.version}</version>
 	<name>esper-template</name>
-	<url>http://maven.apache.org</url>
+	<url>http://www.opencredo.org</url>
 	
 	<description>
 		A simplified Esper Template that can be used to send events
