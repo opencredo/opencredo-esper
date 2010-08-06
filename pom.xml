@@ -6,8 +6,7 @@
     <parent>
         <groupId>org.opencredo</groupId>
         <artifactId>opencredo-master-pom</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <!-- relativePath>../opencredo-master-pom/pom.xml</relativePath -->
+        <version>1.0</version>
     </parent>
 
     <groupId>org.opencredo.esper</groupId>
@@ -16,14 +15,6 @@
     <version>2.0-SNAPSHOT</version>
     <name>opencredoesper-parent</name>
     <url>http://www.opencredo.org</url>
-
-    <distributionManagement>
-        <repository>
-            <id>oc-nexus</id>
-            <name>OpenCredo Staging Repo</name>
-            <url>http://dev.opencredo.com/nexus/content/repositories/releases</url>
-        </repository>
-    </distributionManagement>
 
     <licenses>
         <license>
@@ -40,7 +31,6 @@
 
     <scm>
         <connection>scm:git:git://github.com/opencredo/opencredo-esper.git</connection>
-        <developerConnection>scm:git:git://github.com/opencredo/opencredo-esper.git</developerConnection>
         <url>http://github.com/opencredo/opencredo-esper</url>
     </scm>
 
