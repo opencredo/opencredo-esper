@@ -43,8 +43,8 @@
 			<groupId>org.opencredo.esper</groupId>
 			<artifactId>esper-template</artifactId>
 			<version>${project.parent.version}</version>
-			<classifier>tests</classifier>
 			<scope>test</scope>
+			<type>test-jar</type>
 		</dependency>
 	
 	</dependencies>

@@ -1,24 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.opencredo.esper</groupId>
 		<artifactId>opencredo-esper-parent</artifactId>
 		<version>2.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>org.opencredo.esper</groupId>
 	<artifactId>esper-template</artifactId>
 	<version>${project.parent.version}</version>
 	<name>esper-template</name>
 	<url>http://www.opencredo.org</url>
-	
+
 	<description>
 		A simplified Esper Template that can be used to send events
 		to Esper. Also includes a namespace suport for convenient
 		configuration in the Spring Framework (see: http://www.springsource.org/).
 	</description>
-	
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
