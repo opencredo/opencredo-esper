@@ -6,14 +6,14 @@
     <parent>
         <groupId>org.opencredo</groupId>
         <artifactId>opencredo-master-pom</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
     <groupId>org.opencredo.esper</groupId>
     <artifactId>opencredo-esper-parent</artifactId>
     <packaging>pom</packaging>
     <version>2.0-SNAPSHOT</version>
-    <name>opencredoesper-parent</name>
+    <name>opencredo-esper-parent</name>
     <url>http://www.opencredo.org</url>
 
     <licenses>
@@ -30,7 +30,7 @@
     </issueManagement>
 
     <scm>
-        <connection>scm:git:git://github.com/opencredo/opencredo-esper.git</connection>
+        <connection>scm:git:ssh://git@github.com/opencredo/opencredo-esper.git</connection>
         <url>http://github.com/opencredo/opencredo-esper</url>
     </scm>
 
