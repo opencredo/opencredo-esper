@@ -1,0 +1,91 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+	<id>release</id>
+	<formats>
+		<format>tar.gz</format>
+		<format>zip</format>
+	</formats>
+
+	<!-- Copy files from 'parent' project. -->
+	<fileSets>
+		<fileSet>
+			<includes>
+				<include>${project.basedir}/README*</include>
+				<include>${project.basedir}/LICENSE*</include>
+			</includes>
+		</fileSet>
+
+		<fileSet>
+			<directory>docs</directory>
+			<outputDirectory>docs/reference</outputDirectory>
+			<includes>
+				<include>*.html</include>
+				<include>*.pdf</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+
+	<!-- Copy files from modules. -->
+	<moduleSets>
+		<!-- Copy submodules artifacts excluding samples and module. -->
+		<moduleSet>
+			<includeSubModules>false</includeSubModules>
+			<excludes>
+				<exclude>*:esper-samples</exclude>
+			</excludes>
+			<sources>
+				<includeModuleDirectory>false</includeModuleDirectory>
+				<fileSets>
+					<fileSet>
+						<outputDirectory>docs/api/${module.artifactId}-${module.version}</outputDirectory>
+						<directory>target/site/apidocs</directory>
+					</fileSet>
+					<fileSet>
+						<outputDirectory>src</outputDirectory>
+						<directory>target</directory>
+						<includes>
+							<include>*-sources.jar</include>
+						</includes>
+					</fileSet>
+				</fileSets>
+			</sources>
+			<binaries>
+				<unpack>false</unpack>
+				<outputDirectory>dist</outputDirectory>
+				<includeDependencies>false</includeDependencies>
+			</binaries>
+		</moduleSet>
+
+		<!-- Copy samples modules excluding others. -->
+		<moduleSet>
+			<includeSubModules>false</includeSubModules>
+			<includes>
+				<include>*:esper-samples</include>
+			</includes>
+			<sources>
+				<includeModuleDirectory>false</includeModuleDirectory>
+				<fileSets>
+					<fileSet>
+						<outputDirectory>samples</outputDirectory>
+						<directory>.</directory>
+					</fileSet>
+					<fileSet>
+						<outputDirectory>samples/counting-sheep-sample</outputDirectory>
+						<directory>counting-sheep-sample</directory>
+						<excludes>
+							<exclude>target/**</exclude>
+						</excludes>
+					</fileSet>
+					<fileSet>
+						<outputDirectory>samples/simple-esper-si-sample</outputDirectory>
+						<directory>simple-esper-si-sample</directory>
+						<excludes>
+							<exclude>target/**</exclude>
+						</excludes>
+					</fileSet>
+				</fileSets>
+			</sources>
+		</moduleSet>
+	</moduleSets>
+
+</assembly>

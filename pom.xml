@@ -1,98 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.opencredo</groupId>
-        <artifactId>opencredo-master-pom</artifactId>
-        <version>1.0</version>
-    </parent>
+	<parent>
+		<groupId>org.opencredo</groupId>
+		<artifactId>opencredo-master-pom</artifactId>
+		<version>1.0</version>
+	</parent>
 
-    <groupId>org.opencredo.esper</groupId>
-    <artifactId>opencredo-esper-parent</artifactId>
-    <packaging>pom</packaging>
-    <version>2.0-SNAPSHOT</version>
-    <name>opencredo-esper-parent</name>
-    <url>http://www.opencredo.org</url>
+	<groupId>org.opencredo.esper</groupId>
+	<artifactId>opencredo-esper-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>2.0-SNAPSHOT</version>
+	<name>opencredo-esper-parent</name>
+	<url>http://www.opencredo.org</url>
 
-    <licenses>
-        <license>
-            <name>GPL, Version 3.0</name>
-            <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+	<licenses>
+		<license>
+			<name>GPL, Version 3.0</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
-    <issueManagement>
-        <system>OpenCredo Esper</system>
-        <url>http://dev.opencredo.com/jira/browse/OCESPER</url>
-    </issueManagement>
+	<issueManagement>
+		<system>OpenCredo Esper</system>
+		<url>http://dev.opencredo.com/jira/browse/OCESPER</url>
+	</issueManagement>
 
-    <scm>
-        <developerConnection>scm:git:ssh://git@github.com/opencredo/opencredo-esper.git</developerConnection>
-        <url>http://github.com/opencredo/opencredo-esper</url>
-    </scm>
+	<scm>
+		<developerConnection>scm:git:ssh://git@github.com/opencredo/opencredo-esper.git</developerConnection>
+		<url>http://github.com/opencredo/opencredo-esper</url>
+	</scm>
 
-    <dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<finalName>opencredo-esper-${project.version}</finalName>
+					<outputDirectory>${project.build.directory}/assembly</outputDirectory>
+					<descriptors>
+						<descriptor>src/main/assembly/assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
-        <!-- Esper Dependencies -->
-        <dependency>
-            <groupId>com.espertech</groupId>
-            <artifactId>esper</artifactId>
-            <version>${esperVersion}</version>
-        </dependency>
+	<dependencies>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
-            <version>${springVersion}</version>
-            <scope>compile</scope>
-        </dependency>
+		<!-- Esper Dependencies -->
+		<dependency>
+			<groupId>com.espertech</groupId>
+			<artifactId>esper</artifactId>
+			<version>${esperVersion}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.5.9.RC1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.5.9.RC1</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.14</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring</artifactId>
+			<version>${springVersion}</version>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junitVersion}</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.5.9.RC1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.9.RC1</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>2.5.6.SEC01</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junitVersion}</version>
+			<scope>test</scope>
+		</dependency>
 
-    </dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>2.5.6.SEC01</version>
+			<scope>test</scope>
+		</dependency>
 
-    <modules>
-        <module>esper-template</module>
-        <module>esper-si-support</module>
-        <module>esper-samples</module>
-    </modules>
+	</dependencies>
 
-    <properties>
-        <esperVersion>3.3.0</esperVersion>
-        <springVersion>2.5.6.SEC01</springVersion>
-        <junitVersion>4.4</junitVersion>
-    </properties>
+	<modules>
+		<module>esper-template</module>
+		<module>esper-si-support</module>
+		<module>esper-samples</module>
+	</modules>
+
+	<properties>
+		<esperVersion>3.3.0</esperVersion>
+		<springVersion>2.5.6.SEC01</springVersion>
+		<junitVersion>4.4</junitVersion>
+	</properties>
 </project>
