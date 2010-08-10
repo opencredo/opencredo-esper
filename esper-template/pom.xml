@@ -19,21 +19,65 @@
 		to Esper. Also includes a namespace suport for convenient
 		configuration in the Spring Framework (see: http://www.springsource.org/).
 	</description>
+	
+	<licenses>
+		<license>
+			<name>GPL, Version 3.0</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>test-jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+	<scm>
+		<connection>scm:git:git://github.com/opencredo/opencredo-esper.git</connection>
+		<url>http://github.com/opencredo/opencredo-esper/tree/master/esper-template</url>
+	</scm>
 
+	<developers>
+		<developer>
+			<id>russ.miles</id>
+			<name>Russ Miles</name>
+			<email>russ.miles@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+		<developer>
+			<id>jonas.partner</id>
+			<name>Jonas Partner</name>
+			<email>jonas.partner@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+		<developer>
+			<id>tomas.lukosius</id>
+			<name>Tomas Lukosius</name>
+			<email>tomas.lukosius@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.opencredo.esper</groupId>
+			<artifactId>esper-test-utils</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>

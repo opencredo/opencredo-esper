@@ -3,12 +3,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.opencredo</groupId>
-		<artifactId>opencredo-master-pom</artifactId>
-		<version>1.0</version>
-	</parent>
-
 	<groupId>org.opencredo.esper</groupId>
 	<artifactId>opencredo-esper-parent</artifactId>
 	<packaging>pom</packaging>
@@ -24,21 +18,133 @@
 		</license>
 	</licenses>
 
+	<scm>
+		<connection>scm:git:git://github.com/opencredo/opencredo-esper.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/opencredo/opencredo-esper.git</developerConnection>
+		<url>http://github.com/opencredo/opencredo-esper</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>russ.miles</id>
+			<name>Russ Miles</name>
+			<email>russ.miles@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+		<developer>
+			<id>jonas.partner</id>
+			<name>Jonas Partner</name>
+			<email>jonas.partner@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+		<developer>
+			<id>tomas.lukosius</id>
+			<name>Tomas Lukosius</name>
+			<email>tomas.lukosius@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Sonatype Staging Repo</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
 	<issueManagement>
 		<system>OpenCredo Esper</system>
 		<url>http://dev.opencredo.com/jira/browse/OCESPER</url>
 	</issueManagement>
 
-	<scm>
-		<developerConnection>scm:git:ssh://git@github.com/opencredo/opencredo-esper.git</developerConnection>
-		<url>http://github.com/opencredo/opencredo-esper</url>
-	</scm>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<targetJdk>1.5</targetJdk>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jdepend-maven-plugin</artifactId>
+				<version>2.0-beta-2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.1</version>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.4.3</version>
+				<configuration>
+					<redirectTestOutputToFile>true</redirectTestOutputToFile>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-repository-plugin</artifactId>
+				<version>2.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<mavenExecutorId>forked-path</mavenExecutorId>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2-beta-5</version>
 				<configuration>
 					<finalName>opencredo-esper-${project.version}</finalName>
 					<outputDirectory>${project.build.directory}/assembly</outputDirectory>
@@ -104,11 +210,13 @@
 		<module>esper-template</module>
 		<module>esper-si-support</module>
 		<module>esper-samples</module>
+		<module>esper-test-utils</module>
 	</modules>
 
 	<properties>
 		<esperVersion>3.3.0</esperVersion>
 		<springVersion>2.5.6.SEC01</springVersion>
+		<springIntegrationVersion>1.0.3.RELEASE</springIntegrationVersion>
 		<junitVersion>4.4</junitVersion>
 	</properties>
 </project>

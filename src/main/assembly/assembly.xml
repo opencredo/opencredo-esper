@@ -32,6 +32,7 @@
 			<includeSubModules>false</includeSubModules>
 			<excludes>
 				<exclude>*:esper-samples</exclude>
+				<exclude>*:esper-test-utils</exclude>
 			</excludes>
 			<sources>
 				<includeModuleDirectory>false</includeModuleDirectory>

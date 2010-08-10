@@ -1,24 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <artifactId>esper-samples</artifactId>
-        <groupId>org.opencredo.esper</groupId>
-        <version>2.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
-    <groupId>org.opencredo.esper</groupId>
-    <artifactId>counting-sheep-sample</artifactId>
-    <version>${project.parent.version}</version>
-    <name>counting-sheep-sample</name>
-    <url>http://www.opencredo.org</url>
-    <dependencies>
-        <dependency>
-            <groupId>org.opencredo.esper</groupId>
-            <artifactId>esper-template</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-    </dependencies>
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>esper-samples</artifactId>
+		<groupId>org.opencredo.esper</groupId>
+		<version>2.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<groupId>org.opencredo.esper</groupId>
+	<artifactId>counting-sheep-sample</artifactId>
+	<version>${project.parent.version}</version>
+	<name>counting-sheep-sample</name>
+	<url>http://www.opencredo.org</url>
+
+	<licenses>
+		<license>
+			<name>GPL, Version 3.0</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git://github.com/opencredo/opencredo-esper.git</connection>
+		<url>http://github.com/opencredo/opencredo-esper/tree/master/esper-samples/counting-sheep-sample</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>russ.miles</id>
+			<name>Russ Miles</name>
+			<email>russ.miles@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+		<developer>
+			<id>jonas.partner</id>
+			<name>Jonas Partner</name>
+			<email>jonas.partner@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+		<developer>
+			<id>tomas.lukosius</id>
+			<name>Tomas Lukosius</name>
+			<email>tomas.lukosius@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.opencredo.esper</groupId>
+			<artifactId>esper-template</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+	</dependencies>
 </project>

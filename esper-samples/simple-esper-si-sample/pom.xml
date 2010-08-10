@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.opencredo.esper</groupId>
 		<artifactId>esper-samples</artifactId>
 		<version>2.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
+	
 	<groupId>org.opencredo.esper</groupId>
 	<artifactId>simple-esper-si-sample</artifactId>
 	<version>${project.parent.version}</version>
 	<name>simple-esper-si-sample</name>
 	<url>http://www.opencredo.org</url>
-	
+
 	<description>
 	  A simple sample application that measures throughput of messages
 	 demonstrating the use of the:
@@ -22,40 +22,72 @@
 	  * Esper Gateway (coupled with a transformer for a clean separation of concerns) 
 	</description>
 	
-	<properties>
-	  	<springIntegrationVersion>1.0.3.RELEASE</springIntegrationVersion>
-	</properties>
-	
+	<licenses>
+		<license>
+			<name>GPL, Version 3.0</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git://github.com/opencredo/opencredo-esper.git</connection>
+		<url>http://github.com/opencredo/opencredo-esper/tree/master/esper-samples/simple-esper-si-sample</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>russ.miles</id>
+			<name>Russ Miles</name>
+			<email>russ.miles@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+		<developer>
+			<id>jonas.partner</id>
+			<name>Jonas Partner</name>
+			<email>jonas.partner@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+		<developer>
+			<id>tomas.lukosius</id>
+			<name>Tomas Lukosius</name>
+			<email>tomas.lukosius@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
+	</developers>
+
 	<dependencies>
-	
-		<!-- OpenCredo Esper Dependencies -->
-		<dependency>
-			<groupId>org.opencredo.esper</groupId>
-			<artifactId>esper-template</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.opencredo.esper</groupId>
-			<artifactId>esper-template</artifactId>
-			<version>${project.parent.version}</version>
-			<classifier>tests</classifier>
-			<scope>test</scope>
-		</dependency>
-		
 		<!-- OpenCredo Esper Spring Integration Dependencies -->
 		<dependency>
 			<groupId>org.opencredo.esper</groupId>
 			<artifactId>esper-si-support</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-		
+
 		<!-- Spring Integration Dependencies -->
-	  	<dependency>
-	  		<groupId>org.springframework.integration</groupId>
-	  		<artifactId>spring-integration-core</artifactId>
-	  		<version>${springIntegrationVersion}</version>
-	  	</dependency>
-	
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-core</artifactId>
+			<version>${springIntegrationVersion}</version>
+		</dependency>
+
 	</dependencies>
 </project>
