@@ -12,9 +12,9 @@
 	<name>OpenCredo Test utils</name>
 
 	<description>
-		Classes required by tests in sibling submodules.
+		Classes required by tests in sibling OpenCredo-Esper modules.
 	</description>
-	
+
 	<licenses>
 		<license>
 			<name>GPL, Version 3.0</name>

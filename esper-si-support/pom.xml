@@ -18,7 +18,7 @@
 	<description>
 	  Support for configuring Esper in Spring Integration (see http://www.springsource.org/spring-integration).
 	</description>
-	
+
 	<licenses>
 		<license>
 			<name>GPL, Version 3.0</name>

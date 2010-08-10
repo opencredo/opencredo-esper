@@ -16,6 +16,10 @@
 	<name>counting-sheep-sample</name>
 	<url>http://www.opencredo.org</url>
 
+	<description>
+		Example to shows how ease OpenCredo-Esper implementation integrates with Complex Event Stream processing project Esper.   
+	</description>
+
 	<licenses>
 		<license>
 			<name>GPL, Version 3.0</name>

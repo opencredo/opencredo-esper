@@ -14,6 +14,10 @@
 	<version>2.0-SNAPSHOT</version>
 	<name>esper-samples</name>
 	<url>http://www.opencredo.org</url>
+	
+	<description>
+		Sample of OpenCredo-Esper implementation.   
+	</description>
 
 	<licenses>
 		<license>

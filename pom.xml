@@ -10,6 +10,11 @@
 	<name>opencredo-esper-parent</name>
 	<url>http://www.opencredo.org</url>
 
+	<description>
+		The  OpenCredo Esper project builds on top of the excellent Complex Event Stream processing project Esper, see http://esper.codehaus.org.
+		Primarily motivated by a desire to make using Esper easier within messaging applications built on Spring Integration.
+	</description>
+
 	<licenses>
 		<license>
 			<name>GPL, Version 3.0</name>
@@ -219,7 +224,7 @@
 		<springIntegrationVersion>1.0.3.RELEASE</springIntegrationVersion>
 		<junitVersion>4.4</junitVersion>
 	</properties>
-	
+
 	<profiles>
 		<!-- This profile should be used when invoking 'mvn release:perform' -->
 		<profile>
