@@ -20,8 +20,8 @@
 package org.opencredo.esper.integration.config.xml;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.opencredo.esper.integration.interceptor.EsperWireTap;
@@ -31,39 +31,38 @@ import org.springframework.integration.channel.AbstractMessageChannel;
 import org.springframework.util.Assert;
 
 public class EsperWireTapChannelsBeanPostProcessor implements BeanPostProcessor {
-	
-	@SuppressWarnings("rawtypes")
+
+    @SuppressWarnings("rawtypes")
     private final Map channelPatternMappings;
 
-	public EsperWireTapChannelsBeanPostProcessor(@SuppressWarnings("rawtypes") Map channelPatternMappings) {
-		Assert.notNull(channelPatternMappings, "channelPatternMappings must not be null");
-		this.channelPatternMappings = channelPatternMappings;
-	}
+    public EsperWireTapChannelsBeanPostProcessor(@SuppressWarnings("rawtypes") Map channelPatternMappings) {
+        Assert.notNull(channelPatternMappings, "channelPatternMappings must not be null");
+        this.channelPatternMappings = channelPatternMappings;
+    }
 
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        return bean;
+    }
 
-	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		return bean;
-	}
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        if (bean instanceof AbstractMessageChannel) {
+            this.addMatchingWireTaps((AbstractMessageChannel) bean);
+        }
 
-	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		if (bean instanceof AbstractMessageChannel) {
-			this.addMatchingWireTaps((AbstractMessageChannel) bean);
-		}
-		
-		return bean;
-	}
+        return bean;
+    }
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private void addMatchingWireTaps(AbstractMessageChannel channel) {
-		
-		Assert.notNull(channel.getName(), "channel name must not be null");
-		
-		Set<Entry> patternWireTapEntries = this.channelPatternMappings.entrySet();
-		
-		for (Entry patternWireTapEntry : patternWireTapEntries) {
-			if (((Pattern) patternWireTapEntry.getKey()).matcher(channel.getName()).matches()) {
-				channel.addInterceptor((EsperWireTap) patternWireTapEntry.getValue());
-			}
-		}
-	}
+
+        Assert.notNull(channel.getName(), "channel name must not be null");
+
+        Set<Entry> patternWireTapEntries = this.channelPatternMappings.entrySet();
+
+        for (Entry patternWireTapEntry : patternWireTapEntries) {
+            if (((Pattern) patternWireTapEntry.getKey()).matcher(channel.getName()).matches()) {
+                channel.addInterceptor((EsperWireTap) patternWireTapEntry.getValue());
+            }
+        }
+    }
 }

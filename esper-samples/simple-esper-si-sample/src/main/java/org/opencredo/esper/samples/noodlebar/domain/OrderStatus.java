@@ -27,5 +27,5 @@ package org.opencredo.esper.samples.noodlebar.domain;
  * 
  */
 public enum OrderStatus {
-	NEW, RECEIVED, REJECTED, BEING_COOKED, COMPLETE
+    NEW, RECEIVED, REJECTED, BEING_COOKED, COMPLETE
 }

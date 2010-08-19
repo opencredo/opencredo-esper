@@ -19,16 +19,16 @@
 
 package org.opencredo.esper.sample;
 
-import static org.opencredo.esper.sample.Status.*;
+import static org.opencredo.esper.sample.Status.NEW;
 
 public class SampleEvent {
-	private Status status = NEW;
-	
-	public synchronized void setStatus(Status status) {
-		this.status = status;
-	}
+    private Status status = NEW;
 
-	public Status getStatus() {
-		return this.status;
-	}
+    public synchronized void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Status getStatus() {
+        return this.status;
+    }
 }

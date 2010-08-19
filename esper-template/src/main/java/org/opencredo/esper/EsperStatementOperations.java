@@ -34,60 +34,60 @@ import java.util.List;
  */
 public interface EsperStatementOperations {
 
-	/**
-	 * Performs a concurrency safe 'pull' to retrieve query filtered results
-	 * from the esper statement.
-	 * 
-	 * Be aware that this operation will lock the underlying esper statement
-	 * resources while executing.
-	 * 
-	 * @param rm
-	 *            the {@link ParameterizedEsperRowMapper} to use for result
-	 *            mapping
-	 * @return the single mapped object
-	 */
-	<T> T concurrentSafeQueryForObject(ParameterizedEsperRowMapper<T> rm);
+    /**
+     * Performs a concurrency safe 'pull' to retrieve query filtered results
+     * from the esper statement.
+     * 
+     * Be aware that this operation will lock the underlying esper statement
+     * resources while executing.
+     * 
+     * @param rm
+     *            the {@link ParameterizedEsperRowMapper} to use for result
+     *            mapping
+     * @return the single mapped object
+     */
+    <T> T concurrentSafeQueryForObject(ParameterizedEsperRowMapper<T> rm);
 
-	/**
-	 * Performs a concurrency safe 'pull' to retrieve query filtered results
-	 * from the esper statement. The supplied
-	 * {@link ParameterizedEsperRowMapper} is then used to populate the objects
-	 * that are then collected together and returned as a {@link List}.
-	 * 
-	 * @param rm
-	 *            the {@link ParameterizedEsperRowMapper} to use for result
-	 *            mapping
-	 * @return a list containing all the objects mapped from the query results
-	 */
-	<T> List<T> concurrentSafeQuery(ParameterizedEsperRowMapper<T> rm);
+    /**
+     * Performs a concurrency safe 'pull' to retrieve query filtered results
+     * from the esper statement. The supplied
+     * {@link ParameterizedEsperRowMapper} is then used to populate the objects
+     * that are then collected together and returned as a {@link List}.
+     * 
+     * @param rm
+     *            the {@link ParameterizedEsperRowMapper} to use for result
+     *            mapping
+     * @return a list containing all the objects mapped from the query results
+     */
+    <T> List<T> concurrentSafeQuery(ParameterizedEsperRowMapper<T> rm);
 
-	/**
-	 * Performs a concurrency unsafe 'pull' (i.e. should only be used in a
-	 * single threaded environment) to retrieve a query filtered result from the
-	 * esper statement.
-	 * 
-	 * The supplied {@link ParameterizedEsperRowMapper} is then used to populate
-	 * the object that is returned.
-	 * 
-	 * @param rm
-	 *            the {@link ParameterizedEsperRowMapper} to use for result
-	 *            mapping
-	 * @return the mapped object
-	 */
-	<T> T concurrentUnsafeQueryForObject(ParameterizedEsperRowMapper<T> rm);
+    /**
+     * Performs a concurrency unsafe 'pull' (i.e. should only be used in a
+     * single threaded environment) to retrieve a query filtered result from the
+     * esper statement.
+     * 
+     * The supplied {@link ParameterizedEsperRowMapper} is then used to populate
+     * the object that is returned.
+     * 
+     * @param rm
+     *            the {@link ParameterizedEsperRowMapper} to use for result
+     *            mapping
+     * @return the mapped object
+     */
+    <T> T concurrentUnsafeQueryForObject(ParameterizedEsperRowMapper<T> rm);
 
-	/**
-	 * Performs a concurrency unsafe 'pull' (i.e. should only be used in a
-	 * single threaded environment) to retrieve query filtered results from the
-	 * esper statement. The supplied {@link ParameterizedEsperRowMapper} is then
-	 * used to populate the objects that are then collected together and
-	 * returned as a {@link List}.
-	 * 
-	 * @param rm
-	 *            the {@link ParameterizedEsperRowMapper} to use for result
-	 *            mapping
-	 * @return a list containing all the objects mapped from the query results
-	 */
-	<T> List<T> concurrentUnsafeQuery(ParameterizedEsperRowMapper<T> rm);
+    /**
+     * Performs a concurrency unsafe 'pull' (i.e. should only be used in a
+     * single threaded environment) to retrieve query filtered results from the
+     * esper statement. The supplied {@link ParameterizedEsperRowMapper} is then
+     * used to populate the objects that are then collected together and
+     * returned as a {@link List}.
+     * 
+     * @param rm
+     *            the {@link ParameterizedEsperRowMapper} to use for result
+     *            mapping
+     * @return a list containing all the objects mapped from the query results
+     */
+    <T> List<T> concurrentUnsafeQuery(ParameterizedEsperRowMapper<T> rm);
 
 }

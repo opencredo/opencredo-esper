@@ -43,7 +43,7 @@ import com.espertech.esper.client.UnmatchedListener;
  * <p/>
  * Once setup the template is then used to inform esper of any events of
  * interest by calling sendEvent(Object).
- *
+ * 
  * @author Russ Miles (russ.miles@opencredo.com)
  * @author Jonas Partner (jonas.partner@opencredo.com)
  */
@@ -89,14 +89,12 @@ public class EsperTemplate implements EsperTemplateOperations {
     public synchronized void addStatement(EsperStatement statement) {
         statements.add(statement);
         if (this.initialised) {
-            EPStatement epStatement = epServiceProvider.getEPAdministrator()
-                    .createEPL(statement.getEPL());
+            EPStatement epStatement = epServiceProvider.getEPAdministrator().createEPL(statement.getEPL());
             statement.setEPStatement(epStatement);
         }
     }
 
-    public void sendEvent(Object event)
-            throws InvalidEsperConfigurationException {
+    public void sendEvent(Object event) throws InvalidEsperConfigurationException {
         LOG.debug("Sending event to Esper");
         if (epRuntime != null) {
             epRuntime.sendEvent(event);
@@ -137,8 +135,7 @@ public class EsperTemplate implements EsperTemplateOperations {
      */
     private void setupEPStatements() {
         for (EsperStatement statement : statements) {
-            EPStatement epStatement = epServiceProvider.getEPAdministrator()
-                    .createEPL(statement.getEPL());
+            EPStatement epStatement = epServiceProvider.getEPAdministrator().createEPL(statement.getEPL());
             statement.setEPStatement(epStatement);
         }
     }
@@ -146,7 +143,7 @@ public class EsperTemplate implements EsperTemplateOperations {
     /**
      * Configure the Esper Service Provider to create the appropriate Esper
      * Runtime.
-     *
+     * 
      * @throws IOException
      * @throws EPException
      */
@@ -154,14 +151,12 @@ public class EsperTemplate implements EsperTemplateOperations {
         LOG.debug("Configuring the Esper Service Provider");
         if (this.configuration != null && this.configuration.exists()) {
             Configuration configuration = new Configuration();
-            configuration = configuration.configure(this.configuration
-                    .getFile());
-            epServiceProvider = EPServiceProviderManager.getProvider(name,
-                    configuration);
+            configuration = configuration.configure(this.configuration.getFile());
+            epServiceProvider = EPServiceProviderManager.getProvider(name, configuration);
             LOG.info("Esper configured with a user-provided configuration", configuration);
         } else {
             epServiceProvider = EPServiceProviderManager.getProvider(name);
         }
         LOG.debug("Completed configuring the Esper Service Provider");
-	}
+    }
 }

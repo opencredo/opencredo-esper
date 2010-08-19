@@ -19,7 +19,7 @@
 
 package org.opencredo.esper.integration.config.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,24 +37,24 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration
 public class WireTapChannelsPostReceiveOnlyWithDefaultWireTapPassingDomainObjectTest {
 
-	@Autowired
-	@Qualifier("outgoingDomainEvents")
-	MessageChannel outgoingChannel;
-	
-	@Autowired
-	@Qualifier("incomingDomainEvents")
-	QueueChannel incomingChannel;
-	
-	@Autowired
-	CallRecordingListener listener;
-	
-	@Test
-	public void sendADomainMessageAcrossChannelAndAssertThatListenerIsInvoked() {
-		
-		outgoingChannel.send(new GenericMessage<SampleEvent>(new SampleEvent()));
-		
-		incomingChannel.receive();
+    @Autowired
+    @Qualifier("outgoingDomainEvents")
+    MessageChannel outgoingChannel;
 
-		assertEquals(1, listener.getNumberOfTimesInvoked());
-	}
+    @Autowired
+    @Qualifier("incomingDomainEvents")
+    QueueChannel incomingChannel;
+
+    @Autowired
+    CallRecordingListener listener;
+
+    @Test
+    public void sendADomainMessageAcrossChannelAndAssertThatListenerIsInvoked() {
+
+        outgoingChannel.send(new GenericMessage<SampleEvent>(new SampleEvent()));
+
+        incomingChannel.receive();
+
+        assertEquals(1, listener.getNumberOfTimesInvoked());
+    }
 }

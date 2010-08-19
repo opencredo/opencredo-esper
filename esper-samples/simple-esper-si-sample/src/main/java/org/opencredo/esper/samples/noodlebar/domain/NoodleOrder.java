@@ -19,22 +19,22 @@
 
 package org.opencredo.esper.samples.noodlebar.domain;
 
-import static org.opencredo.esper.samples.noodlebar.domain.OrderStatus.*;
+import static org.opencredo.esper.samples.noodlebar.domain.OrderStatus.NEW;
 
 /**
  * Defines the Noodle Order itself.
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
- *
+ * 
  */
 public class NoodleOrder {
-	private OrderStatus status = NEW;
-	
-	public synchronized void setStatus(OrderStatus status) {
-		this.status = status;
-	}
+    private OrderStatus status = NEW;
 
-	public OrderStatus getStatus() {
-		return this.status;
-	}
+    public synchronized void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public OrderStatus getStatus() {
+        return this.status;
+    }
 }

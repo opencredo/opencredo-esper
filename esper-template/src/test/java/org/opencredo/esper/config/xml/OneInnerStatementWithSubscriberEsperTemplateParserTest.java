@@ -19,7 +19,7 @@
 
 package org.opencredo.esper.config.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Set;
 
@@ -37,29 +37,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration
 public class OneInnerStatementWithSubscriberEsperTemplateParserTest {
 
-	@Autowired
-	EsperTemplate template;
-	
-	@Autowired
-	CallRecordingListener listener;
-	
-	@Test
-	public void testTemplateInitializesWithOneStatement() {
-		
-		Set<EsperStatement> statements = template.getStatements();
-		
-		assertEquals(1, statements.size());	
-	}
-	
-	@Test
-	public void testSendSampleEvent() {
-		
-		Set<EsperStatement> statements = template.getStatements();
-		
-		assertEquals(1, statements.size());
-		
-		template.sendEvent(new SampleEvent());
-		
-		assertEquals(1, listener.getNumberOfTimesInvoked());
-	}
+    @Autowired
+    EsperTemplate template;
+
+    @Autowired
+    CallRecordingListener listener;
+
+    @Test
+    public void testTemplateInitializesWithOneStatement() {
+
+        Set<EsperStatement> statements = template.getStatements();
+
+        assertEquals(1, statements.size());
+    }
+
+    @Test
+    public void testSendSampleEvent() {
+
+        Set<EsperStatement> statements = template.getStatements();
+
+        assertEquals(1, statements.size());
+
+        template.sendEvent(new SampleEvent());
+
+        assertEquals(1, listener.getNumberOfTimesInvoked());
+    }
 }

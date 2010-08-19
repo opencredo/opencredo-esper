@@ -29,21 +29,21 @@ import org.opencredo.esper.samples.noodlebar.domain.NoodleOrder;
  */
 public interface YNoodleBar {
 
-	/**
-	 * Submit an order for cooking.
-	 * 
-	 * @param order
-	 *            the order to be cooked.
-	 */
-	public void cookNoodles(NoodleOrder order);
+    /**
+     * Submit an order for cooking.
+     * 
+     * @param order
+     *            the order to be cooked.
+     */
+    public void cookNoodles(NoodleOrder order);
 
-	/**
-	 * Submit an order and ask the service to call me back when my order is
-	 * cooked.
-	 * 
-	 * @param order
-	 *            the order to be cooked.
-	 * @return the order that has been completed.
-	 */
-	public NoodleOrder cookNoodlesAndRingMeBack(NoodleOrder order);
+    /**
+     * Submit an order and ask the service to call me back when my order is
+     * cooked.
+     * 
+     * @param order
+     *            the order to be cooked.
+     * @return the order that has been completed.
+     */
+    public NoodleOrder cookNoodlesAndRingMeBack(NoodleOrder order);
 }

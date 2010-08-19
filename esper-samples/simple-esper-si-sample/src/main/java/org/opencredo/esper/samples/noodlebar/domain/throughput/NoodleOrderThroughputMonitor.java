@@ -29,14 +29,13 @@ import org.opencredo.esper.samples.noodlebar.throughput.ThroughputMonitor;
  * 
  */
 public class NoodleOrderThroughputMonitor implements ThroughputMonitor {
-	private long averageThroughput = 0l;
+    private long averageThroughput = 0l;
 
-	public synchronized void receiveCurrentThroughput(
-			long ordersProcessedPerDuration) {
-		this.averageThroughput = ordersProcessedPerDuration;
-	}
+    public synchronized void receiveCurrentThroughput(long ordersProcessedPerDuration) {
+        this.averageThroughput = ordersProcessedPerDuration;
+    }
 
-	public synchronized long getAverageThroughput() {
-		return averageThroughput;
-	}
+    public synchronized long getAverageThroughput() {
+        return averageThroughput;
+    }
 }

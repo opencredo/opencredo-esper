@@ -20,21 +20,20 @@
 package org.opencredo.esper;
 
 /**
- * Runtime exception that is raised when an attempt is made to initialize
- * an {@link EsperTemplate} and an internal Esper configuration exception
- * occurs.
+ * Runtime exception that is raised when an attempt is made to initialize an
+ * {@link EsperTemplate} and an internal Esper configuration exception occurs.
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
- *
+ * 
  */
 @SuppressWarnings("serial")
-public class InvalidEsperConfigurationException extends RuntimeException  {
-	
-	public InvalidEsperConfigurationException(String message) {
-		super(message);
-	}
-	
-	public InvalidEsperConfigurationException(String message, Throwable originalException) {
-		super(message, originalException);
-	}
+public class InvalidEsperConfigurationException extends RuntimeException {
+
+    public InvalidEsperConfigurationException(String message) {
+        super(message);
+    }
+
+    public InvalidEsperConfigurationException(String message, Throwable originalException) {
+        super(message, originalException);
+    }
 }

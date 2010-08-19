@@ -19,11 +19,12 @@
 
 package org.opencredo.esper.samples.sheep;
 
+import org.opencredo.esper.EsperStatement;
+import org.opencredo.esper.EsperTemplate;
+
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import com.espertech.esper.event.map.MapEventBean;
-import org.opencredo.esper.EsperStatement;
-import org.opencredo.esper.EsperTemplate;
 
 /**
  * Simple example showing use of EsperTemplate to count sheep from a passing
@@ -34,7 +35,8 @@ import org.opencredo.esper.EsperTemplate;
 public class Insomnia {
 
     public static void main(String[] ars) {
-        EsperStatement statement = new EsperStatement("insert into Sleep select count(*) as total from org.opencredo.esper.samples.sheep.Animal(type='sheep').win:time(10 sec) having count(*) > 100");
+        EsperStatement statement = new EsperStatement(
+                "insert into Sleep select count(*) as total from org.opencredo.esper.samples.sheep.Animal(type='sheep').win:time(10 sec) having count(*) > 100");
 
         EsperStatement sleepStatment = new EsperStatement("select * from Sleep");
         sleepStatment.addListener(new LoggingListener());
@@ -43,7 +45,6 @@ public class Insomnia {
         template.addStatement(statement);
         template.addStatement(sleepStatment);
         template.initialize();
-
 
         for (int i = 0; i < 109; i++) {
             template.sendEvent(new Animal("cat"));

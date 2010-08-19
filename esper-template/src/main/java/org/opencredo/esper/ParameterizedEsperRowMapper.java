@@ -35,12 +35,12 @@ import com.espertech.esper.client.EventBean;
  */
 public interface ParameterizedEsperRowMapper<T> {
 
-	/**
-	 * Implementations should return the object representation of the current
-	 * row as supplied by the {@link EventBean}.
-	 * 
-	 * @param eventBean
-	 * @return 
-	 */
-	T mapRow(EventBean eventBean);
+    /**
+     * Implementations should return the object representation of the current
+     * row as supplied by the {@link EventBean}.
+     * 
+     * @param eventBean
+     * @return
+     */
+    T mapRow(EventBean eventBean);
 }

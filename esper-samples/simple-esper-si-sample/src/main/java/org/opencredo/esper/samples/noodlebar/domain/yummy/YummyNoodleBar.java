@@ -19,7 +19,10 @@
 
 package org.opencredo.esper.samples.noodlebar.domain.yummy;
 
-import static org.opencredo.esper.samples.noodlebar.domain.OrderStatus.*;
+import static org.opencredo.esper.samples.noodlebar.domain.OrderStatus.BEING_COOKED;
+import static org.opencredo.esper.samples.noodlebar.domain.OrderStatus.COMPLETE;
+import static org.opencredo.esper.samples.noodlebar.domain.OrderStatus.RECEIVED;
+import static org.opencredo.esper.samples.noodlebar.domain.OrderStatus.REJECTED;
 
 import org.opencredo.esper.samples.noodlebar.domain.NoodleOrder;
 
@@ -29,47 +32,47 @@ import org.opencredo.esper.samples.noodlebar.domain.NoodleOrder;
  * For the real thing, visit http://www.yummynoodlebar.co.uk/
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
- *
+ * 
  */
 public class YummyNoodleBar implements YNoodleBar {
-	
-	private long cookDuration;
-	
-	public void setCookDuration(long cookDuration) {
-		this.cookDuration = cookDuration;
-	}
-	
-	public void cookNoodles(NoodleOrder order) {
-		order.setStatus(RECEIVED);
-		
-		order.setStatus(BEING_COOKED);
-		
-		try {
-			Thread.sleep(this.cookDuration);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			
-			order.setStatus(REJECTED);
-		}
-		
-		order.setStatus(COMPLETE);
-	}
-	
-	public NoodleOrder cookNoodlesAndRingMeBack(NoodleOrder order) {
-		order.setStatus(RECEIVED);
-		
-		order.setStatus(BEING_COOKED);
-		
-		try {
-			Thread.sleep(this.cookDuration);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			
-			order.setStatus(REJECTED);
-		}
-		
-		order.setStatus(COMPLETE);
-		
-		return order;
-	}
+
+    private long cookDuration;
+
+    public void setCookDuration(long cookDuration) {
+        this.cookDuration = cookDuration;
+    }
+
+    public void cookNoodles(NoodleOrder order) {
+        order.setStatus(RECEIVED);
+
+        order.setStatus(BEING_COOKED);
+
+        try {
+            Thread.sleep(this.cookDuration);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+
+            order.setStatus(REJECTED);
+        }
+
+        order.setStatus(COMPLETE);
+    }
+
+    public NoodleOrder cookNoodlesAndRingMeBack(NoodleOrder order) {
+        order.setStatus(RECEIVED);
+
+        order.setStatus(BEING_COOKED);
+
+        try {
+            Thread.sleep(this.cookDuration);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+
+            order.setStatus(REJECTED);
+        }
+
+        order.setStatus(COMPLETE);
+
+        return order;
+    }
 }

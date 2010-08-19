@@ -19,7 +19,7 @@
 
 package org.opencredo.esper.config.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Set;
 
@@ -39,40 +39,40 @@ import com.espertech.esper.client.UpdateListener;
 @ContextConfiguration
 public class EsperConfigurationDrivenOneInnerStatementEsperTemplateParserTest {
 
-	@Autowired
-	EsperTemplate template;
-	
-	@Test
-	public void testTemplateInitializesWithOneStatement() {
-		
-		Set<EsperStatement> statements = template.getStatements();
-		
-		assertEquals(1, statements.size());	
-	}
-	
-	@Test
-	public void testSendSampleEvent() {
-		
-		Set<EsperStatement> statements = template.getStatements();
-		
-		assertEquals(1, statements.size());
-		
-		EsperStatement[] statementsArray = new EsperStatement[statements.size()];
-			
-		statements.toArray(statementsArray);
-		
-		Set<UpdateListener> listeners = statementsArray[0].getListeners();
-		
-		assertEquals(1, listeners.size());
-		
-		UpdateListener[] listenersArray = new UpdateListener[listeners.size()];
-			
-		listeners.toArray(listenersArray);
-		
-		CallRecordingListener listener = (CallRecordingListener) listenersArray[0];
-		
-		template.sendEvent(new SampleEvent());
-		
-		assertEquals(1, listener.getNumberOfTimesInvoked());
-	}
+    @Autowired
+    EsperTemplate template;
+
+    @Test
+    public void testTemplateInitializesWithOneStatement() {
+
+        Set<EsperStatement> statements = template.getStatements();
+
+        assertEquals(1, statements.size());
+    }
+
+    @Test
+    public void testSendSampleEvent() {
+
+        Set<EsperStatement> statements = template.getStatements();
+
+        assertEquals(1, statements.size());
+
+        EsperStatement[] statementsArray = new EsperStatement[statements.size()];
+
+        statements.toArray(statementsArray);
+
+        Set<UpdateListener> listeners = statementsArray[0].getListeners();
+
+        assertEquals(1, listeners.size());
+
+        UpdateListener[] listenersArray = new UpdateListener[listeners.size()];
+
+        listeners.toArray(listenersArray);
+
+        CallRecordingListener listener = (CallRecordingListener) listenersArray[0];
+
+        template.sendEvent(new SampleEvent());
+
+        assertEquals(1, listener.getNumberOfTimesInvoked());
+    }
 }

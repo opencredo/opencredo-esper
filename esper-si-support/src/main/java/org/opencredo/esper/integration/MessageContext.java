@@ -31,64 +31,62 @@ import org.springframework.integration.core.MessageHeaders;
  * 
  */
 public class MessageContext {
-	private final Message<?> message;
-	private final MessageChannel channel;
-	private final IntegrationOperation operation;
-	private final boolean sent;
+    private final Message<?> message;
+    private final MessageChannel channel;
+    private final IntegrationOperation operation;
+    private final boolean sent;
     private final String messageId;
     private final String sourceId;
 
-	public MessageContext(Message<?> message, MessageChannel channel,
-                          IntegrationOperation operation, String sourceId) {
-		super();
-		this.message = message;
-		this.channel = channel;
-		this.operation = operation;
+    public MessageContext(Message<?> message, MessageChannel channel, IntegrationOperation operation, String sourceId) {
+        super();
+        this.message = message;
+        this.channel = channel;
+        this.operation = operation;
         this.sourceId = sourceId;
         this.sent = false;
-        this.messageId =  message.getHeaders().get(MessageHeaders.ID).toString();
-	}
+        this.messageId = message.getHeaders().get(MessageHeaders.ID).toString();
+    }
 
-	public MessageContext(Message<?> message, MessageChannel channel,
-                          boolean sent, String sourceId) {
-		super();
-		this.message = message;
-		this.channel = channel;
+    public MessageContext(Message<?> message, MessageChannel channel, boolean sent, String sourceId) {
+        super();
+        this.message = message;
+        this.channel = channel;
         this.sourceId = sourceId;
         this.operation = IntegrationOperation.POST_SEND;
-		this.sent = sent;
-         this.messageId =  message.getHeaders().get(MessageHeaders.ID).toString();
-	}
+        this.sent = sent;
+        this.messageId = message.getHeaders().get(MessageHeaders.ID).toString();
+    }
 
-	public MessageContext(MessageChannel channel, String sourceId) {
-		super();
+    public MessageContext(MessageChannel channel, String sourceId) {
+        super();
         this.sourceId = sourceId;
         this.message = null;
-		this.channel = channel;
-		this.operation = IntegrationOperation.PRE_RECEIVE;
-		this.sent = false;
+        this.channel = channel;
+        this.operation = IntegrationOperation.PRE_RECEIVE;
+        this.sent = false;
         this.messageId = null;
-	}
+    }
 
-	public Message<?> getMessage() {
-		return message;
-	}
+    public Message<?> getMessage() {
+        return message;
+    }
 
-    public String getMessageId(){
+    public String getMessageId() {
         return this.messageId;
     }
 
-	public MessageChannel getChannel() {
-		return channel;
-	}
+    public MessageChannel getChannel() {
+        return channel;
+    }
 
-	public IntegrationOperation getOperation() {
-		return operation;
-	}
+    public IntegrationOperation getOperation() {
+        return operation;
+    }
 
-	public boolean isSent() {
-		return sent;
-	}
+    public boolean isSent() {
+        return sent;
+    }
 
     public String getSourceId() {
         return sourceId;

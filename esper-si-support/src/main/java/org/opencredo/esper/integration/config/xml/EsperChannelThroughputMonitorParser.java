@@ -27,25 +27,25 @@ import org.w3c.dom.Element;
 
 public class EsperChannelThroughputMonitorParser extends AbstractSingleBeanDefinitionParser {
 
-	private final static String BASE_PACKAGE_NAME = "org.opencredo.esper.integration";
+    private final static String BASE_PACKAGE_NAME = "org.opencredo.esper.integration";
 
-	@Override
-	protected String getBeanClassName(Element element) {
-		return BASE_PACKAGE_NAME + ".throughput.EsperChannelThroughputMonitor";
-	}
-	
-	@Override
-	protected void doParse(Element element, ParserContext parserContext, BeanDefinitionBuilder builder) {
-		
-		String channelRef = element.getAttribute("channel-ref");
-		builder.addConstructorArgReference(channelRef);
+    @Override
+    protected String getBeanClassName(Element element) {
+        return BASE_PACKAGE_NAME + ".throughput.EsperChannelThroughputMonitor";
+    }
+
+    @Override
+    protected void doParse(Element element, ParserContext parserContext, BeanDefinitionBuilder builder) {
+
+        String channelRef = element.getAttribute("channel-ref");
+        builder.addConstructorArgReference(channelRef);
 
         String sourceId = element.getAttribute("sourceId");
         Assert.hasText(sourceId, "sourceId attribute is required");
         builder.addConstructorArgValue(sourceId);
 
-		String timeSample = element.getAttribute("time-sample");
-		builder.addPropertyValue("timeSample", timeSample);
-	
-	}
+        String timeSample = element.getAttribute("time-sample");
+        builder.addPropertyValue("timeSample", timeSample);
+
+    }
 }

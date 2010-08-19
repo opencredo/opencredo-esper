@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
+
 package org.opencredo.esper.sample;
 
 import com.espertech.esper.client.EventBean;
@@ -24,7 +24,7 @@ import com.espertech.esper.client.UnmatchedListener;
 
 public class CallRecordingUnmatchedListener extends AbstractCallRecorder implements UnmatchedListener {
 
-	public void update(EventBean arg0) {
-		super.incrementCallCounter();
-	}
+    public void update(EventBean arg0) {
+        super.incrementCallCounter();
+    }
 }

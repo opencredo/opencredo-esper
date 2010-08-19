@@ -37,15 +37,15 @@ import com.espertech.esper.client.UpdateListener;
  * @author Jonas Partner (jonas.partner@opencredo.com)
  */
 public class EventDrivenEsperInboundChannelAdapter implements UpdateListener, UnmatchedListener {
-	private final static Logger LOG = LoggerFactory
-			.getLogger(EventDrivenEsperInboundChannelAdapter.class);
+    private final static Logger LOG = LoggerFactory.getLogger(EventDrivenEsperInboundChannelAdapter.class);
 
-	private final MessageChannel channel;
+    private final MessageChannel channel;
 
-	private Long timeout;
+    private Long timeout;
 
     /**
-     * Provide the channel required to send to 
+     * Provide the channel required to send to
+     * 
      * @param channel
      */
     public EventDrivenEsperInboundChannelAdapter(MessageChannel channel) {
@@ -53,64 +53,72 @@ public class EventDrivenEsperInboundChannelAdapter implements UpdateListener, Un
     }
 
     /**
-	 * Provides a timeout that is used when sending messages to the indicated
-	 * channel.
-	 * 
-	 * @param timeout
-	 *            The timeout to be used when sending messages to the specified
-	 *            channel.
-	 */
-	public void setTimeout(long timeout) {
-		this.timeout = timeout;
-	}
+     * Provides a timeout that is used when sending messages to the indicated
+     * channel.
+     * 
+     * @param timeout
+     *            The timeout to be used when sending messages to the specified
+     *            channel.
+     */
+    public void setTimeout(long timeout) {
+        this.timeout = timeout;
+    }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.espertech.esper.client.UpdateListener#update(com.espertech.esper.
+     * client.EventBean[], com.espertech.esper.client.EventBean[])
+     */
+    public void update(EventBean[] eventBeans, EventBean[] eventBeans1) {
+        LOG.debug("Inbound channel adapter receiving an event from esper");
 
+        Assert.notNull(channel);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.espertech.esper.client.UpdateListener#update(com.espertech.esper.
-	 * client.EventBean[], com.espertech.esper.client.EventBean[])
-	 */
-	public void update(EventBean[] eventBeans, EventBean[] eventBeans1) {
-		LOG.debug("Inbound channel adapter receiving an event from esper");
-		
-		Assert.notNull(channel);
+        GenericMessage<EventBean[]> message = new GenericMessage<EventBean[]>(eventBeans);
 
-		GenericMessage<EventBean[]> message = new GenericMessage<EventBean[]>(
-				eventBeans);
+        if (timeout != null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Sending message (" + message + ") to channel " + channel + " with timeout " + timeout);
+            }
+            channel.send(message, timeout);
+        } else {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Sending message (" + message + ") to channel " + channel);
+            }
+            channel.send(message);
+        }
 
-		if (timeout != null) {
-			LOG.debug("Sending message (" + message + ") to channel " + channel + " with timeout " + timeout);
-			channel.send(message, timeout);
-		} else {
-			LOG.debug("Sending message (" + message + ") to channel " + channel);
-			channel.send(message);
-		}
-		
-		LOG.debug("Inbound channel adapter received an event from esper");
-	}
+        LOG.debug("Inbound channel adapter received an event from esper");
+    }
 
-	/* (non-Javadoc)
-	 * @see com.espertech.esper.client.UnmatchedListener#update(com.espertech.esper.client.EventBean)
-	 */
-	public void update(EventBean eventBean) {
-		LOG.debug("Inbound channel adapter receiving an unmatched listener event from esper");
-		
-		Assert.notNull(channel);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.espertech.esper.client.UnmatchedListener#update(com.espertech.esper
+     * .client.EventBean)
+     */
+    public void update(EventBean eventBean) {
+        LOG.debug("Inbound channel adapter receiving an unmatched listener event from esper");
 
-		GenericMessage<EventBean> message = new GenericMessage<EventBean>(
-				eventBean);
+        Assert.notNull(channel);
 
-		if (timeout != null) {
-			LOG.debug("Sending message (" + message + ") to channel " + channel + " with timeout " + timeout);
-			channel.send(message, timeout);
-		} else {
-			LOG.debug("Sending message (" + message + ") to channel " + channel);
-			channel.send(message);
-		}
-		
-		LOG.debug("Inbound channel adapter received an unmatched listener event from esper");
-	}
+        GenericMessage<EventBean> message = new GenericMessage<EventBean>(eventBean);
+
+        if (timeout != null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Sending message (" + message + ") to channel " + channel + " with timeout " + timeout);
+            }
+            channel.send(message, timeout);
+        } else {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Sending message (" + message + ") to channel " + channel);
+            }
+            channel.send(message);
+        }
+
+        LOG.debug("Inbound channel adapter received an unmatched listener event from esper");
+    }
 }

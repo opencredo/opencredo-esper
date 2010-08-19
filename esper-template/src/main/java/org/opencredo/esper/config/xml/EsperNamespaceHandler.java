@@ -26,13 +26,13 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
  * Registers the handlers for the separate namespace root elements.
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
- *
+ * 
  */
 public class EsperNamespaceHandler extends NamespaceHandlerSupport implements NamespaceHandler {
 
-	public void init() {
-		registerBeanDefinitionParser("template", new EsperTemplateParser());
-		registerBeanDefinitionParser("statement", new EsperStatementParser());
-	}
+    public void init() {
+        registerBeanDefinitionParser("template", new EsperTemplateParser());
+        registerBeanDefinitionParser("statement", new EsperStatementParser());
+    }
 
 }

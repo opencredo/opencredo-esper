@@ -19,7 +19,7 @@
 
 package org.opencredo.esper.integration.config.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,23 +36,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration
 public class UnmatchedListenerInboundChannelAdapterParserTest {
 
-	@Autowired
-	EsperTemplate template;
-	
-	@Autowired
-	CallRecordingListener listener;
-	
-	@Autowired
-	CallRecordingUnmatchedListener unmatchedListener;
+    @Autowired
+    EsperTemplate template;
 
-	@Test
-	public void sendAnEsperContextMessageAndAssertThatListenerIsInvoked() {
-		template.sendEvent(new MessageContext(new DirectChannel(), "testSourceId"));
-		
-		template.sendEvent("A simple string event object!");
-		
-		assertEquals(1, listener.getNumberOfTimesInvoked());
-		
-		assertEquals(1, unmatchedListener.getNumberOfTimesInvoked());
-	}
+    @Autowired
+    CallRecordingListener listener;
+
+    @Autowired
+    CallRecordingUnmatchedListener unmatchedListener;
+
+    @Test
+    public void sendAnEsperContextMessageAndAssertThatListenerIsInvoked() {
+        template.sendEvent(new MessageContext(new DirectChannel(), "testSourceId"));
+
+        template.sendEvent("A simple string event object!");
+
+        assertEquals(1, listener.getNumberOfTimesInvoked());
+
+        assertEquals(1, unmatchedListener.getNumberOfTimesInvoked());
+    }
 }

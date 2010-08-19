@@ -19,7 +19,7 @@
 
 package org.opencredo.esper.config.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Set;
 
@@ -35,14 +35,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration
 public class MultipleRefStatementEsperTemplateParserTest {
 
-	@Autowired
-	EsperTemplate template;
-	
-	@Test
-	public void testTemplateInitializesWithOneStatment() {
-		
-		Set<EsperStatement> statements = template.getStatements();
-		
-		assertEquals(2, statements.size());
-	}
+    @Autowired
+    EsperTemplate template;
+
+    @Test
+    public void testTemplateInitializesWithOneStatment() {
+
+        Set<EsperStatement> statements = template.getStatements();
+
+        assertEquals(2, statements.size());
+    }
 }

@@ -30,88 +30,86 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * Asynchronously submits a number of orders to a {@link NoodleBar}
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
- *
+ * 
  */
 public class AsyncNoodleOrderGenerator {
 
-	private static final int NUMBER_OF_ORDERS = 1000;
+    private static final int NUMBER_OF_ORDERS = 1000;
 
-	private static final String NOODLE_BAR_BEAN_NAME = "noodleBar";
+    private static final String NOODLE_BAR_BEAN_NAME = "noodleBar";
 
-	private static final String NOODLE_ORDER_THROUGHPUT_MONITOR_BEAN_NAME = "noodleOrderThroughputMonitor";
+    private static final String NOODLE_ORDER_THROUGHPUT_MONITOR_BEAN_NAME = "noodleOrderThroughputMonitor";
 
-	private static NoodleBar noodleBar;
+    private static NoodleBar noodleBar;
 
-	private static NoodleOrderThroughputMonitor noodleOrderThroughputMonitor;
+    private static NoodleOrderThroughputMonitor noodleOrderThroughputMonitor;
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		System.out.println("Initializing Dependencies...");
-		
-		initializeDependencies();
+        System.out.println("Initializing Dependencies...");
 
-		long startTime = System.currentTimeMillis();
+        initializeDependencies();
 
-		System.out.println("Sending orders into the Noodle Bar...");
-		
-		sendSomeOrders();
+        long startTime = System.currentTimeMillis();
 
-		long stopTime = System.currentTimeMillis();
+        System.out.println("Sending orders into the Noodle Bar...");
 
-		long timeTaken = stopTime - startTime;
+        sendSomeOrders();
 
-		System.out.println("Simple timer calculated at end " + timeTaken
-				+ " milliseconds for " + NUMBER_OF_ORDERS + " orders");
+        long stopTime = System.currentTimeMillis();
 
-		System.out
-				.println("The Noodle Bar is actually accepting "
-						+ noodleOrderThroughputMonitor.getAverageThroughput()
-						+ " orders per second according to continuous Esper Monitoring");
-		
-		System.exit(0);
-	}
+        long timeTaken = stopTime - startTime;
 
-	private static void sendSomeOrders() {
-		NoodleOrder[] orders = new NoodleOrder[NUMBER_OF_ORDERS];
+        System.out.println("Simple timer calculated at end " + timeTaken + " milliseconds for " + NUMBER_OF_ORDERS
+                + " orders");
 
-		// Create and send events
-		for (int x = 0; x < NUMBER_OF_ORDERS; x++) {
-			orders[x] = new NoodleOrder();
-			noodleBar.placeOrder(orders[x]);
-			// Sleep a little bit between orders
-			try {
-				Thread.sleep(5l);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+        System.out.println("The Noodle Bar is actually accepting "
+                + noodleOrderThroughputMonitor.getAverageThroughput()
+                + " orders per second according to continuous Esper Monitoring");
 
-		boolean processing = true;
-		while (processing) {
-			processing = false;
-			for (NoodleOrder order : orders) {
-				if (order.getStatus() == OrderStatus.COMPLETE) {
-					System.out.println("Order Completed!");
-				} else {
-					processing = true;
-				}
-			}
-			try {
-				Thread.sleep(20l);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+        System.exit(0);
+    }
 
-	private static void initializeDependencies() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				"classpath:async-noodlebar-context.xml");
+    private static void sendSomeOrders() {
+        NoodleOrder[] orders = new NoodleOrder[NUMBER_OF_ORDERS];
 
-		noodleBar = (NoodleBar) applicationContext
-				.getBean(NOODLE_BAR_BEAN_NAME);
+        // Create and send events
+        for (int x = 0; x < NUMBER_OF_ORDERS; x++) {
+            orders[x] = new NoodleOrder();
+            noodleBar.placeOrder(orders[x]);
+            // Sleep a little bit between orders
+            try {
+                Thread.sleep(5l);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
-		noodleOrderThroughputMonitor = (NoodleOrderThroughputMonitor) applicationContext
-				.getBean(NOODLE_ORDER_THROUGHPUT_MONITOR_BEAN_NAME);
-	}
+        boolean processing = true;
+        while (processing) {
+            processing = false;
+            for (NoodleOrder order : orders) {
+                if (order.getStatus() == OrderStatus.COMPLETE) {
+                    System.out.println("Order Completed!");
+                } else {
+                    processing = true;
+                }
+            }
+            try {
+                Thread.sleep(20l);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void initializeDependencies() {
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+                "classpath:async-noodlebar-context.xml");
+
+        noodleBar = (NoodleBar) applicationContext.getBean(NOODLE_BAR_BEAN_NAME);
+
+        noodleOrderThroughputMonitor = (NoodleOrderThroughputMonitor) applicationContext
+                .getBean(NOODLE_ORDER_THROUGHPUT_MONITOR_BEAN_NAME);
+    }
 }

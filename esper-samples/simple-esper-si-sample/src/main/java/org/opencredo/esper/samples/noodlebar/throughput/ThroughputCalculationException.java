@@ -22,7 +22,7 @@ package org.opencredo.esper.samples.noodlebar.throughput;
 @SuppressWarnings("serial")
 public class ThroughputCalculationException extends Exception {
 
-	public ThroughputCalculationException(String message) {
-		super(message);
-	}
+    public ThroughputCalculationException(String message) {
+        super(message);
+    }
 }

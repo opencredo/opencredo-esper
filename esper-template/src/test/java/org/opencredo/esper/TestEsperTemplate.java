@@ -19,7 +19,7 @@
 
 package org.opencredo.esper;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,81 +33,79 @@ import org.opencredo.esper.sample.SampleEvent;
  * 
  */
 public class TestEsperTemplate {
-	
-	private EsperTemplate template;
 
-	@Before
-	public void setupStatementUnderTest() {
-		this.template = new EsperTemplate();
-	}
-	
-	@Test(expected = InvalidEsperConfigurationException.class)
-	public void testExceptionRaisedWhenTemplateNotInitialized() {
-		template.sendEvent(new SampleEvent());
-	}
-	
-	@Test
-	public void testEventWithNoStatements() {
-		setupTemplateAndSendSampleEvent();
-	}
+    private EsperTemplate template;
 
-	private void setupTemplateAndSendSampleEvent() {
-		template.setName("testTemplate");
-		
-		template.initialize();
-		
-		template.sendEvent(new SampleEvent());
-	}
-	
-	@Test
-	public void testEventWithOneStatementNoListener() {
-		
-		EsperStatement statement = addTestStatement();
-		
-		template.addStatement(statement);
-		
-		setupTemplateAndSendSampleEvent();
-	}
-	
-	@Test
-	public void testEventWithOneStatementWithOneListener() {
-		
-		EsperStatement statement = addTestStatement();
-		
-		CallRecordingListener listener = this.addListenerToStatement(statement);
-		
-		template.addStatement(statement);
-		
-		setupTemplateAndSendSampleEvent();
-		
-		assertEquals(1, listener.getNumberOfTimesInvoked());
-	}
-	
-	
-	@Test
-	public void testAddStatementAfterInitialisation() {
-		setupTemplateAndSendSampleEvent();
-		EsperStatement statement = addTestStatement();
-    	CallRecordingListener listener = this.addListenerToStatement(statement);
-     	template.addStatement(statement);
+    @Before
+    public void setupStatementUnderTest() {
+        this.template = new EsperTemplate();
+    }
+
+    @Test(expected = InvalidEsperConfigurationException.class)
+    public void testExceptionRaisedWhenTemplateNotInitialized() {
+        template.sendEvent(new SampleEvent());
+    }
+
+    @Test
+    public void testEventWithNoStatements() {
+        setupTemplateAndSendSampleEvent();
+    }
+
+    private void setupTemplateAndSendSampleEvent() {
+        template.setName("testTemplate");
+
+        template.initialize();
+
+        template.sendEvent(new SampleEvent());
+    }
+
+    @Test
+    public void testEventWithOneStatementNoListener() {
+
+        EsperStatement statement = addTestStatement();
+
+        template.addStatement(statement);
+
+        setupTemplateAndSendSampleEvent();
+    }
+
+    @Test
+    public void testEventWithOneStatementWithOneListener() {
+
+        EsperStatement statement = addTestStatement();
+
+        CallRecordingListener listener = this.addListenerToStatement(statement);
+
+        template.addStatement(statement);
+
+        setupTemplateAndSendSampleEvent();
+
+        assertEquals(1, listener.getNumberOfTimesInvoked());
+    }
+
+    @Test
+    public void testAddStatementAfterInitialisation() {
+        setupTemplateAndSendSampleEvent();
+        EsperStatement statement = addTestStatement();
+        CallRecordingListener listener = this.addListenerToStatement(statement);
+        template.addStatement(statement);
         template.sendEvent(new SampleEvent());
         assertEquals(1, listener.getNumberOfTimesInvoked());
 
+    }
 
-	}
+    private CallRecordingListener addListenerToStatement(EsperStatement statement) {
+        CallRecordingListener listener = new CallRecordingListener();
 
-	private CallRecordingListener addListenerToStatement(EsperStatement statement) {
-		CallRecordingListener listener = new CallRecordingListener();
-		
-		statement.addListener(listener);
-		
-		return listener;
-	}
+        statement.addListener(listener);
 
-	private EsperStatement addTestStatement() {
-		
-		String epl = "select * from org.opencredo.esper.sample.SampleEvent";
-		
-		return new EsperStatement(epl);
-	}
+        return listener;
+    }
+
+    private EsperStatement addTestStatement() {
+
+        String epl = "select * from org.opencredo.esper.sample.SampleEvent";
+
+        return new EsperStatement(epl);
+    }
 }

@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
+
 package org.opencredo.esper.integration.config.xml;
 
 import static org.junit.Assert.assertEquals;
@@ -52,7 +52,7 @@ public class ChannelThroughputMonitorTest {
     @Qualifier("messageChannelTwo")
     MessageChannel channelTwo;
 
-    @Test 
+    @Test
     public void testMessageThroughputPerSampleWindow() throws Exception {
 
         for (int i = 0; i < 10; i++) {
@@ -67,14 +67,12 @@ public class ChannelThroughputMonitorTest {
         assertEquals("Throughput calculated incorrectly ", 10, throughput);
     }
 
-
-    @Test 
+    @Test
     public void testMessageThroughputOnMutlipleChannels() throws Exception {
 
         for (int i = 0; i < 10; i++) {
             channel.send(new GenericMessage<SampleEvent>(new SampleEvent()));
         }
-
 
         for (int i = 0; i < 20; i++) {
             channelTwo.send(new GenericMessage<SampleEvent>(new SampleEvent()));
@@ -87,7 +85,6 @@ public class ChannelThroughputMonitorTest {
         System.out.println("Throughput is: " + throughputMonitor.getThroughput());
 
         assertEquals("Throughput one calculated incorrectly ", 10, throughput);
-
 
         long throughputTwo = throughputMonitorTwo.getThroughput();
 

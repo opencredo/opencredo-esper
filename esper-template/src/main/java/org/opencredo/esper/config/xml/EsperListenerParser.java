@@ -32,38 +32,39 @@ import org.w3c.dom.NodeList;
  * Parses the listeners block in the Spring custom namespace support.
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
- *
+ * 
  */
 public class EsperListenerParser {
 
-	/**
-	 * Parses out a set of configured esper statement listeners.
-	 * 
-	 * @param element the esper listeners element
-	 * @param parserContext the parser's current context
-	 * @return a list of configured esper statement listeners
-	 */
-	@SuppressWarnings("unchecked")
-	public ManagedSet parseListeners(Element element, ParserContext parserContext) {
-		ManagedSet listeners = new ManagedSet();
-		NodeList childNodes = element.getChildNodes();
-		for (int i = 0; i < childNodes.getLength(); i++) {
-			Node child = childNodes.item(i);
-			if (child.getNodeType() == Node.ELEMENT_NODE) {
-				Element childElement = (Element) child;
-				String localName = child.getLocalName();
-				if ("bean".equals(localName)) {
-					BeanDefinitionHolder holder = parserContext.getDelegate().parseBeanDefinitionElement(childElement);
-					parserContext.registerBeanComponent(new BeanComponentDefinition(holder));
-					listeners.add(new RuntimeBeanReference(holder.getBeanName()));
-				}
-				else if ("ref".equals(localName)) {
-					String ref = childElement.getAttribute("bean");
-					listeners.add(new RuntimeBeanReference(ref));
-				}
-			}
-		}
-		return listeners;
-	}
+    /**
+     * Parses out a set of configured esper statement listeners.
+     * 
+     * @param element
+     *            the esper listeners element
+     * @param parserContext
+     *            the parser's current context
+     * @return a list of configured esper statement listeners
+     */
+    @SuppressWarnings("unchecked")
+    public ManagedSet parseListeners(Element element, ParserContext parserContext) {
+        ManagedSet listeners = new ManagedSet();
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node child = childNodes.item(i);
+            if (child.getNodeType() == Node.ELEMENT_NODE) {
+                Element childElement = (Element) child;
+                String localName = child.getLocalName();
+                if ("bean".equals(localName)) {
+                    BeanDefinitionHolder holder = parserContext.getDelegate().parseBeanDefinitionElement(childElement);
+                    parserContext.registerBeanComponent(new BeanComponentDefinition(holder));
+                    listeners.add(new RuntimeBeanReference(holder.getBeanName()));
+                } else if ("ref".equals(localName)) {
+                    String ref = childElement.getAttribute("bean");
+                    listeners.add(new RuntimeBeanReference(ref));
+                }
+            }
+        }
+        return listeners;
+    }
 
 }

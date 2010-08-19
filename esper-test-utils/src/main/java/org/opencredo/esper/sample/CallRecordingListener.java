@@ -29,36 +29,37 @@ import com.espertech.esper.client.UpdateListener;
  * Esper.
  * 
  * For a comparison of these contracts, see
- * http://esper.codehaus.org/esper-3.3.0/doc/reference/en/html/api.html#api-receive-results
+ * http://esper.codehaus.org/esper-3.3.0
+ * /doc/reference/en/html/api.html#api-receive-results
  * 
  * @author Russ Miles (russell.miles@opencredo.com)
  * 
  */
 public class CallRecordingListener extends AbstractCallRecorder implements UpdateListener {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.espertech.esper.client.UpdateListener#update(com.espertech.esper.
-	 * client.EventBean[], com.espertech.esper.client.EventBean[])
-	 */
-	public void update(EventBean[] eventBeans, EventBean[] eventBeans1) {
-		super.incrementCallCounter();
-	}
-	
-	public void update(EventBean[] eventBeans) {
-		super.incrementCallCounter();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.espertech.esper.client.UpdateListener#update(com.espertech.esper.
+     * client.EventBean[], com.espertech.esper.client.EventBean[])
+     */
+    public void update(EventBean[] eventBeans, EventBean[] eventBeans1) {
+        super.incrementCallCounter();
+    }
 
-	/**
-	 * Method used when this class is being used as a subscriber as opposed to a
-	 * listener.
-	 * 
-	 * @param event
-	 *            The event detected
-	 */
-	public void update(SampleEvent event) {
-		super.incrementCallCounter();
-	}
+    public void update(EventBean[] eventBeans) {
+        super.incrementCallCounter();
+    }
+
+    /**
+     * Method used when this class is being used as a subscriber as opposed to a
+     * listener.
+     * 
+     * @param event
+     *            The event detected
+     */
+    public void update(SampleEvent event) {
+        super.incrementCallCounter();
+    }
 }

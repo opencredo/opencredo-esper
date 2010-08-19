@@ -19,7 +19,7 @@
 
 package org.opencredo.esper.integration.config.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,17 +35,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration
 public class WireTapParserTest {
 
-	@Autowired
-	EsperWireTap wireTap;
-	
-	@Autowired
-	CallRecordingListener listener;
-	
-	@Test
-	public void sendAStringMessageAndAssertThatListenerIsInvoked() {
-		
-		this.wireTap.preSend(new GenericMessage<SampleEvent>(new SampleEvent()), null);
-		
-		assertEquals(1, listener.getNumberOfTimesInvoked());
-	}
+    @Autowired
+    EsperWireTap wireTap;
+
+    @Autowired
+    CallRecordingListener listener;
+
+    @Test
+    public void sendAStringMessageAndAssertThatListenerIsInvoked() {
+
+        this.wireTap.preSend(new GenericMessage<SampleEvent>(new SampleEvent()), null);
+
+        assertEquals(1, listener.getNumberOfTimesInvoked());
+    }
 }

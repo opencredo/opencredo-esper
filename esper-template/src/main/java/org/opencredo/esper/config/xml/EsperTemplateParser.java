@@ -32,67 +32,62 @@ import org.w3c.dom.Element;
  * Parses out an esper-template element.
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
- *
+ * 
  */
 public class EsperTemplateParser extends AbstractBeanDefinitionParser {
 
-	@Override
-	protected boolean shouldGenerateId() {
-		return false;
-	}
+    @Override
+    protected boolean shouldGenerateId() {
+        return false;
+    }
 
-	@Override
-	protected boolean shouldGenerateIdAsFallback() {
-		return true;
-	}
+    @Override
+    protected boolean shouldGenerateIdAsFallback() {
+        return true;
+    }
 
-	@Override
-	protected AbstractBeanDefinition parseInternal(Element element,
-			ParserContext parserContext) {
-		
-		BeanDefinitionBuilder builder = BeanDefinitionBuilder
-		.genericBeanDefinition(EsperNamespaceUtils.BASE_PACKAGE
-				+ ".spring.EsperTemplateBean");
+    @Override
+    protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
 
-		initialiseStatements(element, parserContext, builder);
-		
-		initializeConfiguration(element, builder);
-		
-		initializeUnmatchedListener(element, builder);
-		
-		return builder.getBeanDefinition();
-	}
+        BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(EsperNamespaceUtils.BASE_PACKAGE
+                + ".spring.EsperTemplateBean");
 
-	private void initializeUnmatchedListener(Element element,
-			BeanDefinitionBuilder builder) {
-		String unmatchedListenerRef = (String) element.getAttribute(EsperNamespaceUtils.UNMATCHED_LISTENER_ATTRIBUTE);
-		
-		if (StringUtils.hasText(unmatchedListenerRef)) {
-			builder.addPropertyReference("unmatchedListener", unmatchedListenerRef);
-		}
-	}
+        initialiseStatements(element, parserContext, builder);
 
-	private void initializeConfiguration(Element element,
-			BeanDefinitionBuilder builder) {
-		String configuration = (String) element.getAttribute(EsperNamespaceUtils.CONFIGURATION_ATTRIBUTE);
-		
-		if (StringUtils.hasText(configuration)) {
-			builder.addPropertyValue("configuration", configuration);
-		}
-	}
+        initializeConfiguration(element, builder);
 
-	private void initialiseStatements(Element element,
-			ParserContext parserContext, BeanDefinitionBuilder builder) {
-		ManagedSet statements = null;
-		
-		Element statementsElement = DomUtils.getChildElementByTagName(element, "statements");
-		if (statementsElement != null) {
-			EsperStatementParser statementParser = new EsperStatementParser();
-			statements = statementParser.parseStatements(statementsElement, parserContext);
-		}
-		
-		if (statements != null) {
-			builder.addPropertyValue("statements", statements);
-		}
-	}
+        initializeUnmatchedListener(element, builder);
+
+        return builder.getBeanDefinition();
+    }
+
+    private void initializeUnmatchedListener(Element element, BeanDefinitionBuilder builder) {
+        String unmatchedListenerRef = (String) element.getAttribute(EsperNamespaceUtils.UNMATCHED_LISTENER_ATTRIBUTE);
+
+        if (StringUtils.hasText(unmatchedListenerRef)) {
+            builder.addPropertyReference("unmatchedListener", unmatchedListenerRef);
+        }
+    }
+
+    private void initializeConfiguration(Element element, BeanDefinitionBuilder builder) {
+        String configuration = (String) element.getAttribute(EsperNamespaceUtils.CONFIGURATION_ATTRIBUTE);
+
+        if (StringUtils.hasText(configuration)) {
+            builder.addPropertyValue("configuration", configuration);
+        }
+    }
+
+    private void initialiseStatements(Element element, ParserContext parserContext, BeanDefinitionBuilder builder) {
+        ManagedSet statements = null;
+
+        Element statementsElement = DomUtils.getChildElementByTagName(element, "statements");
+        if (statementsElement != null) {
+            EsperStatementParser statementParser = new EsperStatementParser();
+            statements = statementParser.parseStatements(statementsElement, parserContext);
+        }
+
+        if (statements != null) {
+            builder.addPropertyValue("statements", statements);
+        }
+    }
 }

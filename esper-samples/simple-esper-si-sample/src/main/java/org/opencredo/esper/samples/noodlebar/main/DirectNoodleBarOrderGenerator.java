@@ -35,32 +35,29 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class DirectNoodleBarOrderGenerator {
 
-	private static NoodleBar noodleBar;
+    private static NoodleBar noodleBar;
 
-	private static final String NOODLE_BAR_BEAN_NAME = "noodleBar";
+    private static final String NOODLE_BAR_BEAN_NAME = "noodleBar";
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		initializeDependencies();
+        initializeDependencies();
 
-		NoodleOrder order = new NoodleOrder();
+        NoodleOrder order = new NoodleOrder();
 
-		System.out.println("Before submitting the order the status is: "
-				+ order.getStatus());
+        System.out.println("Before submitting the order the status is: " + order.getStatus());
 
-		noodleBar.placeOrder(order);
+        noodleBar.placeOrder(order);
 
-		System.out.println("After completing the order the status is: "
-				+ order.getStatus());
+        System.out.println("After completing the order the status is: " + order.getStatus());
 
-	}
+    }
 
-	private static void initializeDependencies() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				"classpath:noodlebar-demo-context.xml");
+    private static void initializeDependencies() {
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+                "classpath:noodlebar-demo-context.xml");
 
-		noodleBar = (NoodleBar) applicationContext
-				.getBean(NOODLE_BAR_BEAN_NAME);
-	}
+        noodleBar = (NoodleBar) applicationContext.getBean(NOODLE_BAR_BEAN_NAME);
+    }
 
 }

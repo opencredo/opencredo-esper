@@ -27,30 +27,29 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
- * Provides some convenient extensions to {@link EsperTemplate} when
- * configuring the template within a Spring environment.
+ * Provides some convenient extensions to {@link EsperTemplate} when configuring
+ * the template within a Spring environment.
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
  * 
  */
-public class EsperTemplateBean extends EsperTemplate implements BeanNameAware,
-		InitializingBean, DisposableBean {
-	private final static Logger LOG = LoggerFactory.getLogger(EsperTemplateBean.class);
-	
-	public void setBeanName(String name) {
-		super.setName(name);
-		LOG.debug("Set esper template bean name to " + name);
-	}
-	
-	public void afterPropertiesSet() throws Exception {
-		LOG.debug("Initializing the esper template bean");
-		super.initialize();
-		LOG.debug("Completed initializing the esper template bean");
-	}
+public class EsperTemplateBean extends EsperTemplate implements BeanNameAware, InitializingBean, DisposableBean {
+    private final static Logger LOG = LoggerFactory.getLogger(EsperTemplateBean.class);
 
-	public void destroy() throws Exception {
-		LOG.debug("Destroying the esper template bean");
-		super.cleanup();
-		LOG.debug("Finished destroying the esper template bean");
-	}
+    public void setBeanName(String name) {
+        super.setName(name);
+        LOG.debug("Set esper template bean name to " + name);
+    }
+
+    public void afterPropertiesSet() throws Exception {
+        LOG.debug("Initializing the esper template bean");
+        super.initialize();
+        LOG.debug("Completed initializing the esper template bean");
+    }
+
+    public void destroy() throws Exception {
+        LOG.debug("Destroying the esper template bean");
+        super.cleanup();
+        LOG.debug("Finished destroying the esper template bean");
+    }
 }

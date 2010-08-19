@@ -19,28 +19,26 @@
 
 package org.opencredo.esper.integration.interceptor;
 
+import org.opencredo.esper.EsperTemplate;
+import org.opencredo.esper.integration.IntegrationOperation;
+import org.opencredo.esper.integration.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.channel.ChannelInterceptor;
 import org.springframework.integration.core.Message;
 import org.springframework.integration.core.MessageChannel;
 
-import org.opencredo.esper.EsperTemplate;
-import org.opencredo.esper.integration.MessageContext;
-import org.opencredo.esper.integration.IntegrationOperation;
-
 /**
  * Provides a spring integration {@link ChannelInterceptor} implementation that
  * takes messages from the 4 interception points (pre-send, post-receive,
  * post-send, pre-receive) and sends either the message context or the message
  * payload to esper.
- *
+ * 
  * @author Russ Miles (russ.miles@opencredo.com)
  * @author Jonas Partner (jonas.partner@opencredo.com)
  */
 public class EsperWireTap implements ChannelInterceptor {
-    private final static Logger LOG = LoggerFactory
-            .getLogger(EsperWireTap.class);
+    private final static Logger LOG = LoggerFactory.getLogger(EsperWireTap.class);
 
     private final EsperTemplate template;
 
@@ -85,8 +83,7 @@ public class EsperWireTap implements ChannelInterceptor {
         if (this.preSend) {
             LOG.debug("Sending a pre-send message to esper");
             if (sendContext) {
-                MessageContext context = new MessageContext(message, channel,
-                        IntegrationOperation.PRE_SEND, sourceId);
+                MessageContext context = new MessageContext(message, channel, IntegrationOperation.PRE_SEND, sourceId);
                 template.sendEvent(context);
                 LOG.debug("Sent message context to esper");
             } else {
@@ -104,8 +101,8 @@ public class EsperWireTap implements ChannelInterceptor {
         if (this.postReceive) {
             LOG.debug("Sending a post-receive message to esper");
             if (sendContext) {
-                MessageContext context = new MessageContext(message, channel,
-                        IntegrationOperation.POST_RECEIVE, sourceId);
+                MessageContext context = new MessageContext(message, channel, IntegrationOperation.POST_RECEIVE,
+                        sourceId);
                 template.sendEvent(context);
                 LOG.debug("Sent message context to esper");
             } else {
@@ -118,15 +115,13 @@ public class EsperWireTap implements ChannelInterceptor {
         return message;
     }
 
-    public void postSend(Message<?> message, MessageChannel channel,
-                         boolean sent) {
+    public void postSend(Message<?> message, MessageChannel channel, boolean sent) {
 
         if (this.postSend) {
             LOG.debug("Sending a post-send message to esper");
 
             if (sendContext) {
-                MessageContext context = new MessageContext(message, channel,
-                        sent, sourceId);
+                MessageContext context = new MessageContext(message, channel, sent, sourceId);
                 template.sendEvent(context);
                 LOG.debug("Sent message context to esper");
             } else {

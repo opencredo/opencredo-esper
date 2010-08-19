@@ -16,17 +16,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
- 
+
 package org.opencredo.esper.sample;
 
 public abstract class AbstractCallRecorder {
-	private int numberOfTimesInvoked = 0;
+    private int numberOfTimesInvoked = 0;
 
-	public int getNumberOfTimesInvoked() {
-		return numberOfTimesInvoked;
-	}
-	
-	protected void incrementCallCounter() {
-		this.numberOfTimesInvoked++;
-	}
+    public int getNumberOfTimesInvoked() {
+        return numberOfTimesInvoked;
+    }
+
+    protected void incrementCallCounter() {
+        this.numberOfTimesInvoked++;
+    }
 }

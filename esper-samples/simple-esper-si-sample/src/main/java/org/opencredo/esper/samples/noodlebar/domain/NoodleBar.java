@@ -27,11 +27,12 @@ package org.opencredo.esper.samples.noodlebar.domain;
  */
 public interface NoodleBar {
 
-	/**
-	 * Places a noodle order.
-	 * 
-	 * @param order the new noodle order being placed.
-	 */
-	public void placeOrder(NoodleOrder order);
+    /**
+     * Places a noodle order.
+     * 
+     * @param order
+     *            the new noodle order being placed.
+     */
+    public void placeOrder(NoodleOrder order);
 
 }

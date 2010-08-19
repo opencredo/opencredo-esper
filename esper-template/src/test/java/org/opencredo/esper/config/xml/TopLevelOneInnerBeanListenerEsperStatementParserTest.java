@@ -19,7 +19,8 @@
 
 package org.opencredo.esper.config.xml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Set;
 
@@ -36,15 +37,15 @@ import com.espertech.esper.client.UpdateListener;
 @ContextConfiguration
 public class TopLevelOneInnerBeanListenerEsperStatementParserTest {
 
-	@Autowired
-	EsperStatement statement;
-	
-	@Test
-	public void testInnerBeanListenerRegistered() {
-		assertNotNull(statement);
-		assertEquals(EsperTestConstants.EPL, statement.getEPL());
-		
-		Set<UpdateListener> listeners = statement.getListeners();
-		assertEquals(1, listeners.size());
-	}
+    @Autowired
+    EsperStatement statement;
+
+    @Test
+    public void testInnerBeanListenerRegistered() {
+        assertNotNull(statement);
+        assertEquals(EsperTestConstants.EPL, statement.getEPL());
+
+        Set<UpdateListener> listeners = statement.getListeners();
+        assertEquals(1, listeners.size());
+    }
 }

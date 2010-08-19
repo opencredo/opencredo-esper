@@ -25,21 +25,20 @@ import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.Assert;
 import org.w3c.dom.Element;
 
-
 public class InboundChannelAdapterParser extends AbstractSingleBeanDefinitionParser {
 
-   private final static String BASE_PACKAGE_NAME = "org.opencredo.esper.integration";
+    private final static String BASE_PACKAGE_NAME = "org.opencredo.esper.integration";
 
-	@Override
-	protected String getBeanClassName(Element element) {
-		return BASE_PACKAGE_NAME + ".EventDrivenEsperInboundChannelAdapter";
-	}
+    @Override
+    protected String getBeanClassName(Element element) {
+        return BASE_PACKAGE_NAME + ".EventDrivenEsperInboundChannelAdapter";
+    }
 
-	@Override
-	protected void doParse(Element element, ParserContext parserContext, BeanDefinitionBuilder builder) {
+    @Override
+    protected void doParse(Element element, ParserContext parserContext, BeanDefinitionBuilder builder) {
         String channelRef = element.getAttribute("channel");
         Assert.hasText(channelRef, "channel attribute must be provided");
-		builder.addConstructorArgReference(channelRef);
-	}
+        builder.addConstructorArgReference(channelRef);
+    }
 
 }

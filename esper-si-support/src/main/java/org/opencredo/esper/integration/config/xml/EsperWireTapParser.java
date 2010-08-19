@@ -19,14 +19,13 @@
 
 package org.opencredo.esper.integration.config.xml;
 
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.Assert;
-import org.w3c.dom.Element;
-
-import org.springframework.beans.factory.support.AbstractBeanDefinition;
-import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.util.StringUtils;
+import org.w3c.dom.Element;
 
 public class EsperWireTapParser extends AbstractBeanDefinitionParser {
 
@@ -41,11 +40,9 @@ public class EsperWireTapParser extends AbstractBeanDefinitionParser {
     }
 
     @Override
-    protected AbstractBeanDefinition parseInternal(Element element,
-                                                   ParserContext parserContext) {
+    protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
         BeanDefinitionBuilder builder = BeanDefinitionBuilder
-                .genericBeanDefinition(EsperIntegrationNamespaceUtils.BASE_PACKAGE
-                        + ".interceptor.EsperWireTap");
+                .genericBeanDefinition(EsperIntegrationNamespaceUtils.BASE_PACKAGE + ".interceptor.EsperWireTap");
 
         initializeEsperTemplate(element, builder);
 
@@ -58,15 +55,13 @@ public class EsperWireTapParser extends AbstractBeanDefinitionParser {
         return builder.getBeanDefinition();
     }
 
-    private void initializeEsperTemplate(Element element,
-                                         BeanDefinitionBuilder builder) {
+    private void initializeEsperTemplate(Element element, BeanDefinitionBuilder builder) {
         String templateRef = element.getAttribute(EsperIntegrationNamespaceUtils.TEMPLATE_REF_ATTRIBUTE_NAME);
 
         builder.addConstructorArgReference(templateRef);
     }
 
-    private void initialiseSendContextProperty(Element element,
-                                               BeanDefinitionBuilder builder) {
+    private void initialiseSendContextProperty(Element element, BeanDefinitionBuilder builder) {
         String sendContext = element.getAttribute(EsperIntegrationNamespaceUtils.SEND_CONTEXT_ATTRIBUTE_NAME);
         if ((sendContext != null) && (!"".equals(sendContext))) {
             builder.addPropertyValue("sendContext", Boolean.parseBoolean(sendContext));
@@ -81,14 +76,14 @@ public class EsperWireTapParser extends AbstractBeanDefinitionParser {
 
     }
 
-    private void configureNotificationStrategy(Element element,
-                                               BeanDefinitionBuilder builder) {
+    private void configureNotificationStrategy(Element element, BeanDefinitionBuilder builder) {
         String preSendFlag = element.getAttribute(EsperIntegrationNamespaceUtils.PRE_SEND_ATTRIBUTE_NAME);
         String postSendFlag = element.getAttribute(EsperIntegrationNamespaceUtils.POST_SEND_ATTRIBUTE_NAME);
         String preReceiveFlag = element.getAttribute(EsperIntegrationNamespaceUtils.PRE_RECEIVE_ATTRIBUTE_NAME);
         String postReceiveFlag = element.getAttribute(EsperIntegrationNamespaceUtils.POST_RECEIVE_ATTRIBUTE_NAME);
 
-        if (StringUtils.hasText(preSendFlag) || StringUtils.hasText(postSendFlag) || StringUtils.hasText(preReceiveFlag) || StringUtils.hasText(postReceiveFlag)) {
+        if (StringUtils.hasText(preSendFlag) || StringUtils.hasText(postSendFlag)
+                || StringUtils.hasText(preReceiveFlag) || StringUtils.hasText(postReceiveFlag)) {
 
             if (StringUtils.hasText(preSendFlag)) {
                 builder.addPropertyValue("preSend", Boolean.parseBoolean(preSendFlag));
