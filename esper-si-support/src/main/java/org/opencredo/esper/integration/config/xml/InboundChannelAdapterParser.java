@@ -23,6 +23,8 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.Assert;
+import org.springframework.util.xml.DomUtils;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 public class InboundChannelAdapterParser extends AbstractSingleBeanDefinitionParser {
@@ -39,6 +41,19 @@ public class InboundChannelAdapterParser extends AbstractSingleBeanDefinitionPar
         String channelRef = element.getAttribute("channel");
         Assert.hasText(channelRef, "channel attribute must be provided");
         builder.addConstructorArgReference(channelRef);
+
+        Element eplElements = DomUtils.getChildElementByTagName(element, "epl");
+
+        if (eplElements != null) {
+            builder.addConstructorArgValue(eplElements.getTextContent());
+        } else {
+            builder.addConstructorArgValue(null);
+        }
+
+        Attr templateNameNode = element.getAttributeNode("template-name");
+        if (templateNameNode != null) {
+            builder.addPropertyValue("templateName", templateNameNode.getTextContent());
+        }
     }
 
 }

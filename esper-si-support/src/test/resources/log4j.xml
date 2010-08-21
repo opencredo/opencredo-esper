@@ -11,8 +11,11 @@
 	</appender>
 
 	<!-- Loggers -->
-	<logger name="org.opencredo">
-		<level value="debug" />
+	<logger name="org.opencredo.esper">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="org.opencredo.esper.integration">
+		<level value="DEBUG" />
 	</logger>
 	
 	<logger name="org.springframework">

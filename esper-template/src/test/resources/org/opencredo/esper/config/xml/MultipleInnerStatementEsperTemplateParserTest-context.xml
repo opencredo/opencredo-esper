@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 						http://www.opencredo.com/schema/esper
-						http://www.opencredo.com/schema/esper/opencredo-esper-2.0.xsd">
+						http://www.opencredo.com/schema/esper/opencredo-esper-3.0.xsd">
 
 	<esper:template>
 		<esper:statements>

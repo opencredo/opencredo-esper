@@ -148,7 +148,9 @@ public class EsperTemplate implements EsperTemplateOperations {
      * @throws EPException
      */
     private void configureEPServiceProvider() throws EPException, IOException {
-        LOG.debug("Configuring the Esper Service Provider");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Configuring the Esper Service Provider with name: " + name);
+        }
         if (this.configuration != null && this.configuration.exists()) {
             Configuration configuration = new Configuration();
             configuration = configuration.configure(this.configuration.getFile());
@@ -157,6 +159,8 @@ public class EsperTemplate implements EsperTemplateOperations {
         } else {
             epServiceProvider = EPServiceProviderManager.getProvider(name);
         }
-        LOG.debug("Completed configuring the Esper Service Provider");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Completed configuring the Esper Service Provider with name: " + name);
+        }
     }
 }

@@ -1,2 +1,2 @@
-http\://www.opencredo.com/schema/esper/opencredo-esper-2.0.xsd=org/opencredo/esper/config/xml/opencredo-esper-2.0.xsd
-http\://www.opencredo.com/schema/esper/opencredo-esper.xsd=org/opencredo/esper/config/xml/opencredo-esper-2.0.xsd
+http\://www.opencredo.com/schema/esper/opencredo-esper-3.0.xsd=org/opencredo/esper/config/xml/opencredo-esper-3.0.xsd
+http\://www.opencredo.com/schema/esper/opencredo-esper.xsd=org/opencredo/esper/config/xml/opencredo-esper-3.0.xsd

@@ -27,6 +27,7 @@ import org.opencredo.esper.integration.throughput.EsperChannelThroughputMonitor;
 import org.opencredo.esper.sample.SampleEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.integration.channel.PollableChannel;
 import org.springframework.integration.core.MessageChannel;
 import org.springframework.integration.message.GenericMessage;
 import org.springframework.test.context.ContextConfiguration;
@@ -46,7 +47,7 @@ public class ChannelThroughputMonitorTest {
 
     @Autowired
     @Qualifier("messageChannel")
-    MessageChannel channel;
+    PollableChannel pollableChannel;
 
     @Autowired
     @Qualifier("messageChannelTwo")
@@ -54,28 +55,35 @@ public class ChannelThroughputMonitorTest {
 
     @Test
     public void testMessageThroughputPerSampleWindow() throws Exception {
+        pollableChannel.receive(10);
 
-        for (int i = 0; i < 10; i++) {
-            channel.send(new GenericMessage<SampleEvent>(new SampleEvent()));
+        int count = 5;
+        for (int i = 0; i < count; i++) {
+            pollableChannel.send(new GenericMessage<SampleEvent>(new SampleEvent()));
         }
 
-        Thread.sleep(1100);
+        Thread.sleep(150);
+
+        for (int i = 0; i < count - 1; i++) {
+            pollableChannel.receive(10);
+        }
+
+        Thread.sleep(1500);
+
         long throughput = throughputMonitor.getThroughput();
 
         System.out.println("Throughput is: " + throughputMonitor.getThroughput());
 
-        assertEquals("Throughput calculated incorrectly ", 10, throughput);
+        assertEquals("Throughput calculated incorrectly ", count - 1, throughput);
+
     }
 
     @Test
     public void testMessageThroughputOnMutlipleChannels() throws Exception {
 
         for (int i = 0; i < 10; i++) {
-            channel.send(new GenericMessage<SampleEvent>(new SampleEvent()));
-        }
-
-        for (int i = 0; i < 20; i++) {
-            channelTwo.send(new GenericMessage<SampleEvent>(new SampleEvent()));
+            pollableChannel.send(new GenericMessage<SampleEvent>(new SampleEvent()));
+            pollableChannel.receive(10);
         }
 
         Thread.sleep(1100);
@@ -85,6 +93,12 @@ public class ChannelThroughputMonitorTest {
         System.out.println("Throughput is: " + throughputMonitor.getThroughput());
 
         assertEquals("Throughput one calculated incorrectly ", 10, throughput);
+
+        for (int i = 0; i < 20; i++) {
+            channelTwo.send(new GenericMessage<SampleEvent>(new SampleEvent()));
+        }
+
+        Thread.sleep(1100);
 
         long throughputTwo = throughputMonitorTwo.getThroughput();
 

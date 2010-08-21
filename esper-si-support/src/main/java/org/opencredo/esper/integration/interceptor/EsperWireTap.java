@@ -19,6 +19,8 @@
 
 package org.opencredo.esper.integration.interceptor;
 
+import java.sql.Timestamp;
+
 import org.opencredo.esper.EsperTemplate;
 import org.opencredo.esper.integration.IntegrationOperation;
 import org.opencredo.esper.integration.MessageContext;
@@ -80,65 +82,98 @@ public class EsperWireTap implements ChannelInterceptor {
     }
 
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
+        System.out.println("preSend - " + new Timestamp(System.currentTimeMillis()));
         if (this.preSend) {
-            LOG.debug("Sending a pre-send message to esper");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Sending a pre-send message to esper from source '" + sourceId + "'");
+            }
+
             if (sendContext) {
                 MessageContext context = new MessageContext(message, channel, IntegrationOperation.PRE_SEND, sourceId);
                 template.sendEvent(context);
-                LOG.debug("Sent message context to esper");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Sent message context to esper from source '" + sourceId + "'");
+                }
             } else {
                 template.sendEvent(message.getPayload());
-                LOG.debug("Sent message payload to esper");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Sent message payload to esper from source '" + sourceId + "'");
+                }
             }
-            LOG.debug("Finished sending a pre-send message to esper");
         }
 
         return message;
     }
 
     public Message<?> postReceive(Message<?> message, MessageChannel channel) {
+        System.out.println("postReceive - " + new Timestamp(System.currentTimeMillis()));
 
+        if (message == null) {
+            // If no message received - no event is created
+            return message;
+        }
+        
         if (this.postReceive) {
-            LOG.debug("Sending a post-receive message to esper");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Sending a post-receive message to esper from source '" + sourceId + "'");
+            }
+
             if (sendContext) {
-                MessageContext context = new MessageContext(message, channel, IntegrationOperation.POST_RECEIVE,
-                        sourceId);
+                MessageContext context;
+
+                // Note that sometimes message might not exist e.g. poller polls empty queue.
+                context = new MessageContext(message, channel, IntegrationOperation.POST_RECEIVE, sourceId);
+
                 template.sendEvent(context);
-                LOG.debug("Sent message context to esper");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Sent message context to esper from source '" + sourceId + "'");
+                }
             } else {
                 template.sendEvent(message.getPayload());
-                LOG.debug("Sent message payload to esper");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Sent message payload to esper from source '" + sourceId + "'");
+                }
             }
-            LOG.debug("Finished sending a post-receive message to esper");
         }
 
         return message;
     }
 
     public void postSend(Message<?> message, MessageChannel channel, boolean sent) {
-
+        System.out.println("postSend - " + new Timestamp(System.currentTimeMillis()));
+        
         if (this.postSend) {
-            LOG.debug("Sending a post-send message to esper");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Sending a post-send message to esper from source '" + sourceId + "'");
+            }
 
             if (sendContext) {
                 MessageContext context = new MessageContext(message, channel, sent, sourceId);
                 template.sendEvent(context);
-                LOG.debug("Sent message context to esper");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Sent message context to esper from source '" + sourceId + "'");
+                }
             } else {
                 template.sendEvent(message.getPayload());
-                LOG.debug("Sent message payload to esper");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Sent message payload to esper from source '" + sourceId + "'");
+                }
             }
-            LOG.debug("Finished sending a post-send message to esper");
         }
     }
 
     public boolean preReceive(MessageChannel channel) {
+        System.out.println("preReceive - " + new Timestamp(System.currentTimeMillis()));
         if (this.preReceive) {
-            LOG.debug("Sending a pre-receive message to esper");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Sending a pre-receive message to esper from source '" + sourceId + "'");
+            }
+
             MessageContext context = new MessageContext(channel, sourceId);
             template.sendEvent(context);
-            LOG.debug("Sent message context to esper");
-            LOG.debug("Finished sending a pre-receive message to esper");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Sent message context to esper from source '" + sourceId + "'");
+            }
         }
         return true;
     }
