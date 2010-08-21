@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns="http://www.opencredo.com/schema/esper/integration"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-	xmlns:tool="http://www.springframework.org/schema/tool"
-	targetNamespace="http://www.opencredo.com/schema/esper/integration"
+<xsd:schema xmlns="http://www.opencredo.com/schema/esper/integration" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:tool="http://www.springframework.org/schema/tool" targetNamespace="http://www.opencredo.com/schema/esper/integration"
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 
 	<xsd:import namespace="http://www.springframework.org/schema/tool" />
 
 	<!-- Declarations associated with the Esper wire-tap (see http://www.eaipatterns.com/WireTap.html) -->
-	
+
 	<xsd:element name="wire-tap">
 		<xsd:complexType>
 			<xsd:annotation>
 				<xsd:documentation>
 					Defines a Esper Wire Tap Channel Interceptor.
         		</xsd:documentation>
-        		<xsd:appinfo>
+				<xsd:appinfo>
 					<tool:annotation>
 						<tool:exports type="org.opencredo.esper.integration.interceptor.EsperWireTap" />
 					</tool:annotation>
@@ -25,13 +23,13 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<tool:annotation kind="ref">
-							<tool:expected-type type="org.opencredo.esper.EsperTemplate"/>
+							<tool:expected-type type="org.opencredo.esper.EsperTemplate" />
 						</tool:annotation>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
 			<xsd:attribute name="id" type="xsd:ID" />
-            <xsd:attribute name="sourceId" type="xsd:string" use="required" />
+			<xsd:attribute name="sourceId" type="xsd:string" use="required" />
 			<xsd:attribute name="send-context" type="xsd:boolean" />
 			<xsd:attribute name="pre-send" type="xsd:boolean" />
 			<xsd:attribute name="post-send" type="xsd:boolean" />
@@ -39,31 +37,31 @@
 			<xsd:attribute name="post-receive" type="xsd:boolean" />
 		</xsd:complexType>
 	</xsd:element>
-	
+
 	<xsd:element name="wire-tap-channels">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element name="channel" type="channelType"
-					minOccurs="0" maxOccurs="unbounded" />
+				<xsd:element name="channel" type="channelType" minOccurs="0" maxOccurs="unbounded" />
 			</xsd:sequence>
 			<xsd:attribute name="default-wire-tap" type="xsd:string">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<tool:annotation kind="ref">
-							<tool:expected-type type="org.opencredo.esper.integration.interceptor.EsperWireTap"/>
+							<tool:expected-type type="org.opencredo.esper.integration.interceptor.EsperWireTap" />
 						</tool:annotation>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
-	
+
 	<xsd:complexType name="channelType">
 		<xsd:annotation>
 			<xsd:documentation>
 				Defines a pattern to be used to match
 				channel names to indicate the channels that
-				should be intercepted by the wire-tap.
+				should be
+				intercepted by the wire-tap.
        		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:attribute name="pattern" type="xsd:string" use="required">
@@ -76,21 +74,21 @@
 		</xsd:attribute>
 		<xsd:attribute name="wire-tap" type="xsd:string">
 			<xsd:annotation>
-			    <xsd:documentation>
+				<xsd:documentation>
 					Overrides the default wire-tap as specified on the
 					parent wire-tap-channels element.
 				</xsd:documentation>
 				<xsd:appinfo>
 					<tool:annotation kind="ref">
-						<tool:expected-type type="org.opencredo.esper.integration.interceptor.EsperWireTap"/>
+						<tool:expected-type type="org.opencredo.esper.integration.interceptor.EsperWireTap" />
 					</tool:annotation>
 				</xsd:appinfo>
 			</xsd:annotation>
 		</xsd:attribute>
 	</xsd:complexType>
-	
+
 	<!-- Declarations associated with the Esper inbound gateway (see http://www.eaipatterns.com/MessagingGateway.html) -->
-	
+
 	<xsd:element name="inbound-channel-adapter">
 		<xsd:complexType>
 			<xsd:annotation>
@@ -98,21 +96,29 @@
 					Defines an inbound Esper message gateway.
         		</xsd:documentation>
 			</xsd:annotation>
+			<xsd:sequence>
+				<xsd:element name="epl" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			</xsd:sequence>
 			<xsd:attribute name="id" type="xsd:ID" use="required" />
+			<xsd:attribute name="template-name" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>This attribute is useful when you want to connect to ESP provider by name.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
 			<xsd:attribute name="channel" type="xsd:string">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<tool:annotation kind="ref">
-							<tool:expected-type type="org.springframework.integration.core.MessageChannel"/>
+							<tool:expected-type type="org.springframework.integration.core.MessageChannel" />
 						</tool:annotation>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
-	
+
 	<!-- Declarations associated with the simple channel throughput monitor -->
-	
+
 	<xsd:element name="channel-throughput-monitor">
 		<xsd:complexType>
 			<xsd:annotation>
@@ -121,18 +127,18 @@
         		</xsd:documentation>
 			</xsd:annotation>
 			<xsd:attribute name="id" type="xsd:ID" use="required" />
-             <xsd:attribute name="sourceId" type="xsd:string" use="required" />
+			<xsd:attribute name="sourceId" type="xsd:string" use="required" />
 			<xsd:attribute name="time-sample" type="xsd:string" />
 			<xsd:attribute name="channel-ref" type="xsd:string">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<tool:annotation kind="ref">
-							<tool:expected-type type="org.springframework.integration.core.MessageChannel"/>
+							<tool:expected-type type="org.springframework.integration.core.MessageChannel" />
 						</tool:annotation>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
-	 
+
 </xsd:schema>

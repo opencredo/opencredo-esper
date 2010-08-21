@@ -1,40 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:esper="http://www.opencredo.com/schema/esper"
-	xmlns:si-esper="http://www.opencredo.com/schema/esper/integration"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:esper="http://www.opencredo.com/schema/esper" xmlns:si-esper="http://www.opencredo.com/schema/esper/integration"
 	xmlns:si="http://www.springframework.org/schema/integration"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 						http://www.opencredo.com/schema/esper
-						http://www.opencredo.com/schema/esper/opencredo-esper-2.0.xsd
+						http://www.opencredo.com/schema/esper/opencredo-esper-3.0.xsd
 						http://www.opencredo.com/schema/esper/integration
-						http://www.opencredo.com/schema/esper/integration/opencredo-integration-esper-2.0.xsd
+						http://www.opencredo.com/schema/esper/integration/opencredo-integration-esper-3.0.xsd
 						http://www.springframework.org/schema/integration
 						http://www.springframework.org/schema/integration/spring-integration-1.0.xsd">
-						
+
 	<!-- Take Esper messages and place them on the inboundRawEsperMessages channel -->
-	
-	<si-esper:inbound-channel-adapter id="inboundGateway" channel="inboundRawEsperMessages"/>
-	
-	<si:channel id="inboundRawEsperMessages" />	
-	
+
+	<si-esper:inbound-channel-adapter id="inboundGateway" channel="inboundRawEsperMessages" template-name="testTemplate">
+		<si-esper:epl>select * from org.opencredo.esper.integration.MessageContext</si-esper:epl>
+	</si-esper:inbound-channel-adapter>
+
+	<si:channel id="inboundRawEsperMessages" />
+
 	<esper:template id="testTemplate">
-		<esper:statements>
-			<esper:statement 
-				epl="select * from org.opencredo.esper.integration.MessageContext">
-				<esper:listeners>
-					<ref bean="inboundGateway"/>
-				</esper:listeners>
-			</esper:statement>
-		</esper:statements>
+		<esper:statements></esper:statements>
 	</esper:template>
-	
+
 	<!-- Take the inbound esper messages on the channel and pass them to the update listener -->
-	
-	<si:service-activator ref="testListener" input-channel="inboundRawEsperMessages" />	
-	
+
+	<si:service-activator ref="testListener" input-channel="inboundRawEsperMessages" />
+
 	<bean id="testListener" class="org.opencredo.esper.sample.CallRecordingListener" />
-	
-	
+
+
 </beans>

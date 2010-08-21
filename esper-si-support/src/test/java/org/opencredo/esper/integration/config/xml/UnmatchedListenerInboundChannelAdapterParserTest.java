@@ -36,7 +36,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration
 public class UnmatchedListenerInboundChannelAdapterParserTest {
 
-    @Autowired
     EsperTemplate template;
 
     @Autowired
@@ -47,6 +46,8 @@ public class UnmatchedListenerInboundChannelAdapterParserTest {
 
     @Test
     public void sendAnEsperContextMessageAndAssertThatListenerIsInvoked() {
+        template = new EsperTemplate();
+        template.initialize();
         template.sendEvent(new MessageContext(new DirectChannel(), "testSourceId"));
 
         template.sendEvent("A simple string event object!");

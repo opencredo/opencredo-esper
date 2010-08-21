@@ -42,9 +42,7 @@ import com.espertech.esper.client.UpdateListener;
  * methods) operations to retrieve results from the associated statement.
  * 
  * For more information on push and pull operations on esper statements, see
- * {@link http
- * ://esper.codehaus.org/esper-3.3.0/doc/reference/en/html/api.html#api
- * -receive-results}
+ * {@link http://esper.codehaus.org/esper-3.3.0/doc/reference/en/html/api.html#api-receive-results}
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
  */
@@ -72,22 +70,30 @@ public class EsperStatement implements EsperStatementOperations {
      * Starts events being collated according to the statement's filter query
      */
     public void start() {
-        LOG.info("Esper statement being started");
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Esper statement [" + epl + "] being started");
+        }
 
         this.epStatement.start();
 
-        LOG.info("Esper statement started");
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Esper statement [" + epl + "] started");
+        }
     }
 
     /**
      * Stops the underlying native statement from applying its filter query.
      */
     public void stop() {
-        LOG.info("Esper statement being stopped");
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Esper statement [" + epl + "] being stopped");
+        }
 
         this.epStatement.stop();
 
-        LOG.info("Esper statement stopped");
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Esper statement [" + epl + "] stopped");
+        }
     }
 
     /**
@@ -114,7 +120,7 @@ public class EsperStatement implements EsperStatementOperations {
         this.subscriber = subscriber;
     }
 
-/**
+    /**
 	 * Adds an {@link UpdateListener) to the statement to support
 	 * the 'push' mode of retrieving results.
 	 * 

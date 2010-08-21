@@ -42,7 +42,7 @@ public class InboundChannelAdapterParserTest {
     CallRecordingListener listener;
 
     @Test
-    public void sendAnEsperContextMessageAndAssertThatListenerIsInvoked() {
+    public void sendAnEsperContextMessageAndAssertThatListenerIsInvoked() throws InterruptedException {
         template.sendEvent(new MessageContext(new DirectChannel(), "testSourceId"));
 
         assertEquals(1, listener.getNumberOfTimesInvoked());

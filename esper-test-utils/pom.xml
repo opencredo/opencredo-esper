@@ -8,7 +8,7 @@
 	<groupId>org.opencredo.esper</groupId>
 	<artifactId>esper-test-utils</artifactId>
 	<version>2.1-SNAPSHOT</version>
-	<name>OpenCredo Test utils</name>
+	<name>esper-test-utils</name>
 
 	<description>
 		Classes required by tests in sibling OpenCredo-Esper modules.

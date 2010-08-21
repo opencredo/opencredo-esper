@@ -6,9 +6,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 						http://www.opencredo.com/schema/esper
-						http://www.opencredo.com/schema/esper/opencredo-esper-2.0.xsd
+						http://www.opencredo.com/schema/esper/opencredo-esper-3.0.xsd
 						http://www.opencredo.com/schema/esper/integration
-						http://www.opencredo.com/schema/esper/integration/opencredo-integration-esper-2.0.xsd
+						http://www.opencredo.com/schema/esper/integration/opencredo-integration-esper-3.0.xsd
 						http://www.springframework.org/schema/integration
 						http://www.springframework.org/schema/integration/spring-integration-1.0.xsd">
 
@@ -42,6 +42,8 @@
 
 	<esper:template id="template" configuration="esper-configuration.xml">
 		<esper:statements>
+			<!--<esper:statement gatewayBean="throughputGateway" />-->
+			
 			<esper:statement epl="select count(*) as throughput from org.opencredo.esper.samples.noodlebar.domain.NoodleOrder.win:time_batch(1 second)">
 				<esper:listeners>
 					<!-- Pass Esper messages to the throughputGateway -->
@@ -56,8 +58,9 @@
 		channel
 	-->
 
-	<si-esper:inbound-channel-adapter id="throughputGateway"
-		channel="inboundRawEsperThroughputMessages" />
+	<si-esper:inbound-channel-adapter id="throughputGateway" channel="inboundRawEsperThroughputMessages" />
+		<!--<si-esper:query>select * from X</si-esper:query>
+	</si-esper:inbound-channel-adapter>-->
 
 	<si:channel id="inboundRawEsperThroughputMessages" />
 

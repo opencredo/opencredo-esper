@@ -19,11 +19,16 @@
 
 package org.opencredo.esper.integration;
 
+import org.opencredo.esper.EsperStatement;
+import org.opencredo.esper.EsperTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.integration.core.MessageChannel;
 import org.springframework.integration.message.GenericMessage;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UnmatchedListener;
@@ -31,25 +36,35 @@ import com.espertech.esper.client.UpdateListener;
 
 /**
  * Provides a simple inbound channel adapter that takes Esper events and places
- * them on the indicated Spring Integration channel.
+ * them on the indicated Spring Integration channel. <br>
+ * By default this adapter creates an Esper template with no name, by specifying
+ * {@link #setTemplateName(String)} you will be able to create Esper template
+ * with name.
  * 
  * @author Russ Miles (russell.miles@opencredo.com)
  * @author Jonas Partner (jonas.partner@opencredo.com)
+ * @author Tomas Lukosius (tomas.lukosius@opencredo.com)
  */
-public class EventDrivenEsperInboundChannelAdapter implements UpdateListener, UnmatchedListener {
+public class EventDrivenEsperInboundChannelAdapter implements InitializingBean, DisposableBean, UpdateListener,
+        UnmatchedListener {
     private final static Logger LOG = LoggerFactory.getLogger(EventDrivenEsperInboundChannelAdapter.class);
 
     private final MessageChannel channel;
-
+    private final String eplQuery;
     private Long timeout;
+    private String templateName;
+
+    private EsperTemplate template;
 
     /**
      * Provide the channel required to send to
      * 
      * @param channel
+     * @param epl
      */
-    public EventDrivenEsperInboundChannelAdapter(MessageChannel channel) {
+    public EventDrivenEsperInboundChannelAdapter(MessageChannel channel, String epl) {
         this.channel = channel;
+        this.eplQuery = epl;
     }
 
     /**
@@ -62,6 +77,33 @@ public class EventDrivenEsperInboundChannelAdapter implements UpdateListener, Un
      */
     public void setTimeout(long timeout) {
         this.timeout = timeout;
+    }
+
+    /**
+     * @param templateName
+     *            the templateName to set
+     */
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    /**
+     * @throws Exception
+     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+     */
+    public void afterPropertiesSet() throws Exception {
+        this.template = new EsperTemplate();
+        this.template.setName(templateName);
+
+        if (StringUtils.hasText(eplQuery)) {
+            EsperStatement statement = new EsperStatement(eplQuery);
+            statement.addListener(this);
+            template.addStatement(statement);
+        } else {
+            template.setUnmatchedListener(this);
+        }
+
+        template.initialize();
     }
 
     /*
@@ -120,5 +162,13 @@ public class EventDrivenEsperInboundChannelAdapter implements UpdateListener, Un
         }
 
         LOG.debug("Inbound channel adapter received an unmatched listener event from esper");
+    }
+
+    /**
+     * @throws Exception
+     * @see org.springframework.beans.factory.DisposableBean#destroy()
+     */
+    public void destroy() throws Exception {
+        this.template.cleanup();
     }
 }
