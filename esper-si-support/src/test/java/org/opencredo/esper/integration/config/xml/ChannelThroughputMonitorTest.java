@@ -28,8 +28,11 @@ import org.opencredo.esper.sample.SampleEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.integration.channel.PollableChannel;
+import org.springframework.integration.core.Message;
 import org.springframework.integration.core.MessageChannel;
 import org.springframework.integration.message.GenericMessage;
+import org.springframework.integration.selector.MessageSelector;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -54,21 +57,22 @@ public class ChannelThroughputMonitorTest {
     MessageChannel channelTwo;
 
     @Test
+    @DirtiesContext
     public void testMessageThroughputPerSampleWindow() throws Exception {
         pollableChannel.receive(10);
 
-        int count = 5;
+        int count = 10;
         for (int i = 0; i < count; i++) {
             pollableChannel.send(new GenericMessage<SampleEvent>(new SampleEvent()));
         }
-
-        Thread.sleep(150);
 
         for (int i = 0; i < count - 1; i++) {
             pollableChannel.receive(10);
         }
 
-        Thread.sleep(1500);
+        // Need to sleep longer than default time_batch of throughput monitor
+        // (which is 1 second).
+        Thread.sleep(1100);
 
         long throughput = throughputMonitor.getThroughput();
 
@@ -76,16 +80,25 @@ public class ChannelThroughputMonitorTest {
 
         assertEquals("Throughput calculated incorrectly ", count - 1, throughput);
 
+        Thread.sleep(11000);
     }
 
     @Test
+    @DirtiesContext
     public void testMessageThroughputOnMutlipleChannels() throws Exception {
+        pollableChannel.purge(new MessageSelector() {
+            public boolean accept(Message<?> message) {
+                return true;
+            }
+        });
 
         for (int i = 0; i < 10; i++) {
             pollableChannel.send(new GenericMessage<SampleEvent>(new SampleEvent()));
             pollableChannel.receive(10);
         }
 
+        // Need to sleep longer than default time_batch of throughput monitor
+        // (which is 1 second).
         Thread.sleep(1100);
 
         long throughput = throughputMonitor.getThroughput();
@@ -98,6 +111,8 @@ public class ChannelThroughputMonitorTest {
             channelTwo.send(new GenericMessage<SampleEvent>(new SampleEvent()));
         }
 
+        // Need to sleep longer than default time_batch of throughput monitor
+        // (which is 1 second).
         Thread.sleep(1100);
 
         long throughputTwo = throughputMonitorTwo.getThroughput();

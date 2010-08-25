@@ -70,10 +70,10 @@ public class EsperChannelThroughputMonitor implements InitializingBean, Disposab
     }
 
     public void afterPropertiesSet() throws Exception {
-        String windowName = sourceId + THROUGHPUT_SUFFIX;
+        String streamName = sourceId + THROUGHPUT_SUFFIX;
 
         StringBuilder createSourceWindow = new StringBuilder();
-        createSourceWindow.append("insert into ").append(windowName);
+        createSourceWindow.append("insert into ").append(streamName);
         createSourceWindow.append(" select sourceId, operation from ").append(MessageContext.class.getName());
         createSourceWindow.append(" where sourceId = '").append(this.sourceId).append("'");
 
@@ -95,21 +95,34 @@ public class EsperChannelThroughputMonitor implements InitializingBean, Disposab
             // We want to know how many messages were received.
             wireTap.setPostReceive(true);
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("select count(PS), count(PR) from pattern [every PS=");
-            sb.append(windowName).append("(operation=").append(IntegrationOperation.class.getName()).append(".")
-                    .append(IntegrationOperation.POST_SEND).append(") OR every PR=");
-            sb.append(windowName).append("(operation=").append(IntegrationOperation.class.getName()).append(".")
-                    .append(IntegrationOperation.POST_RECEIVE).append(")]");
-            sb.append(".win:time_batch(").append(timeSample).append(")");
-            EsperStatement listenForSourceId = new EsperStatement(sb.toString());
-            listenForSourceId.setSubscriber(this);
-            template.addStatement(listenForSourceId);
+            String countStreamName = streamName + "Count";
 
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.append("insert into ").append(countStreamName).append("(ps_count, pr_count) ");
+                sb.append("select count(PS) as ps_count, count(PR) as pr_count from pattern [every PS=");
+                sb.append(streamName).append("(operation=").append(IntegrationOperation.class.getName()).append(".")
+                        .append(IntegrationOperation.POST_SEND).append(") OR every PR=");
+                sb.append(streamName).append("(operation=").append(IntegrationOperation.class.getName()).append(".")
+                        .append(IntegrationOperation.POST_RECEIVE).append(")]");
+
+                // Esper statement
+                EsperStatement statement = new EsperStatement(sb.toString());
+                template.addStatement(statement);
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("select ps_count, pr_count, avg(pr_count) from ").append(countStreamName)
+                    .append(".win:time_batch(").append(timeSample).append(")");
+
+            // Esper statement
+            EsperStatement statement = new EsperStatement(sb.toString());
+            statement.setSubscriber(this);
+            template.addStatement(statement);
         } else {
 
             StringBuilder sb = new StringBuilder();
-            sb.append("select count(*) as throughput from ").append(windowName);
+            sb.append("select count(*) as throughput from ").append(streamName);
             sb.append(".win:time_batch(").append(this.timeSample).append(")");
             sb.append(" where operation=").append(IntegrationOperation.class.getName()).append(".")
                     .append(IntegrationOperation.POST_SEND);
@@ -139,14 +152,20 @@ public class EsperChannelThroughputMonitor implements InitializingBean, Disposab
         this.throughput = throughput;
     }
 
-    public void update(Long ps_count, Long pr_count) {
+    /**
+     * 
+     * @param ps_count
+     * @param pr_count
+     * @param pr_avg
+     */
+    public void update(Long ps_count, Long pr_count, Double pr_avg) {
 
         ps_count = ps_count == null ? 0 : ps_count;
         pr_count = pr_count == null ? 0 : pr_count;
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Sent throughput of " + ps_count + ", received throughput of " + pr_count + " on pollable channel - "
-                    + this.channel.getName());
+            LOG.debug("Sent throughput of " + ps_count + ", received throughput of " + pr_count + " average " + pr_avg
+                    + " on pollable channel - " + this.channel.getName());
         }
         this.throughput = pr_count;
     }
