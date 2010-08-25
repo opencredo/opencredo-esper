@@ -79,8 +79,6 @@ public class ChannelThroughputMonitorTest {
         System.out.println("Throughput is: " + throughputMonitor.getThroughput());
 
         assertEquals("Throughput calculated incorrectly ", count - 1, throughput);
-
-        Thread.sleep(11000);
     }
 
     @Test
