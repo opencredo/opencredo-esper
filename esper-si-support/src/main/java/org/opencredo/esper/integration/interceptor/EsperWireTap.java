@@ -19,8 +19,6 @@
 
 package org.opencredo.esper.integration.interceptor;
 
-import java.sql.Timestamp;
-
 import org.opencredo.esper.EsperTemplate;
 import org.opencredo.esper.integration.IntegrationOperation;
 import org.opencredo.esper.integration.MessageContext;
@@ -82,7 +80,6 @@ public class EsperWireTap implements ChannelInterceptor {
     }
 
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        System.out.println("preSend - " + new Timestamp(System.currentTimeMillis()));
         if (this.preSend) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Sending a pre-send message to esper from source '" + sourceId + "'");
@@ -106,13 +103,11 @@ public class EsperWireTap implements ChannelInterceptor {
     }
 
     public Message<?> postReceive(Message<?> message, MessageChannel channel) {
-        System.out.println("postReceive - " + new Timestamp(System.currentTimeMillis()));
-
         if (message == null) {
             // If no message received - no event is created
             return message;
         }
-        
+
         if (this.postReceive) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Sending a post-receive message to esper from source '" + sourceId + "'");
@@ -121,7 +116,8 @@ public class EsperWireTap implements ChannelInterceptor {
             if (sendContext) {
                 MessageContext context;
 
-                // Note that sometimes message might not exist e.g. poller polls empty queue.
+                // Note that sometimes message might not exist e.g. poller polls
+                // empty queue.
                 context = new MessageContext(message, channel, IntegrationOperation.POST_RECEIVE, sourceId);
 
                 template.sendEvent(context);
@@ -140,8 +136,6 @@ public class EsperWireTap implements ChannelInterceptor {
     }
 
     public void postSend(Message<?> message, MessageChannel channel, boolean sent) {
-        System.out.println("postSend - " + new Timestamp(System.currentTimeMillis()));
-        
         if (this.postSend) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Sending a post-send message to esper from source '" + sourceId + "'");
@@ -163,7 +157,6 @@ public class EsperWireTap implements ChannelInterceptor {
     }
 
     public boolean preReceive(MessageChannel channel) {
-        System.out.println("preReceive - " + new Timestamp(System.currentTimeMillis()));
         if (this.preReceive) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Sending a pre-receive message to esper from source '" + sourceId + "'");
