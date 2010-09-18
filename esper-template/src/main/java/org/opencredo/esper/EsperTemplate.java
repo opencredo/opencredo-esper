@@ -152,10 +152,10 @@ public class EsperTemplate implements EsperTemplateOperations {
             LOG.debug("Configuring the Esper Service Provider with name: " + name);
         }
         if (this.configuration != null && this.configuration.exists()) {
-            Configuration configuration = new Configuration();
-            configuration = configuration.configure(this.configuration.getFile());
-            epServiceProvider = EPServiceProviderManager.getProvider(name, configuration);
-            LOG.info("Esper configured with a user-provided configuration", configuration);
+            Configuration esperConfiguration = new Configuration();
+            esperConfiguration = esperConfiguration.configure(this.configuration.getFile());
+            epServiceProvider = EPServiceProviderManager.getProvider(name, esperConfiguration);
+            LOG.info("Esper configured with a user-provided configuration", esperConfiguration);
         } else {
             epServiceProvider = EPServiceProviderManager.getProvider(name);
         }

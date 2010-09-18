@@ -91,7 +91,7 @@ public class EventDrivenEsperInboundChannelAdapter implements InitializingBean, 
      * @throws Exception
      * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
      */
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         this.template = new EsperTemplate();
         this.template.setName(templateName);
 
@@ -168,7 +168,7 @@ public class EventDrivenEsperInboundChannelAdapter implements InitializingBean, 
      * @throws Exception
      * @see org.springframework.beans.factory.DisposableBean#destroy()
      */
-    public void destroy() throws Exception {
+    public void destroy() {
         this.template.cleanup();
     }
 }

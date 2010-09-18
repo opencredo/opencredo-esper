@@ -58,7 +58,6 @@ public class EsperChannelThroughputMonitor implements InitializingBean, Disposab
         super();
         this.channel = channel;
         this.sourceId = sourceId;
-
     }
 
     public void setTimeSample(String timeSample) {
@@ -69,7 +68,7 @@ public class EsperChannelThroughputMonitor implements InitializingBean, Disposab
         return throughput;
     }
 
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet()  {
         String streamName = sourceId + THROUGHPUT_SUFFIX;
 
         StringBuilder createSourceWindow = new StringBuilder();
@@ -82,11 +81,7 @@ public class EsperChannelThroughputMonitor implements InitializingBean, Disposab
 
         EsperWireTap wireTap = new EsperWireTap(template, this.sourceId);
         wireTap.setSendContext(true);
-        // We always want to listen to event per message sent
-        wireTap.setPostSend(true);
-        wireTap.setPreSend(false);
-        wireTap.setPreReceive(false);
-        wireTap.setPostReceive(false);
+        setToAlwaysWantingToListenToEventPerMessageSent(wireTap);
 
         if (channel instanceof PollableChannel) {
             // This channel is pollable - need to calculate messages received
@@ -137,6 +132,12 @@ public class EsperChannelThroughputMonitor implements InitializingBean, Disposab
 
     }
 
+	private void setToAlwaysWantingToListenToEventPerMessageSent(
+			EsperWireTap wireTap) {
+		wireTap.setPostSend(true);
+        wireTap.setPreSend(false);
+	}
+
     /**
      * Method used by the Esper subscriber contract where the payload of the
      * event is passed to the subscriber. In this case the payload is a
@@ -170,7 +171,7 @@ public class EsperChannelThroughputMonitor implements InitializingBean, Disposab
         this.throughput = pr_count;
     }
 
-    public void destroy() throws Exception {
+    public void destroy() {
         this.template.cleanup();
     }
 }

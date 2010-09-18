@@ -19,7 +19,7 @@
 
 package org.opencredo.esper.integration.config.xml;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,10 +31,10 @@ import org.springframework.integration.channel.PollableChannel;
 import org.springframework.integration.core.Message;
 import org.springframework.integration.core.MessageChannel;
 import org.springframework.integration.message.GenericMessage;
-import org.springframework.integration.selector.MessageSelector;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.integration.selector.MessageSelector;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration

@@ -38,7 +38,11 @@ import org.springframework.integration.core.MessageChannel;
  * @author Jonas Partner (jonas.partner@opencredo.com)
  */
 public class EsperWireTap implements ChannelInterceptor {
-    private final static Logger LOG = LoggerFactory.getLogger(EsperWireTap.class);
+    private static final String SENT_MESSAGE_PAYLOAD_TO_ESPER_FROM_SOURCE = "Sent message payload to esper from source '";
+
+	private static final String SENT_MESSAGE_CONTEXT_TO_ESPER_FROM_SOURCE = "Sent message context to esper from source '";
+
+	private final static Logger LOG = LoggerFactory.getLogger(EsperWireTap.class);
 
     private final EsperTemplate template;
 
@@ -89,12 +93,12 @@ public class EsperWireTap implements ChannelInterceptor {
                 MessageContext context = new MessageContext(message, channel, IntegrationOperation.PRE_SEND, sourceId);
                 template.sendEvent(context);
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Sent message context to esper from source '" + sourceId + "'");
+                    LOG.debug(SENT_MESSAGE_CONTEXT_TO_ESPER_FROM_SOURCE + sourceId + "'");
                 }
             } else {
                 template.sendEvent(message.getPayload());
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Sent message payload to esper from source '" + sourceId + "'");
+                    LOG.debug(SENT_MESSAGE_PAYLOAD_TO_ESPER_FROM_SOURCE + sourceId + "'");
                 }
             }
         }
@@ -122,12 +126,12 @@ public class EsperWireTap implements ChannelInterceptor {
 
                 template.sendEvent(context);
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Sent message context to esper from source '" + sourceId + "'");
+                    LOG.debug(SENT_MESSAGE_CONTEXT_TO_ESPER_FROM_SOURCE + sourceId + "'");
                 }
             } else {
                 template.sendEvent(message.getPayload());
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Sent message payload to esper from source '" + sourceId + "'");
+                    LOG.debug(SENT_MESSAGE_PAYLOAD_TO_ESPER_FROM_SOURCE + sourceId + "'");
                 }
             }
         }
@@ -145,12 +149,12 @@ public class EsperWireTap implements ChannelInterceptor {
                 MessageContext context = new MessageContext(message, channel, sent, sourceId);
                 template.sendEvent(context);
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Sent message context to esper from source '" + sourceId + "'");
+                    LOG.debug(SENT_MESSAGE_CONTEXT_TO_ESPER_FROM_SOURCE + sourceId + "'");
                 }
             } else {
                 template.sendEvent(message.getPayload());
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Sent message payload to esper from source '" + sourceId + "'");
+                    LOG.debug(SENT_MESSAGE_PAYLOAD_TO_ESPER_FROM_SOURCE + sourceId + "'");
                 }
             }
         }
@@ -165,7 +169,7 @@ public class EsperWireTap implements ChannelInterceptor {
             MessageContext context = new MessageContext(channel, sourceId);
             template.sendEvent(context);
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Sent message context to esper from source '" + sourceId + "'");
+                LOG.debug(SENT_MESSAGE_CONTEXT_TO_ESPER_FROM_SOURCE + sourceId + "'");
             }
         }
         return true;

@@ -41,13 +41,13 @@ public class EsperTemplateBean extends EsperTemplate implements BeanNameAware, I
         LOG.debug("Set esper template bean name to " + name);
     }
 
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         LOG.debug("Initializing the esper template bean");
         super.initialize();
         LOG.debug("Completed initializing the esper template bean");
     }
 
-    public void destroy() throws Exception {
+    public void destroy() {
         LOG.debug("Destroying the esper template bean");
         super.cleanup();
         LOG.debug("Finished destroying the esper template bean");
