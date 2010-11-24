@@ -55,12 +55,12 @@ public class EsperWireTapChannelsBeanPostProcessor implements BeanPostProcessor 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private void addMatchingWireTaps(AbstractMessageChannel channel) {
 
-        Assert.notNull(channel.getName(), "channel name must not be null");
+        Assert.notNull(channel.getComponentName(), "channel name must not be null");
 
         Set<Entry> patternWireTapEntries = this.channelPatternMappings.entrySet();
 
         for (Entry patternWireTapEntry : patternWireTapEntries) {
-            if (((Pattern) patternWireTapEntry.getKey()).matcher(channel.getName()).matches()) {
+            if (((Pattern) patternWireTapEntry.getKey()).matcher(channel.getComponentName()).matches()) {
                 channel.addInterceptor((EsperWireTap) patternWireTapEntry.getValue());
             }
         }

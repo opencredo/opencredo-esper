@@ -25,8 +25,8 @@ import org.opencredo.esper.integration.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.channel.ChannelInterceptor;
-import org.springframework.integration.core.Message;
-import org.springframework.integration.core.MessageChannel;
+import org.springframework.integration.Message;
+import org.springframework.integration.MessageChannel;
 
 /**
  * Provides a spring integration {@link ChannelInterceptor} implementation that

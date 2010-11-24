@@ -27,14 +27,12 @@ import org.opencredo.esper.integration.throughput.EsperChannelThroughputMonitor;
 import org.opencredo.esper.sample.SampleEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.integration.channel.PollableChannel;
-import org.springframework.integration.core.Message;
-import org.springframework.integration.core.MessageChannel;
+import org.springframework.integration.core.PollableChannel;
+import org.springframework.integration.MessageChannel;
 import org.springframework.integration.message.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.integration.selector.MessageSelector;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -84,12 +82,6 @@ public class ChannelThroughputMonitorTest {
     @Test
     @DirtiesContext
     public void testMessageThroughputOnMutlipleChannels() throws Exception {
-        pollableChannel.purge(new MessageSelector() {
-            public boolean accept(Message<?> message) {
-                return true;
-            }
-        });
-
         for (int i = 0; i < 10; i++) {
             pollableChannel.send(new GenericMessage<SampleEvent>(new SampleEvent()));
             pollableChannel.receive(10);

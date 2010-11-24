@@ -171,7 +171,7 @@
 
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring</artifactId>
+			<artifactId>spring-context</artifactId>
 			<version>${springVersion}</version>
 			<scope>compile</scope>
 		</dependency>
@@ -179,19 +179,25 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.5.9.RC1</version>
+			<version>${slf4jVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.9.RC1</version>
+			<version>${slf4jVersion}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4jVersion}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.2.14</version>
-			<type>jar</type>
-			<scope>compile</scope>
+			<version>${log4jVersion}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -204,7 +210,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>2.5.6.SEC01</version>
+			<version>${springVersion}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -219,9 +225,11 @@
 
 	<properties>
 		<esperVersion>3.5.0</esperVersion>
-		<springVersion>2.5.6.SEC01</springVersion>
-		<springIntegrationVersion>1.0.3.RELEASE</springIntegrationVersion>
-		<junitVersion>4.4</junitVersion>
+		<springVersion>3.0.5.RELEASE</springVersion>
+		<springIntegrationVersion>2.0.0.RELEASE</springIntegrationVersion>
+		<junitVersion>4.8.2</junitVersion>
+		<slf4jVersion>1.6.1</slf4jVersion>
+		<log4jVersion>1.2.16</log4jVersion>
 	</properties>
 
 	<profiles>

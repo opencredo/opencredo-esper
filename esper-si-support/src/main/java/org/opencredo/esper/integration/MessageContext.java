@@ -19,9 +19,9 @@
 
 package org.opencredo.esper.integration;
 
-import org.springframework.integration.core.Message;
-import org.springframework.integration.core.MessageChannel;
-import org.springframework.integration.core.MessageHeaders;
+import org.springframework.integration.Message;
+import org.springframework.integration.MessageChannel;
+import org.springframework.integration.MessageHeaders;
 
 /**
  * Provides the complete message context as it can be retrieved from Spring

@@ -30,7 +30,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.integration.channel.AbstractMessageChannel;
 import org.springframework.integration.channel.ChannelInterceptor;
-import org.springframework.integration.channel.PollableChannel;
+import org.springframework.integration.core.PollableChannel;
 
 /**
  * Provides a spring integration {@link ChannelInterceptor} default
@@ -148,7 +148,7 @@ public class EsperChannelThroughputMonitor implements InitializingBean, Disposab
      */
     public void update(long throughput) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Received throughput of " + throughput + " on channel - " + this.channel.getName());
+            LOG.debug("Received throughput of " + throughput + " on channel - " + this.channel.getComponentName());
         }
         this.throughput = throughput;
     }
@@ -166,7 +166,7 @@ public class EsperChannelThroughputMonitor implements InitializingBean, Disposab
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Sent throughput of " + ps_count + ", received throughput of " + pr_count + " average " + pr_avg
-                    + " on pollable channel - " + this.channel.getName());
+                    + " on pollable channel - " + this.channel.getComponentName());
         }
         this.throughput = pr_count;
     }
