@@ -3,11 +3,11 @@
 	<parent>
 		<artifactId>opencredo-esper-parent</artifactId>
 		<groupId>org.opencredo.esper</groupId>
-		<version>2.1</version>
+		<version>2.2-SNAPSHOT</version>
 	</parent>
 	<groupId>org.opencredo.esper</groupId>
 	<artifactId>esper-test-utils</artifactId>
-	<version>2.1</version>
+	<version>2.2-SNAPSHOT</version>
 	<name>esper-test-utils</name>
 
 	<description>
