@@ -224,7 +224,7 @@
 	</modules>
 
 	<properties>
-		<esperVersion>3.5.0</esperVersion>
+		<esperVersion>4.3.0</esperVersion>
 		<springVersion>3.0.5.RELEASE</springVersion>
 		<springIntegrationVersion>2.0.3.RELEASE</springIntegrationVersion>
 		<junitVersion>4.8.2</junitVersion>

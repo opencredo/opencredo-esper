@@ -27,7 +27,7 @@ import com.espertech.esper.client.EventBean;
  * 
  * Uses Java 5 covariant return types to override the return type of the
  * {@link #mapRow} method to be the type parameter <code>T</code>. Created in
- * the style of the Sprng Framework's
+ * the style of the Spring Framework's
  * {@link org.springframework.jdbc.core.SimpleParameterizedRowMapper}.
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
