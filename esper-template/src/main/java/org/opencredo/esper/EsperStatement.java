@@ -19,11 +19,7 @@
 
 package org.opencredo.esper;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,20 +43,28 @@ import com.espertech.esper.client.UpdateListener;
  * -receive-results}
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
+ * @author Aleksa Vukotic (aleksa.vukotic@opencredo.com)
  */
 public final class EsperStatement implements EsperStatementOperations {
 	private final static Logger LOG = LoggerFactory.getLogger(EsperStatement.class);
 
+    private String id;
 	private String epl;
-	private EPStatement epStatement;
+    private EPStatement epStatement;
 	private Set<UpdateListener> listeners = new LinkedHashSet<UpdateListener>();
 	private Object subscriber;
 
 	public EsperStatement(String epl) {
-		this.epl = epl;
+		this(UUID.randomUUID().toString(), epl);
 	}
 
-	public String getEPL() {
+
+    public EsperStatement(String id, String epl) {
+        this.id = id;
+        this.epl = epl;
+    }
+
+    public String getEPL() {
 		return epl;
 	}
 
@@ -97,6 +101,18 @@ public final class EsperStatement implements EsperStatementOperations {
 			LOG.info("Esper statement [" + epl + "] stopped");
 		}
 	}
+
+    public void destroy() {
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Esper statement [" + epl + "] being destroyed");
+        }
+
+        this.epStatement.destroy();
+
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Esper statement [" + epl + "] destroyed");
+        }
+    }
 
 	/**
 	 * Provides a mechanism by which to access the underlying esper API
@@ -287,4 +303,32 @@ public final class EsperStatement implements EsperStatementOperations {
 		return result;
 	}
 
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EsperStatement statement = (EsperStatement) o;
+
+        if (id != null ? !id.equals(statement.id) : statement.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "EsperStatement{" +
+                "epl='" + epl + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }

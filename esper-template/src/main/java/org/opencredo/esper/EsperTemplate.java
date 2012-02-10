@@ -23,17 +23,12 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.espertech.esper.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 
-import com.espertech.esper.client.Configuration;
-import com.espertech.esper.client.EPException;
-import com.espertech.esper.client.EPRuntime;
-import com.espertech.esper.client.EPServiceProvider;
-import com.espertech.esper.client.EPServiceProviderManager;
-import com.espertech.esper.client.EPStatement;
-import com.espertech.esper.client.UnmatchedListener;
+import org.springframework.util.Assert;
 
 /**
  * The main workhorse of Esper. The template is configured with a set of
@@ -46,6 +41,7 @@ import com.espertech.esper.client.UnmatchedListener;
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
  * @author Jonas Partner (jonas.partner@opencredo.com)
+ * @author Aleksa Vukotic (aleksa.vukotic@opencredo.com)
  */
 public class EsperTemplate implements EsperTemplateOperations {
     private final static Logger LOG = LoggerFactory.getLogger(EsperTemplate.class);
@@ -92,6 +88,31 @@ public class EsperTemplate implements EsperTemplateOperations {
             EPStatement epStatement = epServiceProvider.getEPAdministrator().createEPL(statement.getEPL());
             statement.setEPStatement(epStatement);
         }
+    }
+
+    public synchronized void destroyStatement(String statementId) {
+        EsperStatement statement = findStatementById(statementId);
+        statement.destroy();
+        Assert.isTrue(statement.getState().equals(EPStatementState.DESTROYED));
+        this.statements.remove(statement);
+
+    }
+    public synchronized void startStatement(String statementId) {
+        EsperStatement statement = findStatementById(statementId);
+        statement.start();
+    }
+    public synchronized void stopStatement(String statementId) {
+        EsperStatement statement = findStatementById(statementId);
+        statement.stop();
+    }
+
+    private EsperStatement findStatementById(String id){
+        for(EsperStatement statement : this.statements){
+            if(statement.getId().equals(id)){
+                return statement;
+            }
+        }
+        throw new IllegalArgumentException("EsperStatement with id " + id + "does not exist");
     }
 
     public void sendEvent(Object event) throws InvalidEsperConfigurationException {

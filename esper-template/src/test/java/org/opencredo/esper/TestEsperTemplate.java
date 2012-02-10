@@ -21,6 +21,7 @@ package org.opencredo.esper;
 
 import static org.junit.Assert.assertEquals;
 
+import com.espertech.esper.client.EPStatementState;
 import org.junit.Before;
 import org.junit.Test;
 import org.opencredo.esper.sample.CallRecordingListener;
@@ -30,6 +31,7 @@ import org.opencredo.esper.sample.SampleEvent;
  * A unit test for the {@link EsperTemplate}.
  * 
  * @author Russ Miles (russ.miles@opencredo.com)
+ * @author Aleksa Vukotic (aleksa.vukotic@opencredo.com)
  * 
  */
 public class TestEsperTemplate {
@@ -91,6 +93,54 @@ public class TestEsperTemplate {
         template.addStatement(statement);
         template.sendEvent(new SampleEvent());
         assertEquals(1, listener.getNumberOfTimesInvoked());
+    }
+
+    @Test
+    public void testDestroyStatementAfterInitialisation() {
+        setupTemplateAndSendSampleEvent();
+        EsperStatement statement = addTestStatement();
+        CallRecordingListener listener = this.addListenerToStatement(statement);
+        template.addStatement(statement);
+
+        template.sendEvent(new SampleEvent());
+        assertEquals(1, listener.getNumberOfTimesInvoked());
+
+        template.destroyStatement(statement.getId());
+        assertEquals(template.getStatements().size(), 0);
+        //send another event
+        template.sendEvent(new SampleEvent());
+        //listener not notified
+        assertEquals(1, listener.getNumberOfTimesInvoked());
+    }
+    @Test
+    public void testStopStartStatementAfterInitialisation() {
+        setupTemplateAndSendSampleEvent();
+        EsperStatement statement = addTestStatement();
+        CallRecordingListener listener = this.addListenerToStatement(statement);
+        template.addStatement(statement);
+
+        template.sendEvent(new SampleEvent());
+        assertEquals(1, listener.getNumberOfTimesInvoked());
+
+        //stop statement
+        template.stopStatement(statement.getId());
+        assertEquals(template.getStatements().size(), 1);
+        assertEquals(template.getStatements().iterator().next().getState(), EPStatementState.STOPPED);
+
+        //send another event
+        template.sendEvent(new SampleEvent());
+        //listener not notified
+        assertEquals(1, listener.getNumberOfTimesInvoked());
+
+        //start statement again
+        template.startStatement(statement.getId());
+        assertEquals(template.getStatements().size(), 1);
+        assertEquals(template.getStatements().iterator().next().getState(), EPStatementState.STARTED);
+
+        //send another event
+        template.sendEvent(new SampleEvent());
+        //listener notified again
+        assertEquals(2, listener.getNumberOfTimesInvoked());
 
     }
 
