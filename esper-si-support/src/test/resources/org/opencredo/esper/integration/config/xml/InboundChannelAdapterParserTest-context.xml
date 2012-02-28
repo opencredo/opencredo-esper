@@ -9,7 +9,7 @@
 						http://www.opencredo.com/schema/esper/integration
 						http://www.opencredo.com/schema/esper/integration/opencredo-integration-esper-3.0.xsd
 						http://www.springframework.org/schema/integration
-						http://www.springframework.org/schema/integration/spring-integration-1.0.xsd">
+						http://www.springframework.org/schema/integration/spring-integration-2.1.xsd">
 
 	<!-- Take Esper messages and place them on the inboundRawEsperMessages channel -->
 

@@ -5,13 +5,13 @@
 	xmlns:si-esper="http://www.opencredo.com/schema/esper/integration"
 	xmlns:si="http://www.springframework.org/schema/integration"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 						http://www.opencredo.com/schema/esper
 						http://www.opencredo.com/schema/esper/opencredo-esper-3.0.xsd
 						http://www.opencredo.com/schema/esper/integration
 						http://www.opencredo.com/schema/esper/integration/opencredo-integration-esper-3.0.xsd
 						http://www.springframework.org/schema/integration
-						http://www.springframework.org/schema/integration/spring-integration-1.0.xsd">	
+						http://www.springframework.org/schema/integration/spring-integration-2.1.xsd">
 		
 	<import resource="sample-integration-environment-config.xml"/>
 	
