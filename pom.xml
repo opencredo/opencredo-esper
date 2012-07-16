@@ -65,6 +65,18 @@
 			</roles>
 			<timezone>+0</timezone>
 		</developer>
+        <developer>
+			<id>aleksav.vukotic</id>
+			<name>Aleksa Vukotic</name>
+			<email>aleksa.vukotic@opencredo.com</email>
+			<organization>OpenCredo</organization>
+			<organizationUrl>http://www.opencredo.com</organizationUrl>
+			<roles>
+				<role>Project Admin</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+0</timezone>
+		</developer>
 	</developers>
 
 	<distributionManagement>
@@ -237,10 +249,10 @@
 	</modules>
 
 	<properties>
-		<esperVersion>4.5.0</esperVersion>
-		<springVersion>3.1.0.RELEASE</springVersion>
+		<esperVersion>4.6.0</esperVersion>
+		<springVersion>3.1.2.RELEASE</springVersion>
 		<springIntegrationVersion>2.1.0.RELEASE</springIntegrationVersion>
-		<junitVersion>4.8.2</junitVersion>
+		<junitVersion>4.10</junitVersion>
 		<slf4jVersion>1.6.1</slf4jVersion>
 		<log4jVersion>1.2.16</log4jVersion>
 	</properties>
