@@ -252,7 +252,7 @@
 		<esperVersion>4.6.0</esperVersion>
 		<springVersion>3.1.2.RELEASE</springVersion>
 		<springIntegrationVersion>2.1.0.RELEASE</springIntegrationVersion>
-		<junitVersion>4.10</junitVersion>
+		<junitVersion>4.13.1</junitVersion>
 		<slf4jVersion>1.6.1</slf4jVersion>
 		<log4jVersion>1.2.16</log4jVersion>
 	</properties>
